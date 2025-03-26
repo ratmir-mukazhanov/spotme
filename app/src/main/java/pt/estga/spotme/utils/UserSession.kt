@@ -1,120 +1,173 @@
-package pt.estga.spotme.utils;
+package pt.estga.spotme.utils
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import pt.estga.spotme.entities.User;
+import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import pt.estga.spotme.entities.User
 
-public class UserSession {
-
-    private static UserSession instance;
-    private static SharedPreferences sharedPreferences;
-    private static SharedPreferences.Editor editor;
-
-    // Keys para armazenar dados do utilizador
-    private static final String KEY_USER_ID = "userId";
-    private static final String KEY_USER_NAME = "userName";
-    private static final String KEY_USER_EMAIL = "userEmail";
-    private static final String KEY_USER_PHONE = "userPhone";
-    private static final String KEY_USER_PASSWORD = "userPassword"; // Se precisares armazenar senha
-    private static final String KEY_USER_PROFILE_IMAGE = "userProfileImage";
-
+class UserSession private constructor(context: Context) {
     // Construtor privado (Singleton)
-    private UserSession(Context context) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        editor = sharedPreferences.edit();
+    init {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        editor = sharedPreferences.edit()
     }
 
-    public static synchronized UserSession getInstance(Context context) {
-        if (instance == null) {
-            instance = new UserSession(context.getApplicationContext());
+    var user: User?
+        // Obter o objeto completo do utilizador
+        get() {
+            val userId: Long = sharedPreferences.getLong(
+                KEY_USER_ID,
+                -1
+            )
+            val userName: String? = sharedPreferences.getString(
+                KEY_USER_NAME,
+                null
+            )
+            val userEmail: String? = sharedPreferences.getString(
+                KEY_USER_EMAIL,
+                null
+            )
+            val userPhone: String? = sharedPreferences.getString(
+                KEY_USER_PHONE,
+                null
+            )
+            val userPassword: String? = sharedPreferences.getString(
+                KEY_USER_PASSWORD,
+                null
+            ) // Se necessário
+            val userProfileImage: String? =
+                sharedPreferences.getString(
+                    KEY_USER_PROFILE_IMAGE,
+                    null
+                )
+
+            // Verifica se os dados do utilizador estão completos
+            if (userId != -1L && userName != null && userEmail != null) {
+                val user: User =
+                    User(userName, userPassword, userEmail, userPhone)
+                user.id = userId
+                user.profileImage = userProfileImage
+                return user
+            } else {
+                return null
+            }
         }
-        return instance;
-    }
-
-    // Salvar todos os detalhes do utilizador
-    public void setUser(User user) {
-        editor.putLong(KEY_USER_ID, user.getId());
-        editor.putString(KEY_USER_NAME, user.getUsername());
-        editor.putString(KEY_USER_EMAIL, user.getEmail());
-        editor.putString(KEY_USER_PHONE, user.getPhone());
-        editor.putString(KEY_USER_PASSWORD, user.getPassword()); // Apenas se necessário
-        editor.putString(KEY_USER_PROFILE_IMAGE, user.getProfileImage());
-        editor.apply();
-    }
-
-    // Obter o objeto completo do utilizador
-    public User getUser() {
-        long userId = sharedPreferences.getLong(KEY_USER_ID, -1);
-        String userName = sharedPreferences.getString(KEY_USER_NAME, null);
-        String userEmail = sharedPreferences.getString(KEY_USER_EMAIL, null);
-        String userPhone = sharedPreferences.getString(KEY_USER_PHONE, null);
-        String userPassword = sharedPreferences.getString(KEY_USER_PASSWORD, null); // Se necessário
-        String userProfileImage = sharedPreferences.getString(KEY_USER_PROFILE_IMAGE, null);
-
-        // Verifica se os dados do utilizador estão completos
-        if (userId != -1 && userName != null && userEmail != null) {
-            User user = new User(userName, userPassword, userEmail, userPhone);
-            user.setId(userId);
-            user.setProfileImage(userProfileImage);
-            return user;
-        } else {
-            return null;
+        // Salvar todos os detalhes do utilizador
+        set(user) {
+            editor.putLong(KEY_USER_ID, user!!.id!!)
+            editor.putString(
+                KEY_USER_NAME,
+                user.username
+            )
+            editor.putString(KEY_USER_EMAIL, user.email)
+            editor.putString(KEY_USER_PHONE, user.phone)
+            editor.putString(
+                KEY_USER_PASSWORD,
+                user.password
+            ) // Apenas se necessário
+            editor.putString(
+                KEY_USER_PROFILE_IMAGE,
+                user.profileImage
+            )
+            editor.apply()
         }
-    }
 
-    // Métodos individuais para definir e recuperar os atributos
-    public void setUserId(long userId) {
-        editor.putLong(KEY_USER_ID, userId).apply();
-    }
+    var userId: Long
+        get() = sharedPreferences.getLong(
+            KEY_USER_ID,
+            -1
+        )
+        // Métodos individuais para definir e recuperar os atributos
+        set(userId) {
+            editor.putLong(KEY_USER_ID, userId).apply()
+        }
 
-    public long getUserId() {
-        return sharedPreferences.getLong(KEY_USER_ID, -1);
-    }
+    var userName: String?
+        get() = sharedPreferences.getString(
+            KEY_USER_NAME,
+            null
+        )
+        set(userName) {
+            editor.putString(KEY_USER_NAME, userName)
+                .apply()
+        }
 
-    public void setUserName(String userName) {
-        editor.putString(KEY_USER_NAME, userName).apply();
-    }
+    var userEmail: String?
+        get() = sharedPreferences.getString(
+            KEY_USER_EMAIL,
+            null
+        )
+        set(userEmail) {
+            editor.putString(KEY_USER_EMAIL, userEmail)
+                .apply()
+        }
 
-    public String getUserName() {
-        return sharedPreferences.getString(KEY_USER_NAME, null);
-    }
+    var userPhone: String?
+        get() {
+            return sharedPreferences.getString(
+                KEY_USER_PHONE,
+                null
+            )
+        }
+        set(userPhone) {
+            editor.putString(KEY_USER_PHONE, userPhone)
+                .apply()
+        }
 
-    public void setUserEmail(String userEmail) {
-        editor.putString(KEY_USER_EMAIL, userEmail).apply();
-    }
+    var userPassword: String?
+        get() {
+            return sharedPreferences.getString(
+                KEY_USER_PASSWORD,
+                null
+            )
+        }
+        set(userPassword) {
+            editor.putString(
+                KEY_USER_PASSWORD,
+                userPassword
+            ).apply()
+        }
 
-    public String getUserEmail() {
-        return sharedPreferences.getString(KEY_USER_EMAIL, null);
-    }
-
-    public void setUserPhone(String userPhone) {
-        editor.putString(KEY_USER_PHONE, userPhone).apply();
-    }
-
-    public String getUserPhone() {
-        return sharedPreferences.getString(KEY_USER_PHONE, null);
-    }
-
-    public void setUserPassword(String userPassword) {
-        editor.putString(KEY_USER_PASSWORD, userPassword).apply();
-    }
-
-    public String getUserPassword() {
-        return sharedPreferences.getString(KEY_USER_PASSWORD, null);
-    }
-
-    public void setUserProfileImage(String profileImage) {
-        editor.putString(KEY_USER_PROFILE_IMAGE, profileImage).apply();
-    }
-
-    public String getUserProfileImage() {
-        return sharedPreferences.getString(KEY_USER_PROFILE_IMAGE, null);
-    }
+    var userProfileImage: String?
+        get() {
+            return sharedPreferences.getString(
+                KEY_USER_PROFILE_IMAGE,
+                null
+            )
+        }
+        set(profileImage) {
+            editor.putString(
+                KEY_USER_PROFILE_IMAGE,
+                profileImage
+            ).apply()
+        }
 
     // Limpar sessão do utilizador
-    public void clearSession() {
-        editor.clear();
-        editor.apply();
+    fun clearSession() {
+        editor.clear()
+        editor.apply()
+    }
+
+    companion object {
+        private var instance: UserSession? = null
+        private lateinit var sharedPreferences: SharedPreferences
+        private lateinit var editor: SharedPreferences.Editor
+
+        // Keys para armazenar dados do utilizador
+        private const val KEY_USER_ID: String = "userId"
+        private const val KEY_USER_NAME: String = "userName"
+        private const val KEY_USER_EMAIL: String = "userEmail"
+        private const val KEY_USER_PHONE: String = "userPhone"
+        private const val KEY_USER_PASSWORD: String =
+            "userPassword" // Se precisares armazenar senha
+        private const val KEY_USER_PROFILE_IMAGE: String = "userProfileImage"
+
+        @Synchronized
+        fun getInstance(context: Context): UserSession {
+            if (instance == null) {
+                instance = UserSession(context.applicationContext)
+            }
+            return instance!!
+        }
     }
 }

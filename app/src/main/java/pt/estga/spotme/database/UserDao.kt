@@ -1,53 +1,52 @@
-package pt.estga.spotme.database;
+package pt.estga.spotme.database
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import pt.estga.spotme.entities.User;
-
-import java.util.List;
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import pt.estga.spotme.entities.User
 
 @Dao
-public interface UserDao {
-    @Query("SELECT * FROM users")
-    List<User> getAll();
+interface UserDao {
+    @get:Query("SELECT * FROM users")
+    val all: List<User?>?
 
     @Query("SELECT * FROM users WHERE id = :id")
-    User getById(int id);
+    fun getById(id: Int): User?
 
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
-    User login(String email, String password);
+    fun login(email: String?, password: String?): User?
 
     @Insert
-    void insert(User user);
+    fun insert(user: User)
 
     @Update
-    void update(User user);
+    fun update(user: User)
+
     @Query("UPDATE users SET username = :username WHERE id = :id")
-    void updateNome(String username, long id);
+    fun updateNome(username: String?, id: Long)
 
     @Query("UPDATE users SET email = :email WHERE id = :id")
-    void updateEmail(String email, long id);
+    fun updateEmail(email: String?, id: Long)
 
     @Query("UPDATE users SET password = :password WHERE id = :id")
-    void updatePassword(String password, long id);
+    fun updatePassword(password: String?, id: Long)
 
     @Query("UPDATE users SET profileImage = :profileImage WHERE id = :id")
-    void updateProfileImage(String profileImage, long id);
+    fun updateProfileImage(profileImage: String?, id: Long)
 
     @Query("SELECT profileImage FROM users WHERE id = :id")
-    String getProfileImage(long id);
+    fun getProfileImage(id: Long): String?
+
     @Query("UPDATE users SET phone = :phone WHERE id = :id")
-    void updatePhone(String phone, long id);
+    fun updatePhone(phone: String?, id: Long)
 
     @Query("DELETE FROM users WHERE id = :id")
-    void delete(long id);
+    fun delete(id: Long)
 
     @Query("SELECT * FROM users WHERE email = :email")
-    User getUserByEmail(String email);
+    fun getUserByEmail(email: String?): User?
 
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
-    User findByEmail(String email);
+    fun findByEmail(email: String?): User?
 }

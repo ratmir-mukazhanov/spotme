@@ -1,193 +1,214 @@
-package pt.estga.spotme.ui.parking;
+package pt.estga.spotme.ui.parking
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.TimePickerDialog;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.TimePickerDialog
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import pt.estga.spotme.R
+import pt.estga.spotme.database.AppDatabase.Companion.getInstance
+import pt.estga.spotme.entities.Parking
+import pt.estga.spotme.utils.UserSession
+import java.util.Calendar
+import java.util.concurrent.Executors
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+class ParkingFormFragment : Fragment() {
+    private lateinit var mViewModel: ParkingFormViewModel
+    private lateinit var titleEditText: EditText
+    private lateinit var latitudeEditText: EditText
+    private lateinit var longitudeEditText: EditText
+    private lateinit var durationEditText: EditText
+    private lateinit var descriptionEditText: EditText
+    private lateinit var textViewStartTime: TextView
+    private lateinit var btnGetLocation: Button
+    private lateinit var btnSelectStartTime: Button
+    private lateinit var btnSave: Button
 
-import pt.estga.spotme.R;
-import pt.estga.spotme.database.AppDatabase;
-import pt.estga.spotme.entities.Parking;
-import pt.estga.spotme.utils.UserSession;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private var startTimeCalendar: Calendar? = null
 
-import java.util.Calendar;
-import java.util.concurrent.Executors;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = inflater.inflate(R.layout.fragment_parking_form, container, false)
 
-public class ParkingFormFragment extends Fragment {
+        titleEditText = root.findViewById(R.id.editTextTitle)
+        latitudeEditText = root.findViewById(R.id.editTextLatitude)
+        longitudeEditText = root.findViewById(R.id.editTextLongitude)
+        descriptionEditText = root.findViewById(R.id.editTextDescription)
+        textViewStartTime = root.findViewById(R.id.textViewStartTime)
+        durationEditText = root.findViewById(R.id.editTextDuration)
+        btnGetLocation = root.findViewById(R.id.btnGetLocation)
+        btnSelectStartTime = root.findViewById(R.id.btnSelectStartTime)
+        btnSave = root.findViewById(R.id.btnSave)
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-    private ParkingFormViewModel mViewModel;
-    private EditText titleEditText, latitudeEditText, longitudeEditText, durationEditText, descriptionEditText;
-    private TextView textViewStartTime;
-    private Button btnGetLocation, btnSelectStartTime, btnSave;
+        btnGetLocation.setOnClickListener(View.OnClickListener { v: View? -> requestLocation() })
+        btnSelectStartTime.setOnClickListener(View.OnClickListener { v: View? -> showTimePicker() })
 
-    private FusedLocationProviderClient fusedLocationClient;
-    private Calendar startTimeCalendar;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_parking_form, container, false);
-
-        titleEditText = root.findViewById(R.id.editTextTitle);
-        latitudeEditText = root.findViewById(R.id.editTextLatitude);
-        longitudeEditText = root.findViewById(R.id.editTextLongitude);
-        descriptionEditText = root.findViewById(R.id.editTextDescription);
-        textViewStartTime = root.findViewById(R.id.textViewStartTime);
-        durationEditText = root.findViewById(R.id.editTextDuration);
-        btnGetLocation = root.findViewById(R.id.btnGetLocation);
-        btnSelectStartTime = root.findViewById(R.id.btnSelectStartTime);
-        btnSave = root.findViewById(R.id.btnSave);
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
-        btnGetLocation.setOnClickListener(v -> requestLocation());
-        btnSelectStartTime.setOnClickListener(v -> showTimePicker());
-
-        return root;
+        return root
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ParkingFormViewModel.class);
+    @SuppressLint("SetTextI18n")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mViewModel = ViewModelProvider(this)[ParkingFormViewModel::class.java]
 
-        mViewModel.getParking().observe(getViewLifecycleOwner(), parking -> {
+        mViewModel.parking.observe(viewLifecycleOwner) { parking: Parking? ->
+            var parking = parking
             if (parking == null) {
                 // Se for null, cria um novo objeto Parking
-                parking = new Parking();
-                mViewModel.setParking(parking);
+                parking = Parking()
+                mViewModel.setParking(parking)
             } else {
                 // Se existir, preencher os campos do formulário
-                titleEditText.setText(parking.getTitle());
-                latitudeEditText.setText(String.valueOf(parking.getLatitude()));
-                longitudeEditText.setText(String.valueOf(parking.getLongitude()));
-                durationEditText.setText(String.valueOf(parking.getAllowedTime()));
-                descriptionEditText.setText(parking.getDescription());
+                titleEditText.setText(parking.title)
+                latitudeEditText.setText(parking.latitude.toString())
+                longitudeEditText.setText(parking.longitude.toString())
+                durationEditText.setText(parking.allowedTime.toString())
+                descriptionEditText.setText(parking.description)
 
-                if (parking.getStartTime() != 0) {
-                    textViewStartTime.setText("Hora de início: " + parking.getStartTime());
+                if (parking.startTime != 0L) {
+                    textViewStartTime.text = "Hora de início: " + parking.startTime
                 }
             }
-        });
-
-        btnSave.setOnClickListener(v -> saveParking());
-    }
-    private void saveParking() {
-        Parking parking = mViewModel.getParking().getValue();
-        if (parking == null) {
-            parking = new Parking();
         }
 
-        long userId = UserSession.getInstance(requireContext()).getUserId();
+        btnSave.setOnClickListener { saveParking() }
+    }
 
-        if (userId == -1) {
-            Toast.makeText(requireContext(), "Utilizador não está loggedIn!", Toast.LENGTH_SHORT).show();
-            return;
+    private fun saveParking() {
+        var parking = mViewModel.parking.value
+        if (parking == null) {
+            parking = Parking()
+        }
+
+        val userId = UserSession.getInstance(requireContext()).userId
+
+        if (userId == -1L) {
+            Toast.makeText(requireContext(), "Utilizador não está loggedIn!", Toast.LENGTH_SHORT)
+                .show()
+            return
         }
 
         // Atualizar os valores do estacionamento
-        parking.setTitle(titleEditText.getText().toString());
-        parking.setLatitude(Double.parseDouble(latitudeEditText.getText().toString()));
-        parking.setLongitude(Double.parseDouble(longitudeEditText.getText().toString()));
-        parking.setAllowedTime((long) Integer.parseInt(durationEditText.getText().toString()) * 60 * 1000);
-        parking.setDescription(descriptionEditText.getText().toString());
-        parking.setUserId(userId);
+        parking.title = titleEditText.text.toString()
+        parking.latitude = latitudeEditText.text.toString().toDouble()
+        parking.longitude = longitudeEditText.text.toString().toDouble()
+        parking.allowedTime = durationEditText.text.toString().toInt().toLong() * 60 * 1000
+        parking.description = descriptionEditText.text.toString()
+        parking.userId = userId
 
         if (startTimeCalendar != null) {
-            long startTimeMillis = startTimeCalendar.getTimeInMillis();
-            parking.setStartTime(startTimeMillis);
+            val startTimeMillis = startTimeCalendar!!.timeInMillis
+            parking.startTime = startTimeMillis
         }
 
-        AppDatabase db = AppDatabase.getInstance(requireContext());
+        val db = getInstance(requireContext())
 
-        Parking finalParking = parking;
-        Executors.newSingleThreadExecutor().execute(() -> {
-            if (finalParking.getId() == null) {
-                db.parkingDao().insert(finalParking);
+        val finalParking: Parking = parking
+        Executors.newSingleThreadExecutor().execute {
+            if (finalParking.id == null) {
+                db.parkingDao().insert(finalParking)
             } else {
-                db.parkingDao().update(finalParking);
+                db.parkingDao().update(finalParking)
             }
-
-            requireActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Estacionamento salvo!", Toast.LENGTH_SHORT).show();
+            requireActivity().runOnUiThread {
+                Toast.makeText(requireContext(), "Estacionamento salvo!", Toast.LENGTH_SHORT).show()
                 // Navegar de volta para a lista de estacionamentos
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigate(R.id.nav_home);
-            });
-        });
-    }
-
-    private void requestLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            return;
+                val navController =
+                    findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
+                navController.navigate(R.id.nav_home)
+            }
         }
-        getLastLocation();
     }
 
-    @SuppressLint("MissingPermission")
-    private void getLastLocation() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
+    private fun requestLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+        lastLocation
+    }
 
-                            latitudeEditText.setText(String.valueOf(latitude));
-                            longitudeEditText.setText(String.valueOf(longitude));
+    @get:SuppressLint("MissingPermission")
+    private val lastLocation: Unit
+        get() {
+            fusedLocationClient!!.lastLocation
+                .addOnSuccessListener(
+                    requireActivity()
+                ) { location ->
+                    if (location != null) {
+                        val latitude = location.latitude
+                        val longitude = location.longitude
 
-                            Parking parking = mViewModel.getParking().getValue();
-                            if (parking != null) {
-                                parking.setLatitude(latitude);
-                                parking.setLongitude(longitude);
-                                mViewModel.setParking(parking);
-                            }
-                        } else {
-                            Toast.makeText(requireContext(), "Não foi possível obter a localização", Toast.LENGTH_SHORT).show();
+                        latitudeEditText.setText(latitude.toString())
+                        longitudeEditText.setText(longitude.toString())
+
+                        val parking = mViewModel.parking.value
+                        if (parking != null) {
+                            parking.latitude = latitude
+                            parking.longitude = longitude
+                            mViewModel.setParking(parking)
                         }
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Não foi possível obter a localização",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                });
+                }
+        }
+
+    private fun showTimePicker() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar[Calendar.HOUR_OF_DAY]
+        val minute = calendar[Calendar.MINUTE]
+
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            { view: TimePicker?, selectedHour: Int, selectedMinute: Int ->
+                val selectedTime = Calendar.getInstance()
+                selectedTime[Calendar.HOUR_OF_DAY] = selectedHour
+                selectedTime[Calendar.MINUTE] = selectedMinute
+
+                startTimeCalendar = selectedTime
+                textViewStartTime.text =
+                    "Hora de início: " + selectedHour + ":" + String.format("%02d", selectedMinute)
+            }, hour, minute, true
+        )
+        timePickerDialog.show()
     }
 
-    private void showTimePicker() {
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
-                (view, selectedHour, selectedMinute) -> {
-                    Calendar selectedTime = Calendar.getInstance();
-                    selectedTime.set(Calendar.HOUR_OF_DAY, selectedHour);
-                    selectedTime.set(Calendar.MINUTE, selectedMinute);
-
-                    startTimeCalendar = selectedTime;
-                    textViewStartTime.setText("Hora de início: " + selectedHour + ":" + String.format("%02d", selectedMinute));
-                }, hour, minute, true);
-        timePickerDialog.show();
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
     }
 }

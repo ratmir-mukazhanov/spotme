@@ -1,19 +1,16 @@
-package pt.estga.spotme.ui.settings;
+package pt.estga.spotme.ui.settings
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-public class SettingsViewModel extends ViewModel {
+class SettingsViewModel : ViewModel() {
+    private val mText = MutableLiveData<String>()
 
-    private final MutableLiveData<String> mText;
-
-    public SettingsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+    init {
+        mText.value = "This is slideshow fragment"
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+    val text: LiveData<String>
+        get() = mText
 }

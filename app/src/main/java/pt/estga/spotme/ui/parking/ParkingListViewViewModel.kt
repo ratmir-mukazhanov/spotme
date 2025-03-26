@@ -1,27 +1,9 @@
-package pt.estga.spotme.ui.parking;
+package pt.estga.spotme.ui.parking
 
-import androidx.lifecycle.ViewModel;
-import pt.estga.spotme.entities.Parking;
-import java.util.ArrayList;
-import java.util.List;
+import androidx.lifecycle.ViewModel
+import pt.estga.spotme.entities.Parking
 
-public class ParkingListViewViewModel extends ViewModel {
-    private List<Parking> parkings = new ArrayList<>();
-    private int currentOffset = 0;
-
-    public List<Parking> getParkings() {
-        return parkings;
-    }
-
-    public void setParkings(List<Parking> parkings) {
-        this.parkings = parkings;
-    }
-
-    public int getCurrentOffset() {
-        return currentOffset;
-    }
-
-    public void setCurrentOffset(int currentOffset) {
-        this.currentOffset = currentOffset;
-    }
+class ParkingListViewViewModel : ViewModel() {
+    var parkings: List<Parking?>? = ArrayList()
+    var currentOffset: Int = 0
 }

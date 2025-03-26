@@ -1,7 +1,5 @@
-package pt.estga.spotme.ui.parking;
+package pt.estga.spotme.ui.parking
 
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
 
-public class ParkingDetailViewViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
-}
+class ParkingDetailViewViewModel : ViewModel()

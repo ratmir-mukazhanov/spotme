@@ -1,108 +1,123 @@
-package pt.estga.spotme.ui.authentication;
+package pt.estga.spotme.ui.authentication
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import pt.estga.spotme.MainActivity;
-import pt.estga.spotme.R;
-import pt.estga.spotme.database.AppDatabase;
-import pt.estga.spotme.database.UserDao;
-import pt.estga.spotme.entities.User;
-import pt.estga.spotme.utils.UserSession;
-import pt.estga.spotme.utils.PasswordUtils; // Classe para Hashing
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import pt.estga.spotme.MainActivity
+import pt.estga.spotme.R
+import pt.estga.spotme.database.AppDatabase.Companion.getInstance
+import pt.estga.spotme.database.UserDao
+import pt.estga.spotme.entities.User
+import pt.estga.spotme.utils.PasswordUtils
+import pt.estga.spotme.utils.UserSession
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-public class RegisterActivity extends AppCompatActivity {
+// Classe para Hashing
+class RegisterActivity : AppCompatActivity() {
+    private lateinit var usernameEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var confirmPasswordEditText: EditText
+    private lateinit var phoneEditText: EditText
+    private lateinit var registerButton: Button
+    private lateinit var loginTextView: TextView
+    private lateinit var userDao: UserDao
+    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
-    private EditText usernameEditText, emailEditText, passwordEditText, confirmPasswordEditText, phoneEditText;
-    private Button registerButton;
-    private TextView loginTextView;
-    private UserDao userDao;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_view);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.register_view)
 
         // Inicializar BD
-        AppDatabase db = AppDatabase.getInstance(this);
-        userDao = db.userDao();
+        val db = getInstance(this)
+        userDao = db.userDao()
 
         // Inicializar os elementos da UI
-        usernameEditText = findViewById(R.id.usernameEditText);
-        emailEditText = findViewById(R.id.emailEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        phoneEditText = findViewById(R.id.phoneNumEditText);
-        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
-        registerButton = findViewById(R.id.registerButton);
-        loginTextView = findViewById(R.id.loginText);
+        usernameEditText = findViewById(R.id.usernameEditText)
+        emailEditText = findViewById(R.id.emailEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+        phoneEditText = findViewById(R.id.phoneNumEditText)
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText)
+        registerButton = findViewById(R.id.registerButton)
+        loginTextView = findViewById(R.id.loginText)
 
         // Ação do botão de registo
-        registerButton.setOnClickListener(v -> registerUser());
+        registerButton.setOnClickListener { registerUser() }
 
         // Ir para a página de login
-        loginTextView.setOnClickListener(v -> {
-            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            finish();
-        });
+        loginTextView.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@RegisterActivity,
+                    LoginActivity::class.java
+                )
+            )
+            finish()
+        }
     }
 
-    private void registerUser() {
-        String username = usernameEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
-        String phone = phoneEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
-        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
+    private fun registerUser() {
+        val username = usernameEditText.text.toString().trim { it <= ' ' }
+        val email = emailEditText.text.toString().trim { it <= ' ' }
+        val phone = phoneEditText.text.toString().trim { it <= ' ' }
+        val password = passwordEditText.text.toString().trim { it <= ' ' }
+        val confirmPassword = confirmPasswordEditText.text.toString().trim { it <= ' ' }
 
         if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phone.isEmpty()) {
-            showToast("Todos os campos devem ser preenchidos!");
-            return;
+            showToast("Todos os campos devem ser preenchidos!")
+            return
         }
 
-        if (!password.equals(confirmPassword)) {
-            showToast("As senhas não coincidem!");
-            return;
+        if (password != confirmPassword) {
+            showToast("As senhas não coincidem!")
+            return
         }
 
         // Verifica se o utilizador já existe e regista-o
-        executorService.execute(() -> {
-            User existingUser = userDao.getUserByEmail(email);
+        executorService.execute {
+            val existingUser = userDao.getUserByEmail(email)
             if (existingUser != null) {
-                runOnUiThread(() -> showToast("Email já registado!"));
-                return;
+                runOnUiThread { showToast("Email já registado!") }
+                return@execute
             }
 
             // Hash da senha antes de salvar
-            String hashedPassword = PasswordUtils.hashPassword(password);
+            val hashedPassword = PasswordUtils.hashPassword(password)
 
             // Criar e inserir novo usuário na BD
-            User newUser = new User(username, hashedPassword, email, phone);
-            userDao.insert(newUser);
+            val newUser =
+                User(username, hashedPassword, email, phone)
+            userDao.insert(newUser)
 
             // Procurar o ID do novo utilizador
-            User registeredUser = userDao.getUserByEmail(email);
+            val registeredUser = userDao.getUserByEmail(email)
             if (registeredUser != null) {
-                UserSession session = UserSession.getInstance(getApplicationContext());
-                session.setUser(registeredUser);
-                session.setUserProfileImage(registeredUser.getProfileImage()); // Caso tenha imagem
-                session.setUserPassword(password);
+                val session = UserSession.getInstance(applicationContext)
+                session.user = registeredUser
+                session.userProfileImage = registeredUser.profileImage // Caso tenha imagem
+                session.userPassword = password
 
-                runOnUiThread(() -> {
-                    showToast("Conta registada com sucesso!");
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    finish();
-                });
+                runOnUiThread {
+                    showToast("Conta registada com sucesso!")
+                    startActivity(
+                        Intent(
+                            this@RegisterActivity,
+                            MainActivity::class.java
+                        )
+                    )
+                    finish()
+                }
             }
-        });
+        }
     }
 
-    private void showToast(String message) {
-        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+    private fun showToast(message: String) {
+        runOnUiThread { Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
     }
 }

@@ -1,43 +1,39 @@
-package pt.estga.spotme.database;
+package pt.estga.spotme.database
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import pt.estga.spotme.entities.Parking;
-
-import java.util.List;
-import java.util.Optional;
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import pt.estga.spotme.entities.Parking
+import java.util.Optional
 
 @Dao
-public interface ParkingDao {
-    @Query("SELECT * FROM parking")
-    List<Parking> getAll();
+interface ParkingDao {
+    @get:Query("SELECT * FROM parking")
+    val all: List<Parking?>?
 
     @Query("SELECT * FROM parking WHERE userId = :userId")
-    List<Parking> getParkingsByUserId(long userId);
+    fun getParkingsByUserId(userId: Long): List<Parking?>?
 
     @Query("SELECT * FROM parking WHERE id = :id")
-    Parking getById(int id);
+    fun getById(id: Int): Parking?
 
-    @Query("SELECT * FROM parking WHERE endTime IS NULL")
-    Optional<Parking> getCurrent();
+    @get:Query("SELECT * FROM parking WHERE endTime IS NULL")
+    val current: Optional<Parking?>?
 
     @Query("SELECT * FROM parking WHERE userId = :userId ORDER BY id DESC LIMIT 1")
-    Parking getLastParkingByUserId(long userId);
+    fun getLastParkingByUserId(userId: Long): Parking?
 
     @Insert
-    void insert(Parking parking);
+    fun insert(parking: Parking)
 
     @Update
-    void update(Parking parking);
+    fun update(parking: Parking)
 
     @Delete
-    void delete(Parking parking);
+    fun delete(parking: Parking)
 
     @Query("SELECT * FROM parking WHERE userId = :userId ORDER BY id DESC LIMIT :limit OFFSET :offset")
-    List<Parking> getParkingsByUserIdWithLimit(long userId, int offset, int limit);
-
+    fun getParkingsByUserIdWithLimit(userId: Long, offset: Int, limit: Int): List<Parking?>?
 }

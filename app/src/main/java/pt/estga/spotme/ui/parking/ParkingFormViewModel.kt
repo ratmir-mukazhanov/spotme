@@ -1,20 +1,17 @@
-package pt.estga.spotme.ui.parking;
+package pt.estga.spotme.ui.parking
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import pt.estga.spotme.entities.Parking
 
-import pt.estga.spotme.entities.Parking;
+class ParkingFormViewModel : ViewModel() {
+    private val parkingLiveData = MutableLiveData<Parking?>()
 
-public class ParkingFormViewModel extends ViewModel {
-    private final MutableLiveData<Parking> parkingLiveData = new MutableLiveData<>();
+    val parking: LiveData<Parking?>
+        get() = parkingLiveData
 
-    public LiveData<Parking> getParking() {
-        return parkingLiveData;
+    fun setParking(parking: Parking?) {
+        parkingLiveData.value = parking
     }
-
-    public void setParking(Parking parking) {
-        parkingLiveData.setValue(parking);
-    }
-
 }

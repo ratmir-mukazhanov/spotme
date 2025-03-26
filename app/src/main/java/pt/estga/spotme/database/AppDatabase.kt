@@ -1,37 +1,37 @@
-package pt.estga.spotme.database;
+package pt.estga.spotme.database
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room.databaseBuilder
+import androidx.room.RoomDatabase
+import pt.estga.spotme.entities.Parking
+import pt.estga.spotme.entities.User
 
-import android.content.Context;
+@Database(entities = [Parking::class, User::class], version = 2)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun parkingDao(): ParkingDao
+    abstract fun userDao(): UserDao
 
-import pt.estga.spotme.entities.Parking;
-import pt.estga.spotme.entities.User;
+    companion object {
+        private var instance: AppDatabase? = null
 
-@Database(entities = {Parking.class, User.class}, version = 2)
-public abstract class AppDatabase extends RoomDatabase {
-    private static AppDatabase instance;
-
-    public abstract ParkingDao parkingDao();
-    public abstract UserDao userDao();
-
-    public static synchronized AppDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "spotme_database")
-                    // .addMigrations(MIGRATION_1_2)
+        @JvmStatic
+        @Synchronized
+        fun getInstance(context: Context): AppDatabase {
+            if (instance == null) {
+                instance = databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java, "spotme_database"
+                ) // .addMigrations(MIGRATION_1_2)
                     // .fallbackToDestructiveMigration()
-                    .build();
-        }
-        return instance;
+                    .build()
+            }
+            return instance!!
+        } //    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        //        @Override
+        //        public void migrate(@NonNull SupportSQLiteDatabase database) {
+        //            database.execSQL("ALTER TABLE User ADD COLUMN phone TEXT");
+        //        }
+        //    };
     }
-
-//    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-//        @Override
-//        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            database.execSQL("ALTER TABLE User ADD COLUMN phone TEXT");
-//        }
-//    };
-
 }
