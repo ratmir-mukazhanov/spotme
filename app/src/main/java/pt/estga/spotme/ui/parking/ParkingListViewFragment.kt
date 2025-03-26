@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room.databaseBuilder
+import androidx.room.Room
 import pt.estga.spotme.R
 import pt.estga.spotme.adapters.ParkingListAdapter
 import pt.estga.spotme.database.AppDatabase
@@ -20,36 +20,37 @@ import pt.estga.spotme.utils.UserSession
 import java.util.concurrent.Executors
 
 class ParkingListViewFragment : Fragment() {
-    private lateinit var mViewModel: ParkingListViewViewModel
+
+    private lateinit var viewModel: ParkingListViewViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ParkingListAdapter
+
+    companion object {
+        private const val LIMIT = 8
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root = inflater.inflate(R.layout.fragment_parking_list_view, container, false)
-        recyclerView = root.findViewById(R.id.recyclerViewParkings)
-        recyclerView.setLayoutManager(LinearLayoutManager(context))
 
-        mViewModel = ViewModelProvider(this).get(
-            ParkingListViewViewModel::class.java
-        )
+        recyclerView = root.findViewById(R.id.recyclerViewParkings)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        viewModel = ViewModelProvider(this)[ParkingListViewViewModel::class.java]
 
         val userId = UserSession.getInstance(requireContext()).userId
 
-        if (mViewModel.parkings == null) {
-            loadParkingList(userId, mViewModel.currentOffset, LIMIT)
+        if (viewModel.parkings.isEmpty()) {
+            loadParkingList(userId, viewModel.currentOffset, LIMIT)
         } else {
-            setupRecyclerView(mViewModel.parkings!!)
+            setupRecyclerView(viewModel.parkings)
         }
 
         root.findViewById<View>(R.id.buttonSeeMore).setOnClickListener {
-            mViewModel.currentOffset += LIMIT
-            loadParkingList(
-                userId,
-                mViewModel.currentOffset,
-                LIMIT
-            )
+            viewModel.currentOffset += LIMIT
+            loadParkingList(userId, viewModel.currentOffset, LIMIT)
         }
 
         return root
@@ -62,46 +63,45 @@ class ParkingListViewFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     Toast.makeText(
                         requireContext(),
-                        "User not logged in",
+                        "Utilizador não autenticado",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
                 return@execute
             }
-            val db = databaseBuilder(
+
+            val db = Room.databaseBuilder(
                 requireContext(),
                 AppDatabase::class.java, "spotme_database"
             ).build()
-            val parkingDao = db.parkingDao()
 
+            val parkingDao = db.parkingDao()
             val newParkings = parkingDao.getParkingsByUserIdWithLimit(userId, offset, limit)
+
             requireActivity().runOnUiThread {
-                mViewModel.parkings!!.plus(newParkings!!)
-                adapter.notifyDataSetChanged()
+                viewModel.parkings.addAll(newParkings)
+                if (!::adapter.isInitialized) {
+                    setupRecyclerView(viewModel.parkings)
+                } else {
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }
 
-    private fun setupRecyclerView(parkings: List<Parking?>) {
-        adapter = ParkingListAdapter(parkings) {
-            val position = recyclerView.getChildLayoutPosition(
-                requireView()
-            )
-            val parking = parkings[position]
-            val navController =
-                findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
-            if (navController.currentDestination != null
-                && navController.currentDestination!!.id != R.id.parkingDetailViewFragmentHistory
-            ) {
-                val bundle = Bundle()
-                bundle.putSerializable("parking", parking)
+    private fun setupRecyclerView(parkings: List<Parking>) {
+        adapter = ParkingListAdapter(parkings) { view ->
+            val position = recyclerView.getChildAdapterPosition(view)
+            val selectedParking = parkings[position]
+
+            val navController = findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
+            if (navController.currentDestination?.id != R.id.parkingDetailViewFragmentHistory) {
+                val bundle = Bundle().apply {
+                    putSerializable("parking", selectedParking)
+                }
                 navController.navigate(R.id.parkingDetailViewFragmentHistory, bundle)
             }
         }
         recyclerView.adapter = adapter
-    }
-
-    companion object {
-        private const val LIMIT = 8
     }
 }

@@ -4,6 +4,6 @@ import androidx.lifecycle.ViewModel
 import pt.estga.spotme.entities.Parking
 
 class ParkingListViewViewModel : ViewModel() {
-    var parkings: List<Parking?>? = ArrayList()
+    val parkings: MutableList<Parking> = mutableListOf()
     var currentOffset: Int = 0
 }
