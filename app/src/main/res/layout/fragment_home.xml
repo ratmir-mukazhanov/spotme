@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:id="@+id/contentMain"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- Content container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/setMyCar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set My Car Location"
+                android:gravity="center"
+                android:textColor="#1E88E5"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:id="@+id/setMyCarImage"
+                android:layout_width="509dp"
+                android:layout_height="243dp"
+                app:srcCompat="@mipmap/ic_setcar" />
+
+            <TextView
+                android:id="@+id/findMyCar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Find My Car"
+                android:gravity="center"
+                android:textColor="#1E88E5"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:id="@+id/pickMyCarImage"
+                android:layout_width="509dp"
+                android:layout_height="243dp"
+                app:srcCompat="@mipmap/ic_mainpage_pickcar_foreground" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
