@@ -91,8 +91,13 @@ class RegisterActivity : AppCompatActivity() {
             val hashedPassword = PasswordUtils.hashPassword(password)
 
             // Criar e inserir novo usuário na BD
-            val newUser =
-                User(username, hashedPassword, email, phone)
+            val newUser = User(
+                username = username,
+                password = hashedPassword,
+                email = email,
+                phone = phone,
+                profileImage = "" // Handle profile image appropriately
+            )
             userDao.insert(newUser)
 
             // Procurar o ID do novo utilizador

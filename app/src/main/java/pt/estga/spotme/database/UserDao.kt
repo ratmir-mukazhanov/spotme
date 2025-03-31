@@ -18,7 +18,7 @@ interface UserDao {
     fun login(email: String?, password: String?): User?
 
     @Insert
-    fun insert(user: User)
+    fun insert(user: User): Long
 
     @Update
     fun update(user: User)
