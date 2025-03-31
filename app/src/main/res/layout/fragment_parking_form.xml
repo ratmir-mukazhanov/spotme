@@ -1,133 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F5F7FA">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:background="#FFFFFF">
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Registo de Estacionamento"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#1976D2"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"/>
-
-
-        <com.google.android.material.textfield.TextInputLayout
+        <!-- Header Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-            <EditText
-                android:id="@+id/editTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Título do estacionamento"
-                android:padding="12dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
 
-    <EditText
-        android:id="@+id/editTextLatitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Latitude"
-        android:inputType="numberDecimal"
-        android:focusable="false" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_car"
+                    android:layout_marginEnd="16dp"
+                    app:tint="#005792" />
 
-    <EditText
-        android:id="@+id/editTextLongitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Longitude"
-        android:inputType="numberDecimal"
-        android:focusable="false" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Registo de Estacionamento"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#005792"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/btnGetLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Obter localização"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#1976D2"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tempo de Estacionamento"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#1976D2"
-            android:layout_marginBottom="16dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSelectStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Escolher hora de início"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1976D2"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/textViewStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hora de início: Não selecionada"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <!-- Information Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
-            <EditText
-                android:id="@+id/editTextDuration"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Duração permitida (minutos)"
-                android:inputType="number"
-                android:padding="12dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Informações Básicas"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#005792"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#005792"
+                    app:hintTextColor="#005792"
+                    style="@style/AppTextInputLayoutStyle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Título do estacionamento"
+                        android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#005792"
+                    app:hintTextColor="#005792"
+                    style="@style/AppTextInputLayoutStyle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Descrição"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Location Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
-            <EditText
-                android:id="@+id/editTextDescription"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descrição"
-                android:padding="12dp"
-                android:minLines="3"
-                android:gravity="top"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_location"
+                        android:layout_marginEnd="8dp"
+                        app:tint="#005792" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Localização"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#005792"/>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="#005792"
+                    app:hintTextColor="#005792"
+                    style="@style/AppTextInputLayoutStyle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextLatitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Latitude"
+                        android:inputType="numberDecimal"
+                        android:focusable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#005792"
+                    app:hintTextColor="#005792"
+                    style="@style/AppTextInputLayoutStyle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextLongitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Longitude"
+                        android:inputType="numberDecimal"
+                        android:focusable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGetLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Obter localização atual"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_location"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="textStart"
+                    android:backgroundTint="#005792"
+                    android:padding="12dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Time Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_recent_history"
+                        android:layout_marginEnd="8dp"
+                        app:tint="#005792" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tempo de Estacionamento"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#005792"/>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSelectStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Escolher hora de início"
+                    android:textColor="#FFFFFF"
+                    app:icon="@android:drawable/ic_menu_my_calendar"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="textStart"
+                    android:backgroundTint="#005792"
+                    style="@style/AppButtonStyle"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/textViewStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hora de início: Não selecionada"
+                    android:textSize="16sp"
+                    android:textColor="#555555"
+                    android:padding="8dp"
+                    android:background="#F0F0F0"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="#005792"
+                    app:hintTextColor="#005792"
+                    app:suffixText="minutos"
+                    style="@style/AppTextInputLayoutStyle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Duração permitida"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Save Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SALVAR"
+            android:text="SALVAR ESTACIONAMENTO"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#1976D2"
-            android:padding="14dp"
+            android:backgroundTint="#005792"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="textStart"
+            android:padding="16dp"
+            android:elevation="8dp"
             android:textStyle="bold"/>
     </LinearLayout>
 </ScrollView>

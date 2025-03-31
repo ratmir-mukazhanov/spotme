@@ -4,4 +4,30 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <!-- Text Input Layout Style -->
+    <style name="AppTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="android:textColorHint">#78909C</item>
+        <item name="hintTextColor">#005792</item>
+        <item name="boxStrokeColor">#005792</item>
+        <item name="errorTextColor">#B00020</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="AppButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="backgroundTint">#005792</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="rippleColor">#33FFFFFF</item>
+        <item name="elevation">2dp</item>
+    </style>
 </resources>
