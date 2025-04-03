@@ -64,7 +64,7 @@
                 android:id="@+id/setMyCarImage"
                 android:layout_width="509dp"
                 android:layout_height="243dp"
-                app:srcCompat="@mipmap/ic_setcar" />
+                app:srcCompat="@drawable/set_car" />
 
             <TextView
                 android:id="@+id/findMyCar"
@@ -81,7 +81,7 @@
                 android:id="@+id/pickMyCarImage"
                 android:layout_width="509dp"
                 android:layout_height="243dp"
-                app:srcCompat="@mipmap/ic_mainpage_pickcar_foreground" />
+                app:srcCompat="@drawable/pick_car" />
 
         </LinearLayout>
     </LinearLayout>

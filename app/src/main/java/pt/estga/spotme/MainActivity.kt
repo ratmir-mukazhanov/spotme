@@ -22,6 +22,10 @@ import androidx.navigation.ui.AppBarConfiguration.Builder
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import pt.estga.spotme.databinding.ActivityMainBinding
 import pt.estga.spotme.ui.authentication.LoginActivity
 import pt.estga.spotme.utils.UserSession
@@ -30,12 +34,16 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
     private var mAppBarConfiguration: AppBarConfiguration? = null
     private var binding: ActivityMainBinding? = null
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
+        FirebaseApp.initializeApp(this)
+        db = Firebase.firestore
 
         createNotificationChannel()
 
@@ -181,7 +189,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun logout() {
         val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "69337317514",
+    "project_id": "spotme-14e63",
+    "storage_bucket": "spotme-14e63.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69337317514:android:6ff9b668cfad69afe3ed73",
+        "android_client_info": {
+          "package_name": "pt.estga.spotme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69337317514-ac1tljvpo3g900pmg5o61hv3n0rgks6v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pt.estga.spotme",
+            "certificate_hash": "0c4ac9b0d8dfb26d6637856208a97068c3ec7af8"
+          }
+        },
+        {
+          "client_id": "69337317514-saovv6gmcgpl646argq5587m7mlrbngp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyoZF5G57LVkTChi9YJQwWORAmdK9zbPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69337317514-saovv6gmcgpl646argq5587m7mlrbngp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
