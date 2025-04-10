@@ -23,6 +23,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import pt.estga.spotme.MainActivity
 import pt.estga.spotme.R
 import pt.estga.spotme.database.AppDatabase
@@ -409,6 +411,11 @@ class AccountFragment : Fragment() {
 
             btnClose.setOnClickListener { view1: View? -> alertDialog.dismiss() }
             buttonCancelar.setOnClickListener { view1: View? -> alertDialog.dismiss() }
+        }
+
+        tvPersonalStats.setOnClickListener {
+            val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
+            navController.navigate(R.id.personalStatisticsFragment)
         }
 
         return root

@@ -48,4 +48,9 @@
         android:name="pt.estga.spotme.ui.parking.ParkingDetailViewFragmentHistory"
         android:label="Parking Detail"
         tools:layout="@layout/fragment_parking_detail_view_history" />
+    <fragment
+        android:id="@+id/personalStatisticsFragment"
+        android:name="pt.estga.spotme.ui.account.PersonalStatisticsFragment"
+        android:label="Personal Statistics"
+        tools:layout="@layout/personal_statistics" />
 </navigation>
