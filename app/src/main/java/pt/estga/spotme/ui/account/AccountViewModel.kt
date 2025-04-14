@@ -8,7 +8,7 @@ class AccountViewModel : ViewModel() {
     private val mText = MutableLiveData<String>()
 
     init {
-        mText.value = "This is gallery fragment"
+        mText.value = "This is account fragment"
     }
 
     val text: LiveData<String>

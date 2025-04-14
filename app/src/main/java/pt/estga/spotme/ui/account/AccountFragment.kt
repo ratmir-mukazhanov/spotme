@@ -23,8 +23,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import pt.estga.spotme.MainActivity
 import pt.estga.spotme.R
 import pt.estga.spotme.database.AppDatabase
@@ -33,6 +33,7 @@ import pt.estga.spotme.database.UserDao
 import pt.estga.spotme.ui.authentication.LoginActivity
 import pt.estga.spotme.utils.PasswordUtils
 import pt.estga.spotme.utils.UserSession
+import pt.estga.spotme.viewmodels.UserViewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -49,17 +50,15 @@ class AccountFragment : Fragment() {
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val root = inflater.inflate(R.layout.profile_main_view, container, false)
+        val root = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Initialize UI components
         val tvAccountTitle = root.findViewById<TextView>(R.id.tvAccountTitle)
         profileImage = root.findViewById(R.id.profileImage) // Use the class field
-        val tvNomeLabel = root.findViewById<TextView>(R.id.tvNomeLabel)
         val tvNome = root.findViewById<TextView>(R.id.tvNome)
         val ivEditNome = root.findViewById<ImageView>(R.id.ivEditNome)
         val tvTelemovel = root.findViewById<TextView>(R.id.tvTelemovel)
         val ivEditTelemovel = root.findViewById<ImageView>(R.id.ivEditTelemovel)
-        val tvEmailLabel = root.findViewById<TextView>(R.id.tvEmailLabel)
         val tvEmail = root.findViewById<TextView>(R.id.tvEmail)
         val ivEditEmail = root.findViewById<ImageView>(R.id.ivEditEmail)
         val tvChangePassword = root.findViewById<TextView>(R.id.tvChangePassword)
@@ -100,24 +99,35 @@ class AccountFragment : Fragment() {
             alertDialog.show()
 
             btnSave.setOnClickListener {
-                val newName = etNewName.text.toString().trim { it <= ' ' }
+                val newName = etNewName.text.toString().trim()
                 if (newName.isNotEmpty()) {
                     userSession!!.userName = newName
                     tvNome.text = newName
+
                     Thread {
                         userDAO!!.updateNome(newName, userSession!!.userId)
                     }.start()
-                    (requireActivity() as MainActivity).updateUserName(newName) // Update the hamburger menu
+
+                    // Atualiza o ViewModel
+                    val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                    userViewModel.updateUser(
+                        newName,
+                        userSession!!.userEmail,
+                        userSession!!.userProfileImage
+                    )
+
                     Toast.makeText(
                         requireContext(),
-                        "Name updated successfully",
+                        "Nome atualizado com sucesso",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                     alertDialog.dismiss()
                 } else {
-                    Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        requireContext(),
+                        "O nome não pode estar vazio",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -144,42 +154,48 @@ class AccountFragment : Fragment() {
             alertDialog.show()
 
             btnSave.setOnClickListener {
-                val newEmail = etNewEmail.text.toString().trim { it <= ' ' }
-                if (newEmail.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(newEmail)
-                        .matches()
-                ) {
+                val newEmail = etNewEmail.text.toString().trim()
+                if (newEmail.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
                     Thread {
                         val existingUser = userDAO!!.findByEmail(newEmail)
                         if (existingUser == null) {
                             userSession!!.userEmail = newEmail
-                            tvEmail.text = newEmail
                             userDAO!!.updateEmail(newEmail, userSession!!.userId)
+
                             requireActivity().runOnUiThread {
+                                tvEmail.text = newEmail
                                 Toast.makeText(
                                     requireContext(),
-                                    "Email updated successfully",
+                                    "Email atualizado com sucesso",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+                                // Atualizar ViewModel
+                                val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                                userViewModel.updateUser(
+                                    userSession!!.userName,
+                                    newEmail,
+                                    userSession!!.userProfileImage
+                                )
+
                                 alertDialog.dismiss()
                             }
                         } else {
                             requireActivity().runOnUiThread {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Email is already registered",
+                                    "Este email já está registado",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
                     }.start()
-                    (requireActivity() as MainActivity).updateUserEmail(newEmail) // Update the hamburger menu
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter a valid email",
+                        "Por favor, insere um email válido",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             }
 
@@ -338,22 +354,32 @@ class AccountFragment : Fragment() {
             }
 
             layoutRemove.setOnClickListener {
-                // Handle removing the photo
                 userSession!!.userProfileImage = null
-                this.profileImage!!.setImageResource(R.drawable.ic_default_profile) // Set to default image
+                this.profileImage!!.setImageResource(R.drawable.ic_default_profile)
+
                 Thread {
                     userDAO!!.updateProfileImage(null, userSession!!.userId)
+
                     requireActivity().runOnUiThread {
+                        // Atualizar ViewModel partilhado
+                        val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                        userViewModel.updateUser(
+                            userSession!!.userName,
+                            userSession!!.userEmail,
+                            null
+                        )
+
                         Toast.makeText(
                             requireContext(),
-                            "Profile image removed",
+                            "Imagem de perfil removida",
                             Toast.LENGTH_SHORT
                         ).show()
-                        (requireActivity() as MainActivity).updateProfileImage(null) // Update the hamburger menu
+
+                        alertDialog.dismiss()
                     }
                 }.start()
-                alertDialog.dismiss()
             }
+
             btnCancel.setOnClickListener { alertDialog.dismiss() }
         }
 
@@ -429,33 +455,32 @@ class AccountFragment : Fragment() {
                 val selectedImageUri = data.data
                 if (selectedImageUri != null) {
                     try {
-                        // Obter o ID do utilizador da sessão
                         val userId = userSession!!.userId
                         if (userId <= 0) {
                             Log.e("ProfileImage", "ID do utilizador inválido.")
                             return
                         }
 
-                        // Copiar a imagem para o armazenamento interno
                         val imagePath = copyImageToInternalStorage(selectedImageUri, userId)
 
                         if (imagePath != null) {
-                            // Atualizar a UI com a nova imagem
                             profileImage!!.setImageURI(Uri.fromFile(File(imagePath)))
 
-                            // Guardar o novo caminho na sessão e na base de dados
                             userSession!!.userProfileImage = imagePath
+
                             Thread {
                                 userDAO!!.updateProfileImage(imagePath, userId)
                                 requireActivity().runOnUiThread {
-                                    (requireActivity() as MainActivity).updateProfileImage(imagePath) // Atualiza o menu
+                                    val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                                    userViewModel.updateUser(
+                                        userSession!!.userName,
+                                        userSession!!.userEmail,
+                                        imagePath
+                                    )
                                 }
                             }.start()
                         } else {
-                            Log.e(
-                                "ProfileImage",
-                                "Erro ao copiar imagem para armazenamento interno."
-                            )
+                            Log.e("ProfileImage", "Erro ao copiar imagem para armazenamento interno.")
                         }
                     } catch (e: Exception) {
                         Log.e("ProfileImage", "Erro ao processar a imagem", e)

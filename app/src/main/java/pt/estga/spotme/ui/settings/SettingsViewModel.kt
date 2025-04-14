@@ -8,7 +8,7 @@ class SettingsViewModel : ViewModel() {
     private val mText = MutableLiveData<String>()
 
     init {
-        mText.value = "This is slideshow fragment"
+        mText.value = "This is settings fragment"
     }
 
     val text: LiveData<String>

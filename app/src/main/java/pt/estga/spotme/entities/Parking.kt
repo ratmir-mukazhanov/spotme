@@ -25,6 +25,7 @@ class Parking : Serializable {
     var startTime: Long = 0
     var endTime: Long = 0
     var description: String? = null
+    var photoUri: String? = null
     @ColumnInfo(name = "userId", index = true)
     var userId: Long? = null
 
