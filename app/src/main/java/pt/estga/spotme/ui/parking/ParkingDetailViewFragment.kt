@@ -23,6 +23,9 @@ class ParkingDetailViewFragment : BaseFragment() {
     private var countDownTimer: CountDownTimer? = null
     private val viewModel: ParkingDetailViewViewModel by viewModels()
 
+    // Tempo total em milissegundos para cálculo da porcentagem do progresso
+    private var totalTimeMillis: Long = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +45,16 @@ class ParkingDetailViewFragment : BaseFragment() {
         viewModel.parking.observe(viewLifecycleOwner) { parking ->
             if (parking != null) {
                 ParkingDetailHelper.bindDetails(binding, parking)
+
+                // Configurar tempos de início e fim separadamente
+                binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
+
+                if (parking.endTime > 0) {
+                    binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+                } else {
+                    binding.tvEndTime.text = "Em andamento"
+                }
+
                 startTimer(parking)
             }
         }
@@ -74,17 +87,14 @@ class ParkingDetailViewFragment : BaseFragment() {
     private fun startTimer(parking: Parking) {
         val currentTime = System.currentTimeMillis()
         val timeLeft = (parking.startTime + parking.allowedTime) - currentTime
+        totalTimeMillis = parking.allowedTime
 
         if (timeLeft > 0) {
-            binding.tvParkingTime.text = """
-                Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                Hora de Fim: Ainda em andamento
-            """.trimIndent()
-
             countDownTimer = object : CountDownTimer(timeLeft, 1000) {
                 private var notified3min = false
                 private var notified2min = false
                 private var notified1min = false
+                private var warningShown = false
 
                 override fun onTick(millisUntilFinished: Long) {
                     var seconds = millisUntilFinished / 1000
@@ -93,6 +103,17 @@ class ParkingDetailViewFragment : BaseFragment() {
 
                     binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds)
 
+                    // Atualizar barra de progresso circular
+                    val progressPercentage = ((totalTimeMillis - millisUntilFinished) * 100 / totalTimeMillis).toInt()
+                    binding.progressTimer.progress = progressPercentage
+
+                    // Mostrar aviso visual se faltarem 3 minutos ou menos
+                    if (minutes <= 3 && !warningShown) {
+                        warningShown = true
+                        binding.tvTimerWarning.text = "⚠️ Atenção! Está quase a terminar!"
+                    }
+
+                    // Enviar notificações específicas por minuto
                     when {
                         minutes == 3L && !notified3min -> {
                             ParkingNotificationHelper.send(requireContext(), "Faltam 3 minutos para o estacionamento expirar!")
@@ -112,19 +133,24 @@ class ParkingDetailViewFragment : BaseFragment() {
                 override fun onFinish() {
                     binding.tvTimer.text = "00:00"
                     binding.tvTimerWarning.text = "Tempo esgotado!"
-                    binding.tvParkingTime.text = """
-                        Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                        Hora de Fim: ${DateFormatter.formatDate(parking.endTime)}
-                    """.trimIndent()
+                    binding.progressTimer.progress = 100
+                    binding.tvEndTime.text = DateFormatter.formatTime(System.currentTimeMillis())
+
+                    // Mudar a cor do indicador para vermelho quando terminar
+                    binding.progressTimer.setIndicatorColor(resources.getColor(android.R.color.holo_red_light))
                 }
             }.start()
         } else {
             binding.tvTimer.text = "00:00"
             binding.tvTimerWarning.text = "Tempo esgotado!"
-            binding.tvParkingTime.text = """
-                Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                Hora de Fim: ${DateFormatter.formatDate(parking.endTime)}
-            """.trimIndent()
+            binding.progressTimer.progress = 100
+            binding.progressTimer.setIndicatorColor(resources.getColor(android.R.color.holo_red_light))
+
+            if (parking.endTime > 0) {
+                binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+            } else {
+                binding.tvEndTime.text = DateFormatter.formatTime(System.currentTimeMillis())
+            }
         }
     }
 

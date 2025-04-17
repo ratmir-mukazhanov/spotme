@@ -1,291 +1,433 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA"
-    android:fillViewport="true">
+    android:background="#F5F7FA">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Header Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Meu Estacionamento"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="#005792"/>
-                    
-                    <ImageButton
-                        android:id="@+id/btn_delete"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_delete"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Eliminar estacionamento"
-                        app:tint="#E53935" />
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="12dp"
-                    android:text="Compartilhar"
-                    android:textAllCaps="false"
-                    app:icon="@android:drawable/ic_menu_share"
-                    app:backgroundTint="#005792"
-                    app:cornerRadius="12dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Timer Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_timer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tempo Restante"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#005792"/>
-
-                <TextView
-                    android:id="@+id/tv_timer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="02:55"
-                    android:textSize="48sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"
-                    android:textColor="#005792"/>
-
-                <TextView
-                    android:id="@+id/tv_timer_warning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Atenção! Está quase a terminar"
-                    android:textColor="#E53935"
-                    android:layout_marginTop="8dp"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Parking Info Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_parking_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_location"
-                        android:layout_marginEnd="12dp"
-                        app:tint="#005792"/>
-
-                    <TextView
-                        android:id="@+id/tv_parking_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Estacionamento na Arrentela"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#005792"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_parking_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hora de Início: 17:00h\nHora de Fim: 17:45h"
-                    android:layout_marginBottom="16dp"
-                    android:textSize="16sp"
-                    android:textColor="#4A5568"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_notes"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_notes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:hint="Notas"
-                            android:inputType="none"
-                            android:paddingEnd="40dp"
-                            android:text="Estacionei ao pé do McDonald's em frente ao símbolo da CarVertical" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <ImageButton
-                        android:id="@+id/btn_edit_notes"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Editar notas"
-                        android:src="@drawable/ic_edit"
-                        app:tint="#005792" />
-                </RelativeLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Coordinates Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_coordinates"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_location"
-                        android:layout_marginEnd="12dp"
-                        app:tint="#005792"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Coordenadas"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#005792"/>
-
-                    <ImageButton
-                        android:id="@+id/btn_copy_coordinates"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_copy"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp"
-                        app:tint="#005792"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_coordinates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Latitude: 40.6412\nLongitude: -8.65362"
-                    android:layout_marginTop="12dp"
-                    android:textSize="16sp"
-                    android:textColor="#4A5568"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Action Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_view_photo"
-                android:layout_width="0dp"
+            <!-- Header Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="Ver Foto"
-                android:textAllCaps="false"
-                app:cornerRadius="12dp"
-                app:backgroundTint="#005792"
-                app:icon="@drawable/ic_photo"
-                app:iconGravity="textStart"/>
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_route"
-                android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Meu Estacionamento"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="#005792"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_delete"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/ic_delete"
+                            app:iconTint="#FFFFFF"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:cornerRadius="24dp"
+                            android:backgroundTint="#E53935"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="3dp"
+                        android:background="#005792"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Compartilhar"
+                        android:textColor="#FFFFFF"
+                        android:layout_gravity="center"
+                        app:icon="@android:drawable/ic_menu_share"
+                        app:iconTint="#FFFFFF"
+                        app:cornerRadius="24dp"
+                        android:paddingHorizontal="24dp"
+                        android:backgroundTint="#005792"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Timer Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_timer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="Direções"
-                android:textAllCaps="false"
-                app:cornerRadius="12dp"
-                app:backgroundTint="#005792"
-                app:icon="@drawable/ic_navigation"
-                app:iconGravity="textStart"/>
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#D0E1F9">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:background="@drawable/timer_gradient_background"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Estado"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"/>
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Concluído"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#FFFFFF"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Duração: 45 min"
+                        android:layout_marginTop="12dp"
+                        app:chipBackgroundColor="#80FFFFFF"
+                        app:chipIconVisible="true"
+                        app:chipIcon="@drawable/ic_time"
+                        app:chipIconTint="#005792"
+                        android:textColor="#005792"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Parking Info Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_parking_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardBackgroundColor="#E6F2FF"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_location"
+                                android:layout_gravity="center"
+                                app:tint="#005792"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:id="@+id/tv_parking_location"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Dados do Estacionamento"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#005792"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_edit_location"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/ic_edit"
+                            app:iconTint="#005792"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:cornerRadius="18dp"
+                            android:backgroundTint="#E6F2FF"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:background="#E6F2FF"
+                            android:padding="12dp"
+                            android:layout_marginEnd="8dp"
+                            android:gravity="center"
+                            android:elevation="1dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hora de Início"
+                                android:textSize="12sp"
+                                android:textColor="#4A5568"/>
+
+                            <TextView
+                                android:id="@+id/tv_start_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="17:00h"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#005792"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:background="#E6F2FF"
+                            android:padding="12dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:elevation="1dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hora de Fim"
+                                android:textSize="12sp"
+                                android:textColor="#4A5568"/>
+
+                            <TextView
+                                android:id="@+id/tv_end_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="17:45h"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#005792"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Data Editable with Edit Button -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Notas"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#005792"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_edit_notes"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:insetLeft="0dp"
+                                android:insetTop="0dp"
+                                android:insetRight="0dp"
+                                android:insetBottom="0dp"
+                                app:icon="@drawable/ic_edit"
+                                app:iconTint="#005792"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:cornerRadius="18dp"
+                                android:backgroundTint="#E6F2FF"/>
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxCornerRadiusTopStart="8dp"
+                            app:boxCornerRadiusTopEnd="8dp"
+                            app:boxCornerRadiusBottomStart="8dp"
+                            app:boxCornerRadiusBottomEnd="8dp"
+                            app:boxStrokeColor="#005792">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_notes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Notas"
+                                android:text="Estacionei ao pé do McDonald's em frente ao símbolo da CarVertical"
+                                android:enabled="false"
+                                android:textColor="#4A5568"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Coordinates Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_coordinates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardBackgroundColor="#E6F2FF"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_location"
+                                android:layout_gravity="center"
+                                app:tint="#005792"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Coordenadas"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#005792"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_copy_coordinates"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            app:icon="@drawable/ic_copy"
+                            app:iconTint="#005792"
+                            android:text="Copiar"
+                            android:textColor="#005792"
+                            app:cornerRadius="20dp"
+                            android:backgroundTint="#E6F2FF"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_coordinates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Latitude: 40.6412\nLongitude: -8.65362"
+                        android:layout_marginTop="12dp"
+                        android:textSize="16sp"
+                        android:background="#E6F2FF"
+                        android:padding="12dp"
+                        android:textColor="#4A5568"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_view_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="Ver Foto"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_photo"
+                    app:iconGravity="textStart"
+                    app:iconTint="#FFFFFF"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#005792"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_route"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Direções"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_navigation"
+                    app:iconGravity="textStart"
+                    app:iconTint="#FFFFFF"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#005792"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

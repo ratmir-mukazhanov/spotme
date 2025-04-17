@@ -1,73 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F7FA"
     tools:context="pt.estga.spotme.ui.parking.ParkingListViewFragment"
-    android:id="@+id/fragmentParkingListView"
-    android:padding="16dp">
+    android:id="@+id/fragmentParkingListView">
 
-    <!-- Bold Blue Title "Parking History" -->
-    <TextView
-        android:id="@+id/textViewParkingHistoryTitle"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header Card com Título -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/textViewParkingHistoryTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Histórico de Estacionamento"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="#005792"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp"/>
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="3dp"
+                        android:background="#005792"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card para Tab Menu -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayoutTimeFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabTextColor="#4A5568"
+                    app:tabSelectedTextColor="#005792"
+                    app:tabIndicatorColor="#005792"
+                    app:tabMode="fixed"
+                    android:background="#FFFFFF"
+                    app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Button">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Última Semana" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Último Mês" />
+                </com.google.android.material.tabs.TabLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card estatísticas rápidas -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="#E6F2FF"
+                        android:padding="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center"
+                        android:elevation="1dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total"
+                            android:textSize="12sp"
+                            android:textColor="#4A5568"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_parkings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="24"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#005792"/>
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="#E6F2FF"
+                        android:padding="12dp"
+                        android:gravity="center"
+                        android:elevation="1dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tempo Médio"
+                            android:textSize="12sp"
+                            android:textColor="#4A5568"/>
+
+                        <TextView
+                            android:id="@+id/tv_avg_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1h 45m"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#005792"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card principal para a lista de estacionamentos -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estacionamentos Recentes"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#005792"
+                        android:padding="16dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewParkings"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:clipToPadding="false"
+                        tools:listitem="@layout/item_parking"
+                        tools:itemCount="3"/>
+
+                    <TextView
+                        android:id="@+id/textViewEmptyList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nenhum estacionamento recente"
+                        android:textSize="16sp"
+                        android:textColor="#757575"
+                        android:gravity="center"
+                        android:padding="32dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botão Ver Mais -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSeeMore"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Ver Todos os Estacionamentos"
+                android:textAllCaps="false"
+                android:backgroundTint="#005792"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_navigation"
+                app:iconGravity="textStart"
+                app:iconTint="#FFFFFF"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    
+    <!-- Botão Flutuante para Adicionar Novo Estacionamento -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddParking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parking History"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#1976D2"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Tab Menu for "Last Week" and "Last Month" -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutTimeFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:tabTextColor="#757575"
-        app:tabSelectedTextColor="#1976D2"
-        app:tabIndicatorColor="#1976D2"
-        app:tabMode="fixed"
-        app:layout_constraintTop_toBottomOf="@id/textViewParkingHistoryTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Week" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Month" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <!-- Recycler View for displaying parking history items -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewParkings"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tabLayoutTimeFilter"
-        app:layout_constraintBottom_toTopOf="@id/buttonSeeMore" />
-
-    <!-- "See More" Button at the bottom -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonSeeMore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="See More"
-        android:textAllCaps="false"
-        android:padding="12dp"
-        android:backgroundTint="#1976D2"
-        app:cornerRadius="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="#FFFFFF"
+        android:backgroundTint="#005792"
+        app:fabSize="normal"
+        app:borderWidth="0dp"
+        app:elevation="6dp" />
+        
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

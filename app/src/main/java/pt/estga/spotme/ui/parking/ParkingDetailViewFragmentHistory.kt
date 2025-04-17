@@ -1,14 +1,12 @@
 package pt.estga.spotme.ui.parking
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import pt.estga.spotme.R
 import pt.estga.spotme.database.AppDatabase
@@ -45,10 +43,43 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
         arguments?.getSerializable("parking")?.let {
             parking = it as Parking
-            ParkingDetailHelper.bindDetails(binding, parking)
-            startTimer(parking)
+            setupUI(parking)
         } ?: Toast.makeText(requireContext(), "Erro ao carregar o estacionamento", Toast.LENGTH_SHORT).show()
 
+        setupListeners()
+    }
+
+    private fun setupUI(parking: Parking) {
+        // Configurar título e localização
+        binding.tvTitle.text = parking.title ?: "Meu Estacionamento"
+
+        // Configurar coordenadas
+        binding.tvCoordinates.text = "Latitude: ${parking.latitude}\nLongitude: ${parking.longitude}"
+
+        // Configurar notas
+        binding.etNotes.setText(parking.description)
+
+        // Configurar horários
+        binding.tvStartTime.text = DateFormatter.formatDateShort(parking.startTime)
+        binding.tvEndTime.text =
+            if (parking.endTime > 0) DateFormatter.formatDateShort(parking.endTime)
+            else "Em andamento"
+
+        // Configurar duração
+        val durationMinutes = (parking.allowedTime / (1000 * 60)).toInt()
+        binding.chipDuration.text = "Duração: $durationMinutes min"
+
+        // Status do estacionamento
+        val currentTime = System.currentTimeMillis()
+        if (currentTime > (parking.startTime + parking.allowedTime)) {
+            binding.tvStatus.text = "Concluído"
+        } else {
+            binding.tvStatus.text = "Em andamento"
+            startTimer(parking)
+        }
+    }
+
+    private fun setupListeners() {
         binding.btnCopyCoordinates.setOnClickListener {
             ClipboardUtils.copyText(
                 requireContext(),
@@ -62,23 +93,77 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         }
 
         binding.btnViewPhoto.setOnClickListener { viewPhoto() }
+
         binding.btnRoute.setOnClickListener {
             ParkingDetailHelper.openInMaps(requireContext(), parking.latitude, parking.longitude)
         }
+
+        binding.btnEditLocation.setOnClickListener { editParkingName() }
+
         binding.btnEditNotes.setOnClickListener { editNotes() }
+
         binding.btnDelete.setOnClickListener { deleteParking() }
+    }
+
+    private fun editParkingName() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_parking_name, null)
+        val etEditName = dialogView.findViewById<android.widget.EditText>(R.id.et_edit_parking_name)
+        val btnSaveName = dialogView.findViewById<View>(R.id.btn_save_parking_name)
+        val btnCancelName = dialogView.findViewById<View>(R.id.btnCancel)
+        val btnClose = dialogView.findViewById<View>(R.id.btnClose)
+
+        val alertDialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        btnCancelName.setOnClickListener {
+            Toast.makeText(requireContext(), "Edição cancelada", Toast.LENGTH_SHORT).show()
+            alertDialog.dismiss() // Fecha o diálogo
+        }
+
+        btnClose.setOnClickListener {
+            Toast.makeText(requireContext(), "Edição cancelada", Toast.LENGTH_SHORT).show()
+            alertDialog.dismiss() // Fecha o diálogo
+        }
+
+        etEditName.setText(parking.title)
+
+        alertDialog.show()
+
+        btnSaveName.setOnClickListener {
+            val newName = etEditName.text.toString()
+            parking.title = newName
+            Executors.newSingleThreadExecutor().execute {
+                parkingDao.update(parking)
+                requireActivity().runOnUiThread {
+                    binding.tvTitle.text = newName
+                    Toast.makeText(requireContext(), "Nome atualizado com sucesso", Toast.LENGTH_SHORT).show()
+                    alertDialog.dismiss()
+                }
+            }
+        }
     }
 
     private fun editNotes() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_notes, null)
         val etEditNotes = dialogView.findViewById<android.widget.EditText>(R.id.et_edit_notes)
-        val btnSaveNotes = dialogView.findViewById<android.widget.Button>(R.id.btn_save_notes)
-
-        etEditNotes.setText(parking.description)
+        val btnSaveNotes = dialogView.findViewById<View>(R.id.btn_save_notes)
+        val btnCancelNotes = dialogView.findViewById<View>(R.id.btnCancel)
+        val btnClose = dialogView.findViewById<View>(R.id.btnClose)
 
         val alertDialog = android.app.AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
+
+        btnCancelNotes.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        btnClose.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        etEditNotes.setText(parking.description)
 
         alertDialog.show()
 
@@ -97,14 +182,21 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
     }
 
     private fun deleteParking() {
-        Executors.newSingleThreadExecutor().execute {
-            parkingDao.delete(parking)
-            requireActivity().runOnUiThread {
-                Toast.makeText(requireContext(), "Estacionamento eliminado com sucesso", Toast.LENGTH_SHORT).show()
-                val navController = findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
-                navController.navigate(R.id.nav_parking_history)
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Eliminar estacionamento")
+            .setMessage("Tem certeza que deseja eliminar este estacionamento?")
+            .setPositiveButton("Sim") { _, _ ->
+                Executors.newSingleThreadExecutor().execute {
+                    parkingDao.delete(parking)
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "Estacionamento eliminado com sucesso", Toast.LENGTH_SHORT).show()
+                        val navController = findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
+                        navController.navigate(R.id.nav_parking_history)
+                    }
+                }
             }
-        }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -113,49 +205,37 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         val timeLeft = (parking.startTime + parking.allowedTime) - currentTime
 
         if (timeLeft > 0) {
-            binding.tvParkingTime.text = """
-                Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                Hora de Fim: Ainda em andamento
-            """.trimIndent()
+            var warningShown = false
 
             countDownTimer = object : CountDownTimer(timeLeft, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val seconds = millisUntilFinished / 1000
                     val minutes = seconds / 60
                     val remainingSeconds = seconds % 60
-                    binding.tvTimer.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, remainingSeconds)
 
-                    if (millisUntilFinished <= 3 * 60 * 1000) {
-                        binding.tvTimerWarning.text = "Atenção! Está quase a terminar!"
+                    // Atualizar o estado conforme o tempo restante
+                    if (millisUntilFinished <= 3 * 60 * 1000 && !warningShown) {
+                        warningShown = true
+                        binding.tvStatus.text = "Quase terminando!"
                         ParkingNotificationHelper.send(
                             requireContext(),
                             "O tempo do teu estacionamento está quase a terminar!"
                         )
-                    } else {
-                        binding.tvTimerWarning.text = ""
                     }
                 }
 
                 override fun onFinish() {
-                    binding.tvTimer.text = "00:00"
-                    binding.tvTimerWarning.text = "Tempo esgotado!"
-                    binding.tvParkingTime.text = """
-                        Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                        Hora de Fim: ${DateFormatter.formatDate(parking.endTime)}
-                    """.trimIndent()
+                    binding.tvStatus.text = "Concluído"
+                    binding.tvEndTime.text = DateFormatter.formatDateShort(System.currentTimeMillis())
                 }
             }.start()
         } else {
-            binding.tvTimer.text = "00:00"
-            binding.tvTimerWarning.text = "Tempo esgotado!"
-            binding.tvParkingTime.text = """
-                Hora de Início: ${DateFormatter.formatDate(parking.startTime)}
-                Hora de Fim: ${DateFormatter.formatDate(parking.endTime)}
-            """.trimIndent()
+            binding.tvStatus.text = "Concluído"
         }
     }
 
     private fun viewPhoto() {
+        Toast.makeText(requireContext(), "Funcionalidade de foto ainda não implementada", Toast.LENGTH_SHORT).show()
         // TODO: Implementar visualização de foto
     }
 

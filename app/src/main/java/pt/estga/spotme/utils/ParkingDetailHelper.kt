@@ -13,10 +13,14 @@ import pt.estga.spotme.entities.Parking
 object ParkingDetailHelper {
 
     fun share(context: Context, parking: Parking) {
+        val googleMapsLink = "https://www.google.com/maps/search/?api=1&query=${parking.latitude},${parking.longitude}"
+
         val shareText = """
-            Localização: ${parking.title}
-            Coordenadas: ${parking.latitude}, ${parking.longitude}
-        """.trimIndent()
+        🚗 A Localização do Meu Veículo!
+        
+        📍 Local: ${parking.title}
+        🌍 Ver no mapa: $googleMapsLink
+    """.trimIndent()
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
@@ -24,9 +28,10 @@ object ParkingDetailHelper {
         }
 
         context.startActivity(
-            Intent.createChooser(shareIntent, "Partilhar detalhes do estacionamento")
+            Intent.createChooser(shareIntent, "Partilhar localização do estacionamento")
         )
     }
+
 
     fun openInMaps(context: Context, latitude: Double, longitude: Double) {
         val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude")

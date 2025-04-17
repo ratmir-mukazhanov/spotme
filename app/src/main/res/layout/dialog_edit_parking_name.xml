@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editar Notas"
+                android:text="Editar Nome do Estacionamento"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/primary_text_light" />
@@ -40,17 +40,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escreva suas notas aqui"
+            android:hint="Nome do estacionamento"
             android:layout_marginTop="16dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_edit_notes"
+                android:id="@+id/et_edit_parking_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:gravity="top|start" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +71,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_notes"
+                android:id="@+id/btn_save_parking_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

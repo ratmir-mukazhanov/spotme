@@ -21,6 +21,7 @@ import kotlinx.coroutines.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import pt.estga.spotme.database.repository.ParkingRepository
+import java.util.TimeZone
 
 class ParkingFormFragment : BaseFragment() {
 
@@ -131,12 +132,13 @@ class ParkingFormFragment : BaseFragment() {
     }
 
     private fun showTimePicker() {
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
         val hour = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
 
         TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
-            val selectedTime = Calendar.getInstance()
+            val selectedTime = Calendar.getInstance(TimeZone.getDefault())
+
             selectedTime.set(Calendar.HOUR_OF_DAY, selectedHour)
             selectedTime.set(Calendar.MINUTE, selectedMinute)
 
