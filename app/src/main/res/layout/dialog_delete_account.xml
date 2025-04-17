@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete Account"
+                android:text="Eliminar a Conta"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#F44336" />
@@ -41,13 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="This action cannot be undone. Please enter your password to confirm."
+            android:text="Esta ação não pode ser anulada. Introduza a sua palavra-passe para confirmar."
             android:textColor="#757575" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your password"
+            android:hint="Introduza a sua palavra-passe"
             android:layout_marginTop="16dp"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancel"
+                android:text="Cancelar"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginEnd="8dp"
@@ -83,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Delete"
+                android:text="Eliminar"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginStart="8dp"

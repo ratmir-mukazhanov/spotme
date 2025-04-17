@@ -37,7 +37,6 @@ import pt.estga.spotme.viewmodels.UserViewModel
 import java.io.File
 import java.io.FileOutputStream
 
-// TO:DO - Implement the Change Image and Profile Statistics View
 class AccountFragment : Fragment() {
     private var userSession: UserSession? = null
     private var db: AppDatabase? = null
@@ -53,31 +52,36 @@ class AccountFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Initialize UI components
-        val tvAccountTitle = root.findViewById<TextView>(R.id.tvAccountTitle)
         profileImage = root.findViewById(R.id.profileImage) // Use the class field
+        val tvNomeField = root.findViewById<TextView>(R.id.tvNomeField)
         val tvNome = root.findViewById<TextView>(R.id.tvNome)
         val ivEditNome = root.findViewById<ImageView>(R.id.ivEditNome)
         val tvTelemovel = root.findViewById<TextView>(R.id.tvTelemovel)
         val ivEditTelemovel = root.findViewById<ImageView>(R.id.ivEditTelemovel)
+        val tvEmailField = root.findViewById<TextView>(R.id.tvEmailField)
         val tvEmail = root.findViewById<TextView>(R.id.tvEmail)
         val ivEditEmail = root.findViewById<ImageView>(R.id.ivEditEmail)
         val tvChangePassword = root.findViewById<TextView>(R.id.tvChangePassword)
-        val ivArrowPassword = root.findViewById<ImageView>(R.id.ivArrowPassword)
+        val cardChangePassword = root.findViewById<LinearLayout>(R.id.cardChangePassword)
         val tvPersonalStats = root.findViewById<TextView>(R.id.tvPersonalStats)
-        val ivArrowStats = root.findViewById<ImageView>(R.id.ivArrowStats)
+        val cardPersonalStats = root.findViewById<LinearLayout>(R.id.cardPersonalStats)
         val ivEditProfilePhoto = root.findViewById<ImageView>(R.id.ivEditProfilePhoto)
         val tvDeleteAccount = root.findViewById<TextView>(R.id.tvDeleteAccount)
+        val cardDeleteAccount = root.findViewById<LinearLayout>(R.id.cardDeleteAccount)
 
         userSession = UserSession.getInstance(requireContext())
         db = getInstance(requireContext())
         userDAO = db!!.userDao()
 
-        // Set initial values or listeners if needed
+        // Set initial values for all text fields
         tvNome.text = userSession!!.userName
+        tvNomeField.text = userSession!!.userName
         tvEmail.text = userSession!!.userEmail
+        tvEmailField.text = userSession!!.userEmail
         tvTelemovel.text = userSession!!.userPhone
 
-        carregarImagemDePerfil() // Load the profile image
+        // Load the profile image
+        carregarImagemDePerfil()
 
         // Add any additional setup or listeners here
         ivEditNome.setOnClickListener { v: View? ->
@@ -103,6 +107,7 @@ class AccountFragment : Fragment() {
                 if (newName.isNotEmpty()) {
                     userSession!!.userName = newName
                     tvNome.text = newName
+                    tvNomeField.text = newName
 
                     Thread {
                         userDAO!!.updateNome(newName, userSession!!.userId)
@@ -164,6 +169,7 @@ class AccountFragment : Fragment() {
 
                             requireActivity().runOnUiThread {
                                 tvEmail.text = newEmail
+                                tvEmailField.text = newEmail
                                 Toast.makeText(
                                     requireContext(),
                                     "Email atualizado com sucesso",
@@ -231,7 +237,7 @@ class AccountFragment : Fragment() {
                         requireActivity().runOnUiThread {
                             Toast.makeText(
                                 requireContext(),
-                                "Phone number updated successfully",
+                                "Número de telefone atualizado com sucesso",
                                 Toast.LENGTH_SHORT
                             ).show()
                             alertDialog.dismiss()
@@ -240,7 +246,7 @@ class AccountFragment : Fragment() {
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Phone number cannot be empty",
+                        "O número de telefone não pode estar vazio",
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -249,202 +255,230 @@ class AccountFragment : Fragment() {
 
             btnCancel.setOnClickListener { view: View? -> alertDialog.dismiss() }
             btnClose.setOnClickListener { view: View? -> alertDialog.dismiss() }
+        }
+
+        cardChangePassword.setOnClickListener { v: View? ->
+            showChangePasswordDialog()
         }
 
         tvChangePassword.setOnClickListener { v: View? ->
-            val inflater4 = LayoutInflater.from(requireContext())
-            val dialogView = inflater4.inflate(R.layout.dialog_change_password, null)
-
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            dialogBuilder.setView(dialogView)
-
-            val etCurrentPassword = dialogView.findViewById<EditText>(R.id.etCurrentPassword)
-            val etNewPassword = dialogView.findViewById<EditText>(R.id.etNewPassword)
-            val etConfirmPassword = dialogView.findViewById<EditText>(R.id.etConfirmPassword)
-            val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
-
-            val btnClose = dialogView.findViewById<ImageButton>(R.id.btnClose)
-            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-
-            btnSave.setOnClickListener { view: View? ->
-                val currentPassword = etCurrentPassword.text.toString().trim { it <= ' ' }
-                val newPassword = etNewPassword.text.toString().trim { it <= ' ' }
-                val confirmPassword = etConfirmPassword.text.toString().trim { it <= ' ' }
-                if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-                    Toast.makeText(requireContext(), "Fields cannot be empty", Toast.LENGTH_SHORT)
-                        .show()
-                } else if (currentPassword != userSession!!.userPassword) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Current Password failed, try again",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else if (newPassword == confirmPassword) {
-                    val hashedPassword = PasswordUtils.hashPassword(newPassword)
-                    Thread {
-                        userDAO!!.updatePassword(hashedPassword, userSession!!.userId)
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(
-                                requireContext(),
-                                "Password updated successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            alertDialog.dismiss()
-                            // ir para a tela de login
-                            userSession!!.clearSession()
-                            val intent = Intent(
-                                requireContext(),
-                                LoginActivity::class.java
-                            )
-                            startActivity(intent)
-                            requireActivity().finish()
-                        }
-                    }.start()
-                } else {
-                    Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-
-            btnClose.setOnClickListener { view: View? -> alertDialog.dismiss() }
-            btnCancel.setOnClickListener { view: View? -> alertDialog.dismiss() }
+            showChangePasswordDialog()
         }
 
         ivEditProfilePhoto.setOnClickListener { v: View? ->
-            val inflater5 = LayoutInflater.from(requireContext())
-            val dialogView = inflater5.inflate(R.layout.dialog_change_profile_image, null)
+            showChangeProfileImageDialog()
+        }
 
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            dialogBuilder.setView(dialogView)
-
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-
-            val layoutCamera = dialogView.findViewById<LinearLayout>(R.id.layoutCamera)
-            val layoutGallery = dialogView.findViewById<LinearLayout>(R.id.layoutGallery)
-            val layoutRemove = dialogView.findViewById<LinearLayout>(R.id.layoutRemove)
-            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
-            layoutCamera.setOnClickListener {
-                // Handle taking a photo
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-                    startActivityForResult(
-                        takePictureIntent,
-                        REQUEST_IMAGE_CAPTURE
-                    )
-                }
-                alertDialog.dismiss()
-            }
-
-            layoutGallery.setOnClickListener {
-                // Handle choosing from gallery
-                val pickPhotoIntent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                )
-                startActivityForResult(
-                    pickPhotoIntent,
-                    REQUEST_IMAGE_PICK
-                )
-                alertDialog.dismiss()
-            }
-
-            layoutRemove.setOnClickListener {
-                userSession!!.userProfileImage = null
-                this.profileImage!!.setImageResource(R.drawable.ic_default_profile)
-
-                Thread {
-                    userDAO!!.updateProfileImage(null, userSession!!.userId)
-
-                    requireActivity().runOnUiThread {
-                        // Atualizar ViewModel partilhado
-                        val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-                        userViewModel.updateUser(
-                            userSession!!.userName,
-                            userSession!!.userEmail,
-                            null
-                        )
-
-                        Toast.makeText(
-                            requireContext(),
-                            "Imagem de perfil removida",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        alertDialog.dismiss()
-                    }
-                }.start()
-            }
-
-            btnCancel.setOnClickListener { alertDialog.dismiss() }
+        cardDeleteAccount.setOnClickListener {
+            showDeleteAccountDialog()
         }
 
         tvDeleteAccount.setOnClickListener {
-            val inflater6 = LayoutInflater.from(requireContext())
-            val dialogView1 = inflater6.inflate(R.layout.dialog_delete_account, null)
+            showDeleteAccountDialog()
+        }
 
-            val dialogBuilder1 = AlertDialog.Builder(requireContext())
-            dialogBuilder1.setView(dialogView1)
-
-            val etPassword = dialogView1.findViewById<EditText>(R.id.etPassword)
-            val btnDelete = dialogView1.findViewById<Button>(R.id.btnDelete)
-
-            val btnClose = dialogView1.findViewById<ImageButton>(R.id.btnClose)
-            val buttonCancelar = dialogView1.findViewById<Button>(R.id.btnCancel)
-
-            val alertDialog = dialogBuilder1.create()
-            alertDialog.show()
-
-            btnDelete.setOnClickListener { view1: View? ->
-                val password = etPassword.text.toString().trim { it <= ' ' }
-                if (password.isEmpty()) {
-                    Toast.makeText(requireContext(), "Password cannot be empty", Toast.LENGTH_SHORT)
-                        .show()
-                } else if (password != userSession!!.userPassword) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Password failed, try again",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                } else {
-                    Thread {
-                        userDAO!!.delete(userSession!!.userId)
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(
-                                requireContext(),
-                                "Account deleted successfully",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            alertDialog.dismiss()
-                            // ir para a tela de login
-                            userSession!!.clearSession()
-                            val intent = Intent(
-                                requireContext(),
-                                LoginActivity::class.java
-                            )
-                            startActivity(intent)
-                            requireActivity().finish()
-                        }
-                    }.start()
-                }
-            }
-
-            btnClose.setOnClickListener { view1: View? -> alertDialog.dismiss() }
-            buttonCancelar.setOnClickListener { view1: View? -> alertDialog.dismiss() }
+        cardPersonalStats.setOnClickListener {
+            navigateToPersonalStats()
         }
 
         tvPersonalStats.setOnClickListener {
-            val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
-            navController.navigate(R.id.personalStatisticsFragment)
+            navigateToPersonalStats()
         }
 
         return root
+    }
+
+    private fun showChangePasswordDialog() {
+        val inflater4 = LayoutInflater.from(requireContext())
+        val dialogView = inflater4.inflate(R.layout.dialog_change_password, null)
+
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setView(dialogView)
+
+        val etCurrentPassword = dialogView.findViewById<EditText>(R.id.etCurrentPassword)
+        val etNewPassword = dialogView.findViewById<EditText>(R.id.etNewPassword)
+        val etConfirmPassword = dialogView.findViewById<EditText>(R.id.etConfirmPassword)
+        val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
+
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnClose)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+
+        btnSave.setOnClickListener { view: View? ->
+            val currentPassword = etCurrentPassword.text.toString().trim { it <= ' ' }
+            val newPassword = etNewPassword.text.toString().trim { it <= ' ' }
+            val confirmPassword = etConfirmPassword.text.toString().trim { it <= ' ' }
+            if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(requireContext(), "Os campos não podem estar vazios", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (currentPassword != userSession!!.userPassword) {
+                Toast.makeText(
+                    requireContext(),
+                    "Senha atual incorreta, tente novamente",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (newPassword == confirmPassword) {
+                val hashedPassword = PasswordUtils.hashPassword(newPassword)
+                Thread {
+                    userDAO!!.updatePassword(hashedPassword, userSession!!.userId)
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            "Password atualizada com sucesso",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        alertDialog.dismiss()
+                        // ir para a tela de login
+                        userSession!!.clearSession()
+                        val intent = Intent(
+                            requireContext(),
+                            LoginActivity::class.java
+                        )
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }.start()
+            } else {
+                Toast.makeText(requireContext(), "As senhas não coincidem", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        btnClose.setOnClickListener { view: View? -> alertDialog.dismiss() }
+        btnCancel.setOnClickListener { view: View? -> alertDialog.dismiss() }
+    }
+
+    private fun showChangeProfileImageDialog() {
+        val inflater5 = LayoutInflater.from(requireContext())
+        val dialogView = inflater5.inflate(R.layout.dialog_change_profile_image, null)
+
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setView(dialogView)
+
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+
+        val layoutCamera = dialogView.findViewById<LinearLayout>(R.id.layoutCamera)
+        val layoutGallery = dialogView.findViewById<LinearLayout>(R.id.layoutGallery)
+        val layoutRemove = dialogView.findViewById<LinearLayout>(R.id.layoutRemove)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+        layoutCamera.setOnClickListener {
+            // Handle taking a photo
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivityForResult(
+                    takePictureIntent,
+                    REQUEST_IMAGE_CAPTURE
+                )
+            }
+            alertDialog.dismiss()
+        }
+
+        layoutGallery.setOnClickListener {
+            // Handle choosing from gallery
+            val pickPhotoIntent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            startActivityForResult(
+                pickPhotoIntent,
+                REQUEST_IMAGE_PICK
+            )
+            alertDialog.dismiss()
+        }
+
+        layoutRemove.setOnClickListener {
+            userSession!!.userProfileImage = null
+            this.profileImage!!.setImageResource(R.drawable.ic_default_profile)
+
+            Thread {
+                userDAO!!.updateProfileImage("", userSession!!.userId)
+
+                requireActivity().runOnUiThread {
+                    // Atualizar ViewModel partilhado
+                    val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                    userViewModel.updateUser(
+                        userSession!!.userName,
+                        userSession!!.userEmail,
+                        null
+                    )
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Imagem de perfil removida",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    alertDialog.dismiss()
+                }
+            }.start()
+        }
+
+        btnCancel.setOnClickListener { alertDialog.dismiss() }
+    }
+
+    private fun showDeleteAccountDialog() {
+        val inflater6 = LayoutInflater.from(requireContext())
+        val dialogView1 = inflater6.inflate(R.layout.dialog_delete_account, null)
+
+        val dialogBuilder1 = AlertDialog.Builder(requireContext())
+        dialogBuilder1.setView(dialogView1)
+
+        val etPassword = dialogView1.findViewById<EditText>(R.id.etPassword)
+        val btnDelete = dialogView1.findViewById<Button>(R.id.btnDelete)
+
+        val btnClose = dialogView1.findViewById<ImageButton>(R.id.btnClose)
+        val buttonCancelar = dialogView1.findViewById<Button>(R.id.btnCancel)
+
+        val alertDialog = dialogBuilder1.create()
+        alertDialog.show()
+
+        btnDelete.setOnClickListener { view1: View? ->
+            val password = etPassword.text.toString().trim { it <= ' ' }
+            if (password.isEmpty()) {
+                Toast.makeText(requireContext(), "A senha não pode estar vazia", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (password != userSession!!.userPassword) {
+                Toast.makeText(
+                    requireContext(),
+                    "Senha incorreta, tente novamente",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            } else {
+                Thread {
+                    userDAO!!.delete(userSession!!.userId)
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            "Conta apagada com sucesso",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        alertDialog.dismiss()
+                        // ir para a tela de login
+                        userSession!!.clearSession()
+                        val intent = Intent(
+                            requireContext(),
+                            LoginActivity::class.java
+                        )
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }.start()
+            }
+        }
+
+        btnClose.setOnClickListener { view1: View? -> alertDialog.dismiss() }
+        buttonCancelar.setOnClickListener { view1: View? -> alertDialog.dismiss() }
+    }
+
+    private fun navigateToPersonalStats() {
+        val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
+        navController.navigate(R.id.personalStatisticsFragment)
     }
 
     @Deprecated("Deprecated in Java")
@@ -485,6 +519,43 @@ class AccountFragment : Fragment() {
                     } catch (e: Exception) {
                         Log.e("ProfileImage", "Erro ao processar a imagem", e)
                     }
+                }
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                // Processar a imagem capturada pela câmera
+                try {
+                    val userId = userSession!!.userId
+                    if (userId <= 0) {
+                        Log.e("ProfileImage", "ID do utilizador inválido.")
+                        return
+                    }
+                    
+                    val imageBitmap = data.extras?.get("data") as android.graphics.Bitmap
+                    val cw = ContextWrapper(requireContext())
+                    val directory = cw.getDir("profile_images", Context.MODE_PRIVATE)
+                    val imageFile = File(directory, "profile_$userId.jpg")
+                    
+                    val fos = FileOutputStream(imageFile)
+                    imageBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, fos)
+                    fos.close()
+                    
+                    val imagePath = imageFile.absolutePath
+                    profileImage!!.setImageURI(Uri.fromFile(imageFile))
+                    
+                    userSession!!.userProfileImage = imagePath
+                    
+                    Thread {
+                        userDAO!!.updateProfileImage(imagePath, userId)
+                        requireActivity().runOnUiThread {
+                            val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                            userViewModel.updateUser(
+                                userSession!!.userName,
+                                userSession!!.userEmail,
+                                imagePath
+                            )
+                        }
+                    }.start()
+                } catch (e: Exception) {
+                    Log.e("ProfileImage", "Erro ao processar a imagem da câmera", e)
                 }
             }
         }
@@ -595,7 +666,6 @@ class AccountFragment : Fragment() {
             }
         }
     }
-
 
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1

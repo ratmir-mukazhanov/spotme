@@ -37,7 +37,7 @@
                         android:id="@+id/textViewParkingHistoryTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Histórico de Estacionamento"
+                        android:text="Histórico de Estacionamentos"
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:textColor="#005792"

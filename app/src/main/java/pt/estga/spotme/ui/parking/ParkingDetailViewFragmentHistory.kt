@@ -53,24 +53,36 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         // Configurar título e localização
         binding.tvTitle.text = parking.title ?: "Meu Estacionamento"
 
+        // Configurar data do estacionamento
+        binding.tvParkingDate.text = DateFormatter.formatDate(parking.startTime)
+
         // Configurar coordenadas
         binding.tvCoordinates.text = "Latitude: ${parking.latitude}\nLongitude: ${parking.longitude}"
 
         // Configurar notas
         binding.etNotes.setText(parking.description)
 
-        // Configurar horários
-        binding.tvStartTime.text = DateFormatter.formatDateShort(parking.startTime)
-        binding.tvEndTime.text =
-            if (parking.endTime > 0) DateFormatter.formatDateShort(parking.endTime)
-            else "Em andamento"
+        // Configurar horário de início
+        binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
+
+        // Configurar horário de fim
+        val currentTime = System.currentTimeMillis()
+        if (parking.endTime > 0) {
+            // Se o estacionamento já tem hora de fim definida
+            binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+        } else if (currentTime > (parking.startTime + parking.allowedTime)) {
+            // Se o tempo permitido já passou, mas endTime não foi registrado
+            binding.tvEndTime.text = DateFormatter.formatTime(parking.startTime + parking.allowedTime)
+        } else {
+            // Estacionamento ainda está em andamento
+            binding.tvEndTime.text = "Em andamento"
+        }
 
         // Configurar duração
         val durationMinutes = (parking.allowedTime / (1000 * 60)).toInt()
         binding.chipDuration.text = "Duração: $durationMinutes min"
 
         // Status do estacionamento
-        val currentTime = System.currentTimeMillis()
         if (currentTime > (parking.startTime + parking.allowedTime)) {
             binding.tvStatus.text = "Concluído"
         } else {
@@ -117,13 +129,11 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
             .create()
 
         btnCancelName.setOnClickListener {
-            Toast.makeText(requireContext(), "Edição cancelada", Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss() // Fecha o diálogo
+            alertDialog.dismiss()
         }
 
         btnClose.setOnClickListener {
-            Toast.makeText(requireContext(), "Edição cancelada", Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss() // Fecha o diálogo
+            alertDialog.dismiss()
         }
 
         etEditName.setText(parking.title)

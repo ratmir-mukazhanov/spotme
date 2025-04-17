@@ -10,5 +10,5 @@ data class User(
     var password: String,
     var email: String,
     var phone: String,
-    var profileImage: String
+    var profileImage: String? = null
 )

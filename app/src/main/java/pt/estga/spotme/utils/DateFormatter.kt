@@ -10,7 +10,7 @@ object DateFormatter {
         return if (time == 0L) {
             "Ainda em andamento"
         } else {
-            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             sdf.timeZone = TimeZone.getDefault()
             sdf.format(Date(time))
         }

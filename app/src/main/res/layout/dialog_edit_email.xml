@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Your Email"
+                android:text="Atualizar o Email"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/primary_text_light" />
@@ -40,7 +40,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter new Email"
+            android:hint="Introduza o novo email"
             android:layout_marginTop="16dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -63,7 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancel"
+                android:text="Cancelar"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginEnd="8dp"
@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Save"
+                android:text="Guardar"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginStart="8dp"

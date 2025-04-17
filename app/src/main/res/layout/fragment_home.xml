@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hello there,"
+                    android:text="Viva, como vai?"
                     android:textSize="16sp"
                     android:textColor="#7E7E7E"
                     android:fontFamily="sans-serif-medium"/>
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Where's your car today?"
+                    android:text="Onde está o teu veículo hoje?"
                     android:textSize="28sp"
                     android:textColor="#005792"
                     android:textStyle="bold"
@@ -84,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="Set My Car Location"
+                            android:text="Definir a Localização do meu veículo"
                             android:textSize="20sp"
                             android:textColor="#005792"
                             android:textStyle="bold"/>
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Mark where you've parked your car to find it easily later."
+                        android:text="Marque o local onde estacionou o veículo para o encontrar facilmente mais tarde."
                         android:textSize="14sp"
                         android:textColor="#5F6368"/>
 
@@ -112,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginTop="16dp"
-                        android:text="Set Location"
+                        android:text="Definir localização"
                         android:textColor="#FFFFFF"
                         app:cornerRadius="12dp"
                         android:backgroundTint="#005792"/>
@@ -152,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="Find My Car"
+                            android:text="Encontrar o meu Veículo"
                             android:textSize="20sp"
                             android:textColor="#005792"
                             android:textStyle="bold"/>
@@ -171,7 +171,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Navigate back to your car with directions and distance info."
+                        android:text="Navegue de volta para o seu carro com informações sobre direcções e distâncias."
                         android:textSize="14sp"
                         android:textColor="#5F6368"/>
 
@@ -180,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginTop="16dp"
-                        android:text="Find My Car"
+                        android:text="Encontrar o meu Veículo"
                         android:textColor="#FFFFFF"
                         app:cornerRadius="12dp"
                         android:backgroundTint="#FF7D45"/>

@@ -3,22 +3,22 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_mainpage"
-            android:title="@string/home" />
-        <item
-            android:id="@+id/nav_account"
-            android:icon="@drawable/ic_menu_account"
-            android:title="@string/account" />
+            android:title="Início" />
         <item
             android:id="@+id/nav_parking_history"
             android:icon="@drawable/ic_menu_history"
-            android:title="@string/parking_history" />
+            android:title="Histórico de Estacionamentos" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_menu_account"
+            android:title="Perfil" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_settings"
-            android:title="@string/settings" />
+            android:title="Definições" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/logout" />
+            android:title="Sair da Conta" />
     </group>
 </menu>

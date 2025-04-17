@@ -33,7 +33,7 @@
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome Back"
+            android:text="Bem-vindo de volta!"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#005792"
@@ -43,7 +43,7 @@
             android:id="@+id/subtitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login to your account"
+            android:text="Faça login para continuar"
             android:textSize="16sp"
             android:textColor="#808080"
             android:layout_marginTop="4dp"
@@ -90,22 +90,11 @@
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="Palavra-passe"
                 android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- FORGOT PASSWORD -->
-        <TextView
-            android:id="@+id/forgotPasswordText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textSize="14sp"
-            android:textColor="#005792"
-            android:layout_gravity="end"
-            android:layout_marginBottom="24dp" />
 
         <!-- LOGIN BUTTON -->
         <com.google.android.material.button.MaterialButton
@@ -137,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Or"
+                android:text="Ou"
                 android:textSize="14sp"
                 android:textColor="#808080"
                 android:layout_marginHorizontal="16dp" />
@@ -154,7 +143,7 @@
             android:id="@+id/googleButton"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Continue with Google"
+            android:text="Continuar com a Google"
             android:textColor="#5F6368"
             app:cornerRadius="12dp"
             android:backgroundTint="#FFFFFF"
@@ -172,7 +161,7 @@
             android:id="@+id/signupText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an account? Sign up"
+            android:text="Ainda não tem conta? Registe-se"
             android:textSize="16sp"
             android:textColor="#005792"
             android:layout_marginTop="24dp"

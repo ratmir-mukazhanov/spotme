@@ -206,6 +206,41 @@
                         android:orientation="horizontal"
                         android:layout_marginBottom="16dp">
 
+                        <!-- Adicionando seção de data -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="#E6F2FF"
+                            android:padding="12dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="center"
+                            android:elevation="1dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Data"
+                                android:textSize="12sp"
+                                android:textColor="#4A5568"/>
+
+                            <TextView
+                                android:id="@+id/tv_parking_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="01/01/2023"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#005792"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
