@@ -47,6 +47,8 @@ class ParkingListViewFragment : BaseFragment() {
 
         val userId = UserSession.getInstance(requireContext()).userId
 
+        loadParkingStatistics(userId)
+
         if (viewModel.parkings.isEmpty()) {
             loadParkingList(userId, viewModel.currentOffset, LIMIT)
         } else {
@@ -85,6 +87,36 @@ class ParkingListViewFragment : BaseFragment() {
                     setupRecyclerView(viewModel.parkings)
                 } else {
                     adapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+    private fun loadParkingStatistics(userId: Long){
+        Executors.newSingleThreadExecutor().execute{
+
+            if(userId == -1L) return@execute
+
+            val db = AppDatabase.getInstance(requireContext())
+            val totalParkings = db.parkingDao().getParkingCountByUserId(userId)
+            val averageParkingTime = db.parkingDao().getAverageParkingTimeByUserId(userId) ?: 0L
+
+            requireActivity().runOnUiThread {
+                if (!isAdded || _binding == null) return@runOnUiThread
+
+                viewModel.totalParkings = totalParkings
+                viewModel.averageParkingTime = averageParkingTime
+
+                binding.tvTotalParkings.text = totalParkings.toString()
+
+                val avgMinutes = (averageParkingTime / 60000).toInt()
+                val hours = avgMinutes / 60
+                val minutes = avgMinutes % 60
+
+                binding.tvAvgTime.text = if(hours > 0) {
+                    "${hours}h ${minutes}m"
+                } else {
+                    "${minutes}m"
                 }
             }
         }

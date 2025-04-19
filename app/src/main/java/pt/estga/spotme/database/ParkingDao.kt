@@ -24,6 +24,12 @@ interface ParkingDao {
     @Query("SELECT * FROM parking WHERE userId = :userId ORDER BY id DESC LIMIT :limit OFFSET :offset")
     fun getParkingsByUserIdWithLimit(userId: Long, offset: Int, limit: Int): List<Parking>
 
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId")
+    fun getParkingCountByUserId(userId: Long): Int
+
+    @Query("SELECT AVG(CASE WHEN endTime > 0 THEN endTime - startTime ELSE allowedTime END) FROM parking WHERE userId = :userId AND (endTime > 0 OR allowedTime > 0)")
+    fun getAverageParkingTimeByUserId(userId: Long): Long?
+
     @Insert
     fun insert(parking: Parking)
 

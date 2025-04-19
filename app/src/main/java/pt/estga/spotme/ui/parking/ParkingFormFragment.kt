@@ -93,7 +93,7 @@ class ParkingFormFragment : BaseFragment() {
                     if (parking.id == null) repository.insertParking(parking)
                     else repository.updateParking(parking)
                 }
-                Toast.makeText(requireContext(), "Estacionamento salvo!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Estacionamento guardado com sucesso!", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.nav_home)
             }
         } catch (e: Exception) {

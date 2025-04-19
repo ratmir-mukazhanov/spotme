@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Viva, como vai?"
+                    android:text="Olá, como estás?"
                     android:textSize="16sp"
                     android:textColor="#7E7E7E"
                     android:fontFamily="sans-serif-medium"/>

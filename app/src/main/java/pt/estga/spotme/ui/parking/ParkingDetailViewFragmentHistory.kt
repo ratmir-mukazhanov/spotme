@@ -17,8 +17,6 @@ import pt.estga.spotme.ui.BaseFragment
 import pt.estga.spotme.utils.ClipboardUtils
 import pt.estga.spotme.utils.DateFormatter
 import pt.estga.spotme.utils.ParkingDetailHelper
-import pt.estga.spotme.utils.ParkingNotificationHelper
-import java.util.*
 import java.util.concurrent.Executors
 
 class ParkingDetailViewFragmentHistory : BaseFragment() {
@@ -86,7 +84,7 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         if (currentTime > (parking.startTime + parking.allowedTime)) {
             binding.tvStatus.text = "Concluído"
         } else {
-            binding.tvStatus.text = "Em andamento"
+            binding.tvStatus.text = "Calma, ainda tens tempo!"
             startTimer(parking)
         }
     }
@@ -194,7 +192,7 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
     private fun deleteParking() {
         android.app.AlertDialog.Builder(requireContext())
             .setTitle("Eliminar estacionamento")
-            .setMessage("Tem certeza que deseja eliminar este estacionamento?")
+            .setMessage("Tens a certeza que pretendes eliminar este estacionamento?")
             .setPositiveButton("Sim") { _, _ ->
                 Executors.newSingleThreadExecutor().execute {
                     parkingDao.delete(parking)
@@ -219,18 +217,9 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
             countDownTimer = object : CountDownTimer(timeLeft, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    val seconds = millisUntilFinished / 1000
-                    val minutes = seconds / 60
-                    val remainingSeconds = seconds % 60
-
-                    // Atualizar o estado conforme o tempo restante
                     if (millisUntilFinished <= 3 * 60 * 1000 && !warningShown) {
                         warningShown = true
-                        binding.tvStatus.text = "Quase terminando!"
-                        ParkingNotificationHelper.send(
-                            requireContext(),
-                            "O tempo do teu estacionamento está quase a terminar!"
-                        )
+                        binding.tvStatus.text = "⚠️ A terminar!"
                     }
                 }
 
@@ -243,6 +232,7 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
             binding.tvStatus.text = "Concluído"
         }
     }
+
 
     private fun viewPhoto() {
         Toast.makeText(requireContext(), "Funcionalidade de foto ainda não implementada", Toast.LENGTH_SHORT).show()

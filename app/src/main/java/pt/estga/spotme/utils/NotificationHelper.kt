@@ -4,28 +4,21 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 
 object NotificationHelper {
-
-    fun createChannel(context: Context, channelId: String, channelName: String, description: String) {
+    fun createChannel(context: Context, channelId: String, name: String, description: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            if (notificationManager == null) {
-                Log.e("Notification", "NotificationManager é null!")
-                return
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                this.description = description
+                enableVibration(true)
+                enableLights(true)
             }
 
-            val channel = NotificationChannel(
-                channelId,
-                channelName,
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                this.description = description
-            }
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             notificationManager.createNotificationChannel(channel)
-            Log.d("Notification", "Notification Channel criado com sucesso!")
         }
     }
 }
