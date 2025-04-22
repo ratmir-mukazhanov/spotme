@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
+import pt.estga.spotme.entities.AppRating
 import pt.estga.spotme.entities.Parking
 import pt.estga.spotme.entities.User
 
-@Database(entities = [Parking::class, User::class], version = 2)
+@Database(entities = [Parking::class, User::class, AppRating::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun parkingDao(): ParkingDao
     abstract fun userDao(): UserDao
+    abstract fun appRatingDao(): AppRatingDao
 
     companion object {
         private var instance: AppDatabase? = null

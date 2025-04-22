@@ -305,35 +305,6 @@
                         android:src="@drawable/ic_arrow_right"
                         app:tint="#005792"/>
                 </LinearLayout>
-
-                <!-- Data Usage -->
-                <LinearLayout
-                    android:id="@+id/layoutDataUsage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_background"
-                    android:padding="16dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tvDataUsage"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Utilização de Dados"
-                        android:textSize="16sp"
-                        android:textColor="#005792"/>
-
-                    <ImageView
-                        android:id="@+id/ivArrowDataUsage"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
-                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
