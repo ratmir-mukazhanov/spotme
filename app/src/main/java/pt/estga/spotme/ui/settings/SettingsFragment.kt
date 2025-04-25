@@ -17,6 +17,7 @@ import pt.estga.spotme.database.AppDatabase
 import pt.estga.spotme.databinding.DialogRateAppBinding
 import pt.estga.spotme.databinding.FragmentSettingsBinding
 import pt.estga.spotme.entities.AppRating
+import pt.estga.spotme.utils.UserPreferences
 import pt.estga.spotme.utils.UserSession
 
 class SettingsFragment : Fragment() {
@@ -31,7 +32,10 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         userSession = UserSession.getInstance(requireContext())
 
+        setupLocationToggle()
+        setupNotificationsToggle()
         setupRateAppButton()
+        setupDeleteHistoryButton()
 
         return binding.root
     }
@@ -39,6 +43,114 @@ class SettingsFragment : Fragment() {
     private fun setupRateAppButton() {
         binding.layoutRateApp.setOnClickListener {
             checkPreviousRating()
+        }
+    }
+
+    private fun setupDeleteHistoryButton() {
+        binding.layoutDeleteHistory.setOnClickListener {
+            showDeleteHistoryConfirmationDialog()
+        }
+    }
+
+    private fun setupNotificationsToggle() {
+        val userPreferences = UserPreferences.getInstance(requireContext())
+
+        // Definir o estado inicial do switch com base nas preferências
+        binding.switchNotifications.isChecked = userPreferences.areNotificationsEnabled()
+
+        // Configurar o listener para mudanças no switch
+        binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
+            userPreferences.setNotificationsEnabled(isChecked)
+
+            if (isChecked) {
+                Toast.makeText(
+                    requireContext(),
+                    "Notificações ativadas",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Notificações desativadas",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        // Fazer o layout completo ser clicável também
+        binding.layoutNotifications.setOnClickListener {
+            binding.switchNotifications.isChecked = !binding.switchNotifications.isChecked
+        }
+    }
+
+    private fun setupLocationToggle() {
+        val userPreferences = UserPreferences.getInstance(requireContext())
+
+        // Definir o estado inicial do switch com base nas preferências
+        binding.switchLocation.isChecked = userPreferences.isLocationEnabled()
+
+        // Configurar o listener para mudanças no switch
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            userPreferences.setLocationEnabled(isChecked)
+
+            if (isChecked) {
+                Toast.makeText(
+                    requireContext(),
+                    "Serviços de localização ativados",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Serviços de localização desativados",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        // Fazer o layout completo ser clicável também
+        binding.layoutLocationServices.setOnClickListener {
+            binding.switchLocation.isChecked = !binding.switchLocation.isChecked
+        }
+    }
+
+    private fun showDeleteHistoryConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Apagar Histórico")
+            .setMessage("Tem certeza que deseja apagar todo o seu histórico de estacionamentos? Esta ação não pode ser desfeita.")
+            .setPositiveButton("Apagar") { _, _ ->
+                deleteUserParkingHistory()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun deleteUserParkingHistory() {
+        val userId = userSession?.userId ?: return
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val database = AppDatabase.getInstance(requireContext())
+                val deletedCount = withContext(Dispatchers.IO) {
+                    database.parkingDao().deleteParkingsByUserId(userId)
+                }
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Histórico apagado com sucesso! ${deletedCount} registros removidos.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Erro ao apagar histórico: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 

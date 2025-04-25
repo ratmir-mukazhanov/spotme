@@ -8,6 +8,13 @@ import java.util.concurrent.TimeUnit
 object ParkingReminderScheduler {
 
     fun scheduleReminder(context: Context, delayMillis: Long, message: String) {
+        // Verificar se as notificações estão habilitadas
+        val userPreferences = UserPreferences.getInstance(context)
+        if (!userPreferences.areNotificationsEnabled()) {
+            // Se notificações estiverem desativadas, não agendar nada
+            return
+        }
+
         val data = Data.Builder()
             .putString("message", message)
             .build()

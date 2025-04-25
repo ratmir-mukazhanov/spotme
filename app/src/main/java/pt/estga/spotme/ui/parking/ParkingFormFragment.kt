@@ -21,6 +21,7 @@ import kotlinx.coroutines.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import pt.estga.spotme.database.repository.ParkingRepository
+import pt.estga.spotme.utils.UserPreferences
 import java.util.TimeZone
 
 class ParkingFormFragment : BaseFragment() {
@@ -46,6 +47,8 @@ class ParkingFormFragment : BaseFragment() {
 
         viewModel = androidx.lifecycle.ViewModelProvider(this)[ParkingFormViewModel::class.java]
 
+        updateLocationButtonState()
+
         viewModel.parking.observe(viewLifecycleOwner) { parking ->
             if (parking == null) {
                 viewModel.setParking(Parking())
@@ -70,6 +73,11 @@ class ParkingFormFragment : BaseFragment() {
 
     private fun saveParking() {
         val parking = viewModel.parking.value ?: Parking()
+
+        // Validar campos obrigatórios
+        if (!validateFields()) {
+            return
+        }
 
         val userId = userViewModel.userId.value
         if (userId == null || userId == -1L) {
@@ -101,18 +109,114 @@ class ParkingFormFragment : BaseFragment() {
         }
     }
 
+    private fun validateFields(): Boolean {
+        var isValid = true
+
+        with(binding) {
+            // Validar título
+            if (editTextTitle.text.isNullOrEmpty()) {
+                editTextTitle.error = "Título é obrigatório"
+                isValid = false
+            }
+
+            // Validar latitude
+            if (editTextLatitude.text.isNullOrEmpty()) {
+                editTextLatitude.error = "Latitude é obrigatória"
+                isValid = false
+            } else {
+                try {
+                    editTextLatitude.text.toString().toDouble()
+                } catch (e: NumberFormatException) {
+                    editTextLatitude.error = "Formato de latitude inválido"
+                    isValid = false
+                }
+            }
+
+            // Validar longitude
+            if (editTextLongitude.text.isNullOrEmpty()) {
+                editTextLongitude.error = "Longitude é obrigatória"
+                isValid = false
+            } else {
+                try {
+                    editTextLongitude.text.toString().toDouble()
+                } catch (e: NumberFormatException) {
+                    editTextLongitude.error = "Formato de longitude inválido"
+                    isValid = false
+                }
+            }
+
+            // Validar duração
+            if (editTextDuration.text.isNullOrEmpty()) {
+                editTextDuration.error = "Duração é obrigatória"
+                isValid = false
+            } else {
+                try {
+                    val duration = editTextDuration.text.toString().toLong()
+                    if (duration <= 0) {
+                        editTextDuration.error = "A duração deve ser maior que zero"
+                        isValid = false
+                    }
+                } catch (e: NumberFormatException) {
+                    editTextDuration.error = "Formato de duração inválido"
+                    isValid = false
+                }
+            }
+
+            // Validar hora de início (opcional)
+            if (startTimeCalendar == null) {
+                Toast.makeText(requireContext(), "Recomendado definir uma hora de início", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (!isValid) {
+            Toast.makeText(requireContext(), "Por favor, preencha todos os campos obrigatórios", Toast.LENGTH_LONG).show()
+        }
+
+        return isValid
+    }
+
     private fun requestLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        // Verificar primeiro se o usuário habilitou a localização nas configurações
+        val userPreferences = UserPreferences.getInstance(requireContext())
+
+        if (!userPreferences.isLocationEnabled()) {
+            Toast.makeText(
+                requireContext(),
+                "Serviços de localização estão desativados nas configurações do aplicativo.",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
+
+        // Continuar com a verificação de permissões do sistema
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+
         getLastLocation()
     }
 
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
+        val userPreferences = UserPreferences.getInstance(requireContext())
+
+        // Verificação dupla para garantir que a localização está habilitada
+        if (!userPreferences.isLocationEnabled()) {
+            return
+        }
+
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 val latitude = location.latitude
@@ -126,7 +230,11 @@ class ParkingFormFragment : BaseFragment() {
                     viewModel.setParking(it)
                 }
             } else {
-                Toast.makeText(requireContext(), "Não foi possível obter a localização", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Não foi possível obter a localização",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -145,6 +253,28 @@ class ParkingFormFragment : BaseFragment() {
             startTimeCalendar = selectedTime
             binding.textViewStartTime.text = "Hora de início: %02d:%02d".format(selectedHour, selectedMinute)
         }, hour, minute, true).show()
+    }
+
+    private fun updateLocationButtonState() {
+        val userPreferences = UserPreferences.getInstance(requireContext())
+
+        // Se a localização estiver desativada, podemos desabilitar o botão ou torná-lo menos visível
+        binding.btnGetLocation.isEnabled = userPreferences.isLocationEnabled()
+
+        // Opcionalmente, adicionar uma dica visual
+        if (!userPreferences.isLocationEnabled()) {
+            binding.btnGetLocation.alpha = 0.5f
+            binding.btnGetLocation.setOnClickListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Ative os serviços de localização nas configurações do aplicativo primeiro.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        } else {
+            binding.btnGetLocation.alpha = 1.0f
+            binding.btnGetLocation.setOnClickListener { requestLocation() }
+        }
     }
 
     override fun onDestroyView() {

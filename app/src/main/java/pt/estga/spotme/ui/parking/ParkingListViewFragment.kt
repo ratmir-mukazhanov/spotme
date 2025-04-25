@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
 import pt.estga.spotme.R
 import pt.estga.spotme.adapters.ParkingListAdapter
 import pt.estga.spotme.database.AppDatabase
@@ -28,7 +29,7 @@ class ParkingListViewFragment : BaseFragment() {
     private lateinit var adapter: ParkingListAdapter
 
     companion object {
-        private const val LIMIT = 8
+        private const val LIMIT = 5
     }
 
     override fun onCreateView(
@@ -59,6 +60,41 @@ class ParkingListViewFragment : BaseFragment() {
             viewModel.currentOffset += LIMIT
             loadParkingList(userId, viewModel.currentOffset, LIMIT)
         }
+
+        binding.tabLayoutTimeFilter.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> applyFilter(TimeFilter.LAST_WEEK)
+                    1 -> applyFilter(TimeFilter.LAST_MONTH)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
+        binding.tabLayoutTimeFilter.getTabAt(0)?.select()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val userId = UserSession.getInstance(requireContext()).userId
+
+        // Verifica novamente se o botão "Ver Mais" deve estar visível
+        Executors.newSingleThreadExecutor().execute {
+            val db = AppDatabase.getInstance(requireContext())
+            val totalCount = db.parkingDao().getParkingCountByUserId(userId)
+
+            // Verifica se há mais estacionamentos para carregar além dos já exibidos
+            val hasMoreItems = viewModel.parkings.size < totalCount
+
+            requireActivity().runOnUiThread {
+                if (!isAdded || _binding == null) return@runOnUiThread
+                binding.buttonSeeMore.visibility = if (hasMoreItems) View.VISIBLE else View.GONE
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -79,14 +115,35 @@ class ParkingListViewFragment : BaseFragment() {
             val db = AppDatabase.getInstance(requireContext())
             val newParkings = db.parkingDao().getParkingsByUserIdWithLimit(userId, offset, limit)
 
+            // Obtém o total de estacionamentos para este usuário
+            val totalCount = db.parkingDao().getParkingCountByUserId(userId)
+
+            // Verifica se já carregamos todos os estacionamentos
+            val hasMoreItems = (offset + newParkings.size) < totalCount
+
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
 
                 viewModel.parkings.addAll(newParkings)
+
                 if (!::adapter.isInitialized) {
                     setupRecyclerView(viewModel.parkings)
                 } else {
                     adapter.notifyDataSetChanged()
+                }
+
+                // Atualiza a visibilidade do botão Ver Mais
+                binding.buttonSeeMore.visibility = if (hasMoreItems) View.VISIBLE else View.GONE
+
+                // Mostra mensagem quando lista estiver vazia
+                binding.textViewEmptyList.visibility =
+                    if (viewModel.parkings.isEmpty()) View.VISIBLE else View.GONE
+
+                // Aplica o filtro atual
+                val selectedTab = binding.tabLayoutTimeFilter.selectedTabPosition
+                when (selectedTab) {
+                    0 -> applyFilter(TimeFilter.LAST_WEEK)
+                    1 -> applyFilter(TimeFilter.LAST_MONTH)
                 }
             }
         }
@@ -140,5 +197,45 @@ class ParkingListViewFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private enum class TimeFilter {
+        LAST_WEEK, LAST_MONTH
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun applyFilter(filter: TimeFilter) {
+        val now = System.currentTimeMillis()
+        val millisInDay = 24 * 60 * 60 * 1000L
+        val threshold = when (filter) {
+            TimeFilter.LAST_WEEK -> now - (7 * millisInDay)
+            TimeFilter.LAST_MONTH -> now - (30 * millisInDay)
+        }
+
+        val filtered = viewModel.parkings.filter { parking ->
+            parking.startTime >= threshold
+        }
+
+        if (!::adapter.isInitialized) {
+            setupRecyclerView(filtered)
+        } else {
+            adapter.updateData(filtered)
+        }
+
+        // Atualiza visibilidade do texto de lista vazia
+        binding.textViewEmptyList.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
+
+        // Mantém a verificação para o botão Ver Mais após filtrar
+        val userId = UserSession.getInstance(requireContext()).userId
+        Executors.newSingleThreadExecutor().execute {
+            val db = AppDatabase.getInstance(requireContext())
+            val totalCount = db.parkingDao().getParkingCountByUserId(userId)
+            val hasMoreToLoad = viewModel.parkings.size < totalCount
+
+            requireActivity().runOnUiThread {
+                if (!isAdded || _binding == null) return@runOnUiThread
+                binding.buttonSeeMore.visibility = if (hasMoreToLoad) View.VISIBLE else View.GONE
+            }
+        }
     }
 }

@@ -9,3 +9,4 @@ class ParkingListViewViewModel : ViewModel() {
     var totalParkings: Int = 0
     var averageParkingTime: Long = 0
 }
+

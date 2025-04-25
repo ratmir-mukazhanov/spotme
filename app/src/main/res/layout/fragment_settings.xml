@@ -192,42 +192,6 @@
                         app:thumbTint="#005792"
                         app:trackTint="#80BFDDF2"/>
                 </LinearLayout>
-
-                <!-- Location Precision -->
-                <LinearLayout
-                    android:id="@+id/layoutLocationPrecision"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_background"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/tvLocationPrecision"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Precisão da localização"
-                        android:textSize="16sp"
-                        android:textColor="#005792"/>
-
-                    <TextView
-                        android:id="@+id/tvLocationPrecisionValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Alta"
-                        android:textSize="14sp"
-                        android:textColor="#4A5568"
-                        android:layout_marginEnd="8dp"/>
-
-                    <ImageView
-                        android:id="@+id/ivArrowLocationPrecision"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
-                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

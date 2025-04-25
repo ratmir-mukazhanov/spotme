@@ -10,6 +10,13 @@ import pt.estga.spotme.R
 
 object ParkingNotificationHelper {
     fun send(context: Context, message: String) {
+        // Verificar se as notificações estão habilitadas
+        val userPreferences = UserPreferences.getInstance(context)
+        if (!userPreferences.areNotificationsEnabled()) {
+            // Se notificações estiverem desativadas, não mostrar nada
+            return
+        }
+
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

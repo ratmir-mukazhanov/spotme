@@ -48,6 +48,13 @@ class ParkingListAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newList: List<Parking>) {
+        parkingList = newList
+        notifyDataSetChanged()
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
     fun setParkingList(parkingList: MutableList<Parking>) {
         this.parkingList = parkingList
         notifyDataSetChanged()
