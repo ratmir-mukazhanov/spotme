@@ -30,6 +30,14 @@ class ParkingListViewFragment : BaseFragment() {
 
     companion object {
         private const val LIMIT = 5
+        private const val STATE_SELECTED_TAB = "selected_tab"
+    }
+
+    // Metodo para salvar o estado do fragment
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Salvar a posição da tab selecionada
+        outState.putInt(STATE_SELECTED_TAB, binding.tabLayoutTimeFilter.selectedTabPosition)
     }
 
     override fun onCreateView(
@@ -67,14 +75,17 @@ class ParkingListViewFragment : BaseFragment() {
                     0 -> applyFilter(TimeFilter.LAST_WEEK)
                     1 -> applyFilter(TimeFilter.LAST_MONTH)
                 }
+                // Salvar a posição da tab no ViewModel para persistência
+                viewModel.selectedTabPosition = tab?.position ?: 0
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.tabLayoutTimeFilter.getTabAt(0)?.select()
-
+        // Restaurar a tab selecionada do savedInstanceState ou do ViewModel
+        val selectedTab = savedInstanceState?.getInt(STATE_SELECTED_TAB) ?: viewModel.selectedTabPosition
+        binding.tabLayoutTimeFilter.getTabAt(selectedTab)?.select()
     }
 
     override fun onResume() {
@@ -82,16 +93,39 @@ class ParkingListViewFragment : BaseFragment() {
 
         val userId = UserSession.getInstance(requireContext()).userId
 
-        // Verifica novamente se o botão "Ver Mais" deve estar visível
+        // Recarrega os dados quando retornar ao fragment
         Executors.newSingleThreadExecutor().execute {
             val db = AppDatabase.getInstance(requireContext())
+
+            // Recarrega a lista completa de estacionamentos
+            val freshParkings = db.parkingDao().getParkingsByUserIdWithLimit(userId, 0, viewModel.currentOffset + LIMIT)
             val totalCount = db.parkingDao().getParkingCountByUserId(userId)
 
-            // Verifica se há mais estacionamentos para carregar além dos já exibidos
-            val hasMoreItems = viewModel.parkings.size < totalCount
+            // Verifica se há mais estacionamentos para carregar
+            val hasMoreItems = freshParkings.size < totalCount
 
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
+
+                // Atualiza os dados no viewModel
+                viewModel.parkings.clear()
+                viewModel.parkings.addAll(freshParkings)
+
+                // Reaplica o filtro atual baseado no valor armazenado no ViewModel
+                val selectedTabPosition = viewModel.selectedTabPosition
+                val selectedFilter = when (selectedTabPosition) {
+                    0 -> TimeFilter.LAST_WEEK
+                    1 -> TimeFilter.LAST_MONTH
+                    else -> TimeFilter.LAST_WEEK // Filtro padrão
+                }
+
+                // Aplica o filtro (que também atualizará as estatísticas)
+                applyFilter(selectedFilter)
+
+                // Garante que a tab correta esteja selecionada visualmente
+                binding.tabLayoutTimeFilter.getTabAt(selectedTabPosition)?.select()
+
+                // Atualiza visibilidade do botão "Ver Mais"
                 binding.buttonSeeMore.visibility = if (hasMoreItems) View.VISIBLE else View.GONE
             }
         }
@@ -149,14 +183,32 @@ class ParkingListViewFragment : BaseFragment() {
         }
     }
 
-    private fun loadParkingStatistics(userId: Long){
-        Executors.newSingleThreadExecutor().execute{
-
-            if(userId == -1L) return@execute
+    private fun loadParkingStatistics(userId: Long, timeFilter: TimeFilter = TimeFilter.LAST_WEEK) {
+        Executors.newSingleThreadExecutor().execute {
+            if (userId == -1L) return@execute
 
             val db = AppDatabase.getInstance(requireContext())
-            val totalParkings = db.parkingDao().getParkingCountByUserId(userId)
-            val averageParkingTime = db.parkingDao().getAverageParkingTimeByUserId(userId) ?: 0L
+
+            // Calcular o limite de tempo com base no filtro
+            val now = System.currentTimeMillis()
+            val millisInDay = 24 * 60 * 60 * 1000L
+            val threshold = when (timeFilter) {
+                TimeFilter.LAST_WEEK -> now - (7 * millisInDay)
+                TimeFilter.LAST_MONTH -> now - (30 * millisInDay)
+            }
+
+            // Obter estacionamentos filtrados por data
+            val filteredParkings = db.parkingDao().getParkingsByUserIdAfterTimestamp(userId, threshold)
+            val totalParkings = filteredParkings.size
+
+            // Calcular o tempo médio de estacionamento para os itens filtrados
+            val averageParkingTime = if (filteredParkings.isEmpty()) {
+                0L
+            } else {
+                filteredParkings.sumOf { parking ->
+                    parking.allowedTime
+                } / filteredParkings.size
+            }
 
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
@@ -227,6 +279,10 @@ class ParkingListViewFragment : BaseFragment() {
 
         // Mantém a verificação para o botão Ver Mais após filtrar
         val userId = UserSession.getInstance(requireContext()).userId
+
+        // Atualiza as estatísticas com base no filtro aplicado
+        loadParkingStatistics(userId, filter)
+
         Executors.newSingleThreadExecutor().execute {
             val db = AppDatabase.getInstance(requireContext())
             val totalCount = db.parkingDao().getParkingCountByUserId(userId)

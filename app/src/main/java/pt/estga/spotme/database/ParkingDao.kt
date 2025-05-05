@@ -30,6 +30,9 @@ interface ParkingDao {
     @Query("SELECT AVG(CASE WHEN endTime > 0 THEN endTime - startTime ELSE allowedTime END) FROM parking WHERE userId = :userId AND (endTime > 0 OR allowedTime > 0)")
     fun getAverageParkingTimeByUserId(userId: Long): Long?
 
+    @Query("SELECT * FROM parking WHERE userId = :userId AND startTime >= :timestamp")
+    fun getParkingsByUserIdAfterTimestamp(userId: Long, timestamp: Long): List<Parking>
+
     @Query("DELETE FROM parking WHERE userId = :userId")
     suspend fun deleteParkingsByUserId(userId: Long): Int
 

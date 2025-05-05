@@ -8,5 +8,6 @@ class ParkingListViewViewModel : ViewModel() {
     var currentOffset: Int = 0
     var totalParkings: Int = 0
     var averageParkingTime: Long = 0
+    var selectedTabPosition = 0
 }
 

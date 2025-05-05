@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import pt.estga.spotme.entities.User
 
-class UserSession private constructor(context: Context) {
+class UserSession private constructor(private val context: Context) {
 
     private val sharedPreferences: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -80,6 +80,10 @@ class UserSession private constructor(context: Context) {
         editor.putString(KEY_USER_PASSWORD, password)
         editor.putString(KEY_USER_PROFILE_IMAGE, user.profileImage)
         editor.apply()
+    }
+
+    fun isLoggedIn(): Boolean {
+        return userId != -1L && userName != null && userEmail != null
     }
 
     companion object {

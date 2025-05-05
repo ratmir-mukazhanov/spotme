@@ -25,25 +25,33 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
-        <!-- RegisterActivity não é a Launcher Activity -->
-        <activity android:name="pt.estga.spotme.ui.authentication.RegisterActivity"
-            android:exported="true">
-        </activity>
-
-        <!-- LoginActivity é a Launcher Activity -->
-        <activity android:name="pt.estga.spotme.ui.authentication.LoginActivity"
-            android:exported="true">
+        <!-- SplashActivity como Launcher Activity -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Spotme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- RegisterActivity -->
+        <activity
+            android:name="pt.estga.spotme.ui.authentication.RegisterActivity"
+            android:exported="false" />
+
+        <!-- LoginActivity não é mais a Launcher Activity -->
+        <activity
+            android:name="pt.estga.spotme.ui.authentication.LoginActivity"
+            android:exported="false" />
+
+        <!-- MainActivity -->
         <activity
             android:name="pt.estga.spotme.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Spotme.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.Spotme.NoActionBar" />
 
         <!-- FileProvider declaration -->
         <provider
