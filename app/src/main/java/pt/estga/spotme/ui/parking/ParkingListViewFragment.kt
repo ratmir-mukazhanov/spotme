@@ -35,9 +35,15 @@ class ParkingListViewFragment : BaseFragment() {
 
     // Metodo para salvar o estado do fragment
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Salvar a posição da tab selecionada
-        outState.putInt(STATE_SELECTED_TAB, binding.tabLayoutTimeFilter.selectedTabPosition)
+        // Verificar se binding está inicializado para evitar NPE
+        if (_binding != null) {
+            outState.putInt(STATE_SELECTED_TAB, binding.tabLayoutTimeFilter.selectedTabPosition)
+            super.onSaveInstanceState(outState)
+        } else {
+            super.onSaveInstanceState(outState)
+            // Se binding for nulo, usa a posição salva no ViewModel
+            outState.putInt(STATE_SELECTED_TAB, viewModel.selectedTabPosition)
+        }
     }
 
     override fun onCreateView(

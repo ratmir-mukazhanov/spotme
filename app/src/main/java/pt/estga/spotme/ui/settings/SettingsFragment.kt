@@ -1,7 +1,9 @@
 package pt.estga.spotme.ui.settings
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,17 +96,46 @@ class SettingsFragment : Fragment() {
             userPreferences.setLocationEnabled(isChecked)
 
             if (isChecked) {
+                // Apenas armazena a preferência, não precisa de permissões extras
                 Toast.makeText(
                     requireContext(),
-                    "Serviços de localização ativados",
+                    "Acesso à localização permitido no aplicativo",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Serviços de localização desativados",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // Quando desativado, revoga as permissões de localização concedidas ao aplicativo
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = android.net.Uri.fromParts("package", requireActivity().packageName, null)
+                        intent.setData(uri)
+
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Revogar permissões de localização")
+                            .setMessage("Para maior segurança, recomendamos revogar as permissões de localização nas configurações do aplicativo. Deseja fazer isso agora?")
+                            .setPositiveButton("Ir para configurações") { _, _ ->
+                                startActivity(intent)
+                            }
+                            .setNegativeButton("Não") { _, _ ->
+                                Toast.makeText(requireContext(),
+                                    "O acesso à localização foi restrito apenas dentro do aplicativo",
+                                    Toast.LENGTH_LONG).show()
+                            }
+                            .show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "O acesso à localização foi restrito dentro do aplicativo",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Não foi possível abrir as configurações de permissão",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 

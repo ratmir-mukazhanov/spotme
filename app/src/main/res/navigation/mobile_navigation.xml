@@ -53,4 +53,9 @@
         android:name="pt.estga.spotme.ui.account.PersonalStatisticsFragment"
         android:label="Estatísticas Pessoais"
         tools:layout="@layout/personal_statistics" />
+    <fragment
+        android:id="@+id/parkingRouteFragment"
+        android:name="pt.estga.spotme.ui.routing.MapRouteFragment"
+        android:label="Rota para o Estacionamento"
+        tools:layout="@layout/fragment_map_route" />
 </navigation>

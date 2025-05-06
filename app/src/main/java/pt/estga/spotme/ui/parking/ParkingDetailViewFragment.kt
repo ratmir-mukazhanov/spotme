@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import pt.estga.spotme.R
@@ -22,7 +23,6 @@ class ParkingDetailViewFragment : BaseFragment() {
     private var countDownTimer: CountDownTimer? = null
     private val viewModel: ParkingDetailViewViewModel by viewModels()
 
-    // Tempo total em milissegundos para cálculo da porcentagem do progresso
     private var totalTimeMillis: Long = 0
 
     override fun onCreateView(
@@ -76,8 +76,16 @@ class ParkingDetailViewFragment : BaseFragment() {
 
         binding.btnViewPhoto.setOnClickListener { viewPhoto() }
         binding.btnRoute.setOnClickListener {
-            viewModel.parking.value?.let {
-                ParkingDetailHelper.openInMaps(requireContext(), it.latitude, it.longitude)
+            viewModel.parking.value?.let { parking ->
+                val bundle = Bundle().apply {
+                    putSerializable("parking", parking)
+                }
+                LocationValidator.checkAndNavigate(
+                    requireContext(),
+                    findNavController(),
+                    R.id.parkingRouteFragment,
+                    bundle
+                )
             }
         }
     }

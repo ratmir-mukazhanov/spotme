@@ -90,6 +90,16 @@ dependencies {
     implementation(libs.jbcrypt)
 
     implementation(libs.play.services.location)
+
+    // OpenStreetMap
+    implementation("org.osmdroid:osmdroid-android:6.1.17")
+
+    // Opcional: suporte para roteamento
+    implementation("org.osmdroid:osmdroid-mapsforge:6.1.17")
+
+    // Retrofit para chamadas API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 apply(plugin = "com.google.gms.google-services")
