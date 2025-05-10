@@ -127,17 +127,31 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleGoogleUser(firebaseUser: FirebaseUser) {
-        val user = convertFirebaseUserToUser(firebaseUser) ?: return showToast("Erro ao converter utilizador Firebase.")
+        val baseUser = convertFirebaseUserToUser(firebaseUser) ?: return showToast("Erro ao converter utilizador Firebase.")
 
         val db = AppDatabase.getInstance(applicationContext)
         val userDao = db.userDao()
         val session = UserSession.getInstance(applicationContext)
 
         Executors.newSingleThreadExecutor().execute {
-            val existingUser = userDao.getUserByEmail(user.email)
-            user.id = existingUser?.id ?: userDao.insert(user)
+            val existingUser = userDao.getUserByEmail(baseUser.email)
+
+            val user = if (existingUser != null) {
+                existingUser.apply {
+                    username = firebaseUser.displayName ?: username
+                    if (firebaseUser.photoUrl != null) {
+                        profileImage = firebaseUser.photoUrl.toString()
+                    }
+                }
+                userDao.update(existingUser)
+                existingUser
+            } else {
+                val userId = userDao.insert(baseUser)
+                baseUser.apply { id = userId }
+            }
+
             session.user = user
-            session.userId = user.id!!
+            session.isGoogleLogin = true
 
             runOnUiThread {
                 showToast("Login com Google bem-sucedido!")

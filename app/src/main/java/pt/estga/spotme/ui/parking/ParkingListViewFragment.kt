@@ -105,15 +105,11 @@ class ParkingListViewFragment : BaseFragment() {
 
             // Recarrega a lista completa de estacionamentos
             val freshParkings = db.parkingDao().getParkingsByUserIdWithLimit(userId, 0, viewModel.currentOffset + LIMIT)
-            val totalCount = db.parkingDao().getParkingCountByUserId(userId)
-
-            // Verifica se há mais estacionamentos para carregar
-            val hasMoreItems = freshParkings.size < totalCount
 
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
 
-                // Atualiza os dados no viewModel
+                // Limpa e atualiza os dados no viewModel
                 viewModel.parkings.clear()
                 viewModel.parkings.addAll(freshParkings)
 
@@ -125,14 +121,11 @@ class ParkingListViewFragment : BaseFragment() {
                     else -> TimeFilter.LAST_WEEK // Filtro padrão
                 }
 
-                // Aplica o filtro (que também atualizará as estatísticas)
+                // Aplica o filtro (que também atualizará as estatísticas e a visibilidade do botão)
                 applyFilter(selectedFilter)
 
                 // Garante que a tab correta esteja selecionada visualmente
                 binding.tabLayoutTimeFilter.getTabAt(selectedTabPosition)?.select()
-
-                // Atualiza visibilidade do botão "Ver Mais"
-                binding.buttonSeeMore.visibility = if (hasMoreItems) View.VISIBLE else View.GONE
             }
         }
     }
@@ -153,6 +146,8 @@ class ParkingListViewFragment : BaseFragment() {
             }
 
             val db = AppDatabase.getInstance(requireContext())
+
+            // Carrega apenas os NOVOS registros a partir do offset atual
             val newParkings = db.parkingDao().getParkingsByUserIdWithLimit(userId, offset, limit)
 
             // Obtém o total de estacionamentos para este usuário
@@ -164,20 +159,8 @@ class ParkingListViewFragment : BaseFragment() {
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
 
+                // Adiciona apenas os novos estacionamentos
                 viewModel.parkings.addAll(newParkings)
-
-                if (!::adapter.isInitialized) {
-                    setupRecyclerView(viewModel.parkings)
-                } else {
-                    adapter.notifyDataSetChanged()
-                }
-
-                // Atualiza a visibilidade do botão Ver Mais
-                binding.buttonSeeMore.visibility = if (hasMoreItems) View.VISIBLE else View.GONE
-
-                // Mostra mensagem quando lista estiver vazia
-                binding.textViewEmptyList.visibility =
-                    if (viewModel.parkings.isEmpty()) View.VISIBLE else View.GONE
 
                 // Aplica o filtro atual
                 val selectedTab = binding.tabLayoutTimeFilter.selectedTabPosition

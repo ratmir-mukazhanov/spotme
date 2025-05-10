@@ -73,6 +73,13 @@ class AccountFragment : Fragment() {
         db = getInstance(requireContext())
         userDAO = db!!.userDao()
 
+        if (userSession!!.isGoogleLogin) {
+            root.findViewById<LinearLayout>(R.id.layoutEmail).visibility = View.GONE
+            root.findViewById<LinearLayout>(R.id.cardChangePassword).visibility = View.GONE
+            ivEditProfilePhoto.visibility = View.GONE
+            root.findViewById<LinearLayout>(R.id.cardDeleteAccount).visibility = View.GONE
+        }
+
         // Set initial values for all text fields
         tvNome.text = userSession!!.userName
         tvNomeField.text = userSession!!.userName

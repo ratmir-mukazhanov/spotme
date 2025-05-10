@@ -68,6 +68,10 @@ class UserSession private constructor(private val context: Context) {
         get() = sharedPreferences.getString(KEY_USER_PROFILE_IMAGE, null)
         set(value) = editor.putString(KEY_USER_PROFILE_IMAGE, value).apply()
 
+    var isGoogleLogin: Boolean
+        get() = sharedPreferences.getBoolean(KEY_IS_GOOGLE_LOGIN, false)
+        set(value) = editor.putBoolean(KEY_IS_GOOGLE_LOGIN, value).apply()
+
     fun clearSession() {
         editor.clear().apply()
     }
@@ -96,6 +100,7 @@ class UserSession private constructor(private val context: Context) {
         private const val KEY_USER_PHONE = "userPhone"
         private const val KEY_USER_PASSWORD = "userPassword"
         private const val KEY_USER_PROFILE_IMAGE = "userProfileImage"
+        private const val KEY_IS_GOOGLE_LOGIN = "isGoogleLogin"
 
         fun getInstance(context: Context): UserSession {
             return instance ?: synchronized(this) {

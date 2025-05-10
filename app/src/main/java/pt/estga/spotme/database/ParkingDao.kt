@@ -33,6 +33,9 @@ interface ParkingDao {
     @Query("SELECT * FROM parking WHERE userId = :userId AND startTime >= :timestamp")
     fun getParkingsByUserIdAfterTimestamp(userId: Long, timestamp: Long): List<Parking>
 
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId AND startTime >= :timestamp")
+    fun getParkingCountByUserIdAfterTimestamp(userId: Long, timestamp: Long): Int
+
     @Query("DELETE FROM parking WHERE userId = :userId")
     suspend fun deleteParkingsByUserId(userId: Long): Int
 
