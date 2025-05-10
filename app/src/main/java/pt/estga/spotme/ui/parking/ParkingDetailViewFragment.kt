@@ -1,6 +1,8 @@
 package pt.estga.spotme.ui.parking
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -14,6 +16,8 @@ import pt.estga.spotme.databinding.FragmentParkingDetailViewBinding
 import pt.estga.spotme.entities.Parking
 import pt.estga.spotme.ui.BaseFragment
 import pt.estga.spotme.utils.*
+import java.io.File
+import androidx.core.net.toUri
 
 class ParkingDetailViewFragment : BaseFragment() {
 
@@ -160,7 +164,14 @@ class ParkingDetailViewFragment : BaseFragment() {
     }
 
     private fun viewPhoto() {
-        // TODO: Implementar visualização de foto
+        viewModel.parking.value?.photoUri?.let { uriString ->
+            val uri = uriString.toUri()
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "image/*")
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }
+            startActivity(intent)
+        } ?: Toast.makeText(requireContext(), "Nenhuma foto disponível", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

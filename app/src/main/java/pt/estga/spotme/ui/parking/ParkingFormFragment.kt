@@ -3,13 +3,19 @@ package pt.estga.spotme.ui.parking
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import pt.estga.spotme.R
@@ -21,8 +27,15 @@ import kotlinx.coroutines.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import pt.estga.spotme.database.repository.ParkingRepository
+import pt.estga.spotme.ui.parking.ParkingFormFragment.Companion.LOCATION_PERMISSION_REQUEST_CODE
 import pt.estga.spotme.utils.UserPreferences
 import java.util.TimeZone
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.toString
 
 class ParkingFormFragment : BaseFragment() {
 
@@ -32,6 +45,7 @@ class ParkingFormFragment : BaseFragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var startTimeCalendar: Calendar? = null
     private lateinit var repository: ParkingRepository
+    private var photoUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -68,6 +82,8 @@ class ParkingFormFragment : BaseFragment() {
 
         binding.btnGetLocation.setOnClickListener { requestLocation() }
         binding.btnSelectStartTime.setOnClickListener { showTimePicker() }
+        binding.btnTakePhoto.setOnClickListener { checkCameraPermissionAndTakePhoto() }
+        binding.btnSelectPhoto.setOnClickListener { selectPhoto() }
         binding.btnSave.setOnClickListener { saveParking() }
     }
 
@@ -95,6 +111,7 @@ class ParkingFormFragment : BaseFragment() {
             }
             parking.userId = userId
             parking.startTime = startTimeCalendar?.timeInMillis ?: parking.startTime
+            parking.photoUri = photoUri?.toString()
 
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
@@ -277,6 +294,101 @@ class ParkingFormFragment : BaseFragment() {
         }
     }
 
+    private fun takePhoto() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+            val photoFile = createImageFile()
+            photoFile?.let {
+                val photoURI = FileProvider.getUriForFile(
+                    requireContext(),
+                    "${requireContext().packageName}.fileprovider",
+                    it
+                )
+                photoUri = photoURI
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        } else {
+            Toast.makeText(requireContext(), "Não foi possível abrir a câmera", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkCameraPermissionAndTakePhoto() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            takePhoto()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhoto()
+            } else {
+                Toast.makeText(requireContext(), "Permissão de câmera negada", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun selectPhoto() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_PHOTO)
+        } else {
+            Toast.makeText(requireContext(), "Não foi possível abrir a galeria", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createImageFile(): File? {
+        return try {
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+        } catch (ex: IOException) {
+            Toast.makeText(requireContext(), "Erro ao criar arquivo de imagem", Toast.LENGTH_SHORT).show()
+            null
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == AppCompatActivity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE -> {
+                    photoUri?.let {
+                        binding.imageViewParking.setImageURI(it)
+                        binding.textViewNoImage.visibility = View.GONE
+                    }
+                }
+                REQUEST_SELECT_PHOTO -> {
+                    data?.data?.let { uri ->
+                        val newFile = createImageFile()
+                        if (newFile != null) {
+                            try {
+                                requireContext().contentResolver.openInputStream(uri)?.use { inputStream ->
+                                    newFile.outputStream().use { outputStream ->
+                                        inputStream.copyTo(outputStream)
+                                    }
+                                }
+                                photoUri = FileProvider.getUriForFile(
+                                    requireContext(),
+                                    "${requireContext().packageName}.fileprovider",
+                                    newFile
+                                )
+                                binding.imageViewParking.setImageURI(photoUri)
+                                binding.textViewNoImage.visibility = View.GONE
+                            } catch (e: IOException) {
+                                Toast.makeText(requireContext(), "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -284,5 +396,8 @@ class ParkingFormFragment : BaseFragment() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 1002
+        private const val REQUEST_IMAGE_CAPTURE = 1
+        private const val REQUEST_SELECT_PHOTO = 2
     }
 }

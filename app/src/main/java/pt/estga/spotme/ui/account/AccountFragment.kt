@@ -505,7 +505,10 @@ class AccountFragment : Fragment() {
                         val imagePath = copyImageToInternalStorage(selectedImageUri, userId)
 
                         if (imagePath != null) {
-                            profileImage!!.setImageURI(Uri.fromFile(File(imagePath)))
+                            val uriWithTimestamp = Uri.fromFile(File(imagePath)).buildUpon()
+                                .appendQueryParameter("ts", System.currentTimeMillis().toString())
+                                .build()
+                            profileImage!!.setImageURI(uriWithTimestamp)
 
                             userSession!!.userProfileImage = imagePath
 
@@ -544,10 +547,13 @@ class AccountFragment : Fragment() {
                     val fos = FileOutputStream(imageFile)
                     imageBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, fos)
                     fos.close()
-                    
+
                     val imagePath = imageFile.absolutePath
-                    profileImage!!.setImageURI(Uri.fromFile(imageFile))
-                    
+                    val uriWithTimestamp = Uri.fromFile(imageFile).buildUpon()
+                        .appendQueryParameter("ts", System.currentTimeMillis().toString())
+                        .build()
+                    profileImage!!.setImageURI(uriWithTimestamp)
+
                     userSession!!.userProfileImage = imagePath
                     
                     Thread {
