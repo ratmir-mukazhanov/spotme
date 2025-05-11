@@ -107,11 +107,4 @@ object ParkingDetailHelper {
         binding.tvCoordinates.text = "${parking.latitude}, ${parking.longitude}"
         binding.etNotes.setText(parking.description)
     }
-
-    fun bindDetails(binding: FragmentParkingDetailViewHistoryBinding, parking: Parking) {
-        parking.updateEndTime()
-        binding.tvParkingLocation.text = parking.title
-        binding.tvCoordinates.text = "${parking.latitude}, ${parking.longitude}"
-        binding.etNotes.setText(parking.description)
-    }
 }

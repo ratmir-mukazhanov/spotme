@@ -49,19 +49,51 @@ class ParkingDetailViewFragment : BaseFragment() {
             if (parking != null) {
                 ParkingDetailHelper.bindDetails(binding, parking)
 
-                binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
-
-                if (parking.endTime > 0) {
-                    binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+                // Configurar visualização com base na temporização
+                if (parking.allowedTime <= 0) {
+                    // Não tem temporização definida
+                    binding.cardTimerSection.visibility = View.GONE
+                    binding.tvTimerNotDefined.visibility = View.VISIBLE
+                    binding.timeInfoLayout.visibility = View.GONE
                 } else {
-                    binding.tvEndTime.text = "Em andamento"
+                    // Tem temporização definida
+                    binding.cardTimerSection.visibility = View.VISIBLE
+                    binding.tvTimerNotDefined.visibility = View.GONE
+                    binding.timeInfoLayout.visibility = View.VISIBLE
+
+                    binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
+
+                    if (parking.endTime > 0) {
+                        binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+                    } else {
+                        binding.tvEndTime.text = "Em andamento"
+                    }
+
+                    startTimer(parking)
+                    scheduleNotificationWorkers(parking)
                 }
 
-                startTimer(parking)
-                scheduleNotificationWorkers(parking)
+                // Verificar se há descrição
+                if (parking.description.isNullOrEmpty()) {
+                    binding.descriptionSection.visibility = View.GONE
+                } else {
+                    binding.descriptionSection.visibility = View.VISIBLE
+                    binding.etNotes.setText(parking.description)
+                }
+
+                // Verificar se há foto
+                if (parking.photoUri.isNullOrEmpty()) {
+                    binding.btnViewPhoto.visibility = View.GONE
+                } else {
+                    binding.btnViewPhoto.visibility = View.VISIBLE
+                }
             }
         }
 
+        setupButtonListeners()
+    }
+
+    private fun setupButtonListeners() {
         binding.btnCopyCoordinates.setOnClickListener {
             viewModel.parking.value?.let {
                 ClipboardUtils.copyText(
@@ -79,6 +111,7 @@ class ParkingDetailViewFragment : BaseFragment() {
         }
 
         binding.btnViewPhoto.setOnClickListener { viewPhoto() }
+
         binding.btnRoute.setOnClickListener {
             viewModel.parking.value?.let { parking ->
                 val bundle = Bundle().apply {

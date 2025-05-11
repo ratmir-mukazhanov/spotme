@@ -36,21 +36,27 @@ class ParkingListAdapter(
         val date = Date(parking.startTime)
         holder.dateTextView.text = dateFormat.format(date)
 
-        // Calcular duração em minutos
-        val durationMinutes = parking.allowedTime / 60000
-        val hours = durationMinutes / 60
-        val minutes = durationMinutes % 60
+        // Verificar se tem temporizador definido (allowedTime > 0)
+        if (parking.allowedTime > 0) {
+            // Calcular duração em minutos
+            val durationMinutes = parking.allowedTime / 60000
+            val hours = durationMinutes / 60
+            val minutes = durationMinutes % 60
 
-        val durationText = if (hours > 0) {
-            "Duração: ${hours}h ${minutes}min"
+            val durationText = if (hours > 0) {
+                "Duração: ${hours}h ${minutes}min"
+            } else {
+                "Duração: ${minutes}min"
+            }
+            holder.durationTextView.text = durationText
         } else {
-            "Duração: ${minutes}min"
+            // Para estacionamentos sem temporizador, mostrar "Não Definida"
+            holder.durationTextView.text = "Duração: Não Definida"
         }
-        holder.durationTextView.text = durationText
 
         // Configurar o status do estacionamento
         val now = System.currentTimeMillis()
-        val isActive = parking.startTime + parking.allowedTime > now
+        val isActive = parking.allowedTime > 0 && parking.startTime + parking.allowedTime > now
 
         holder.statusChip.text = if (isActive) "Ativo" else "Concluído"
         holder.statusChip.setChipBackgroundColorResource(

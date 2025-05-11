@@ -1,12 +1,15 @@
 package pt.estga.spotme.ui.parking
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import pt.estga.spotme.R
 import pt.estga.spotme.database.AppDatabase
@@ -57,35 +60,69 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         // Configurar coordenadas
         binding.tvCoordinates.text = "Latitude: ${parking.latitude}\nLongitude: ${parking.longitude}"
 
-        // Configurar notas
-        binding.etNotes.setText(parking.description)
+        // Verificar se há temporizador
+        if (parking.allowedTime <= 0) {
+            // Não tem temporizador definido
+            binding.cardTimer.visibility = View.GONE
+            binding.tvTimerNotDefined.visibility = View.VISIBLE
+            binding.chipDuration.visibility = View.GONE
 
-        // Configurar horário de início
-        binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
+            // Ocultar seções de hora de início e fim
+            val startTimeParent = (binding.tvStartTime.parent as View).parent as View
+            startTimeParent.visibility = View.GONE
 
-        // Configurar horário de fim
-        val currentTime = System.currentTimeMillis()
-        if (parking.endTime > 0) {
-            // Se o estacionamento já tem hora de fim definida
-            binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
-        } else if (currentTime > (parking.startTime + parking.allowedTime)) {
-            // Se o tempo permitido já passou, mas endTime não foi registrado
-            binding.tvEndTime.text = DateFormatter.formatTime(parking.startTime + parking.allowedTime)
+            val endTimeParent = (binding.tvEndTime.parent as View).parent as View
+            endTimeParent.visibility = View.GONE
         } else {
-            // Estacionamento ainda está em andamento
-            binding.tvEndTime.text = "Em andamento"
+            // Tem temporizador definido
+            binding.cardTimer.visibility = View.VISIBLE
+            binding.tvTimerNotDefined.visibility = View.GONE
+
+            // Mostrar seções de hora de início e fim
+            val startTimeParent = (binding.tvStartTime.parent as View).parent as View
+            startTimeParent.visibility = View.VISIBLE
+
+            val endTimeParent = (binding.tvEndTime.parent as View).parent as View
+            endTimeParent.visibility = View.VISIBLE
+
+            // Configurar horário de início
+            binding.tvStartTime.text = DateFormatter.formatTime(parking.startTime)
+
+            // Configurar horário de fim
+            val currentTime = System.currentTimeMillis()
+            if (parking.endTime > 0) {
+                binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+            } else {
+                binding.tvEndTime.text = "Não registrado"
+            }
+
+            // Configurar duração
+            val durationMinutes = (parking.allowedTime / (1000 * 60)).toInt()
+            binding.chipDuration.text = "Duração: $durationMinutes min"
+            binding.chipDuration.visibility = View.VISIBLE
+
+            // Status do estacionamento
+            if (currentTime > (parking.startTime + parking.allowedTime)) {
+                binding.tvStatus.text = "Concluído"
+            } else {
+                binding.tvStatus.text = "Em andamento"
+            }
         }
 
-        // Configurar duração
-        val durationMinutes = (parking.allowedTime / (1000 * 60)).toInt()
-        binding.chipDuration.text = "Duração: $durationMinutes min"
+        binding.tilNotes.visibility = View.VISIBLE
+        binding.btnEditNotes.visibility = View.VISIBLE
 
-        // Status do estacionamento
-        if (currentTime > (parking.startTime + parking.allowedTime)) {
-            binding.tvStatus.text = "Concluído"
+        if (!parking.description.isNullOrEmpty()) {
+            binding.etNotes.setText(parking.description)
         } else {
-            binding.tvStatus.text = "Calma, ainda tens tempo!"
-            startTimer(parking)
+            binding.etNotes.setText("")
+        }
+
+        // Verificar se há foto
+        if (parking.photoUri.isNullOrEmpty()) {
+            binding.btnViewPhoto.visibility = View.GONE
+        } else {
+            binding.btnViewPhoto.visibility = View.VISIBLE
         }
     }
 
@@ -235,8 +272,14 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
 
     private fun viewPhoto() {
-        Toast.makeText(requireContext(), "Funcionalidade de foto ainda não implementada", Toast.LENGTH_SHORT).show()
-        // TODO: Implementar visualização de foto
+        parking.photoUri?.let { uriString ->
+            val uri = uriString.toUri()
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "image/*")
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }
+            startActivity(intent)
+        } ?: Toast.makeText(requireContext(), "Nenhuma foto disponível", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

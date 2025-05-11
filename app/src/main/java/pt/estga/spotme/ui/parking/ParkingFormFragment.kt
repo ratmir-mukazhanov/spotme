@@ -66,6 +66,7 @@ class ParkingFormFragment : BaseFragment() {
         viewModel.parking.observe(viewLifecycleOwner) { parking ->
             if (parking == null) {
                 viewModel.setParking(Parking())
+                binding.switchEnableTimer.isChecked = false
             } else {
                 with(binding) {
                     editTextTitle.setText(parking.title)
@@ -76,7 +77,26 @@ class ParkingFormFragment : BaseFragment() {
                     if (parking.startTime != 0L) {
                         textViewStartTime.text = "Hora de início: ${parking.startTime}"
                     }
+                    if (parking.allowedTime > 0 || parking.startTime > 0) {
+                        switchEnableTimer.isChecked = true
+                        layoutTimeControls.visibility = View.VISIBLE
+                    } else {
+                        switchEnableTimer.isChecked = false
+                        layoutTimeControls.visibility = View.GONE
+                    }
                 }
+            }
+        }
+
+        binding.switchEnableTimer.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.layoutTimeControls.visibility = View.VISIBLE
+            } else {
+                binding.layoutTimeControls.visibility = View.GONE
+                // Opcional: limpar os valores de tempo quando desativado
+                startTimeCalendar = null
+                binding.textViewStartTime.text = "Hora de início: Não selecionada"
+                binding.editTextDuration.setText("")
             }
         }
 
@@ -104,13 +124,23 @@ class ParkingFormFragment : BaseFragment() {
         try {
             with(binding) {
                 parking.title = editTextTitle.text.toString()
+                parking.title = editTextTitle.text.toString()
                 parking.latitude = editTextLatitude.text.toString().toDouble()
                 parking.longitude = editTextLongitude.text.toString().toDouble()
-                parking.allowedTime = editTextDuration.text.toString().toLong() * 60 * 1000
+
+                // Considerar o estado do toggle
+                if (switchEnableTimer.isChecked) {
+                    parking.allowedTime = editTextDuration.text.toString().toLong() * 60 * 1000
+                    parking.startTime = startTimeCalendar?.timeInMillis ?: System.currentTimeMillis()
+                } else {
+                    // Se o temporizador estiver desativado, definimos valores padrão ou zeros
+                    parking.allowedTime = 0
+                    parking.startTime = System.currentTimeMillis() // Definimos pelo menos a data atual
+                }
+
                 parking.description = editTextDescription.text.toString()
             }
             parking.userId = userId
-            parking.startTime = startTimeCalendar?.timeInMillis ?: parking.startTime
             parking.photoUri = photoUri?.toString()
 
             lifecycleScope.launch {
@@ -162,26 +192,30 @@ class ParkingFormFragment : BaseFragment() {
                 }
             }
 
-            // Validar duração
-            if (editTextDuration.text.isNullOrEmpty()) {
-                editTextDuration.error = "Duração é obrigatória"
-                isValid = false
-            } else {
-                try {
-                    val duration = editTextDuration.text.toString().toLong()
-                    if (duration <= 0) {
-                        editTextDuration.error = "A duração deve ser maior que zero"
+            // Validar campos de temporização apenas se o toggle estiver ativado
+            if (switchEnableTimer.isChecked) {
+                // Validar duração
+                if (editTextDuration.text.isNullOrEmpty()) {
+                    editTextDuration.error = "Duração é obrigatória quando a temporização está ativada"
+                    isValid = false
+                } else {
+                    try {
+                        val duration = editTextDuration.text.toString().toLong()
+                        if (duration <= 0) {
+                            editTextDuration.error = "A duração deve ser maior que zero"
+                            isValid = false
+                        }
+                    } catch (e: NumberFormatException) {
+                        editTextDuration.error = "Formato de duração inválido"
                         isValid = false
                     }
-                } catch (e: NumberFormatException) {
-                    editTextDuration.error = "Formato de duração inválido"
+                }
+
+                // Validar hora de início (agora obrigatória)
+                if (startTimeCalendar == null) {
+                    Toast.makeText(requireContext(), "Hora de início é obrigatória quando a temporização está ativada", Toast.LENGTH_LONG).show()
                     isValid = false
                 }
-            }
-
-            // Validar hora de início (opcional)
-            if (startTimeCalendar == null) {
-                Toast.makeText(requireContext(), "Recomendado definir uma hora de início", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -193,7 +227,7 @@ class ParkingFormFragment : BaseFragment() {
     }
 
     private fun requestLocation() {
-        // Verificar primeiro se o usuário habilitou a localização nas configurações
+        // Verificar primeiro se o utilizador habilitou a localização nas configurações
         val userPreferences = UserPreferences.getInstance(requireContext())
 
         if (!userPreferences.isLocationEnabled()) {
@@ -333,11 +367,12 @@ class ParkingFormFragment : BaseFragment() {
     }
 
     private fun selectPhoto() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+        try {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
             startActivityForResult(intent, REQUEST_SELECT_PHOTO)
-        } else {
-            Toast.makeText(requireContext(), "Não foi possível abrir a galeria", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Não foi possível abrir a galeria: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 

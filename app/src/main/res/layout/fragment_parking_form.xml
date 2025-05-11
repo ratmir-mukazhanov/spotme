@@ -202,12 +202,13 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Cabeçalho com toggle -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="8dp">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -217,53 +218,71 @@
                         app:tint="#005792" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Tempo de Estacionamento"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchEnableTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        app:thumbTint="@color/purple_500"
+                        app:trackTint="@color/purple_700"/>
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSelectStartTime"
+                <!-- Container para os controles de tempo que serão mostrados/ocultados -->
+                <LinearLayout
+                    android:id="@+id/layoutTimeControls"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Escolher hora de início"
-                    android:textColor="#FFFFFF"
-                    app:icon="@android:drawable/ic_menu_my_calendar"
-                    app:iconTint="#FFFFFF"
-                    app:iconGravity="textStart"
-                    android:backgroundTint="#005792"
-                    style="@style/AppButtonStyle"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/textViewStartTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hora de início: Não selecionada"
-                    android:textSize="16sp"
-                    android:textColor="#555555"
-                    android:padding="8dp"
-                    android:background="#F0F0F0"
-                    android:layout_marginBottom="16dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxStrokeColor="#005792"
-                    app:hintTextColor="#005792"
-                    app:suffixText="minutos"
-                    style="@style/AppTextInputLayoutStyle">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextDuration"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSelectStartTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Duração permitida"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:text="Escolher hora de início"
+                        android:textColor="#FFFFFF"
+                        app:icon="@android:drawable/ic_menu_my_calendar"
+                        app:iconTint="#FFFFFF"
+                        app:iconGravity="textStart"
+                        android:backgroundTint="#005792"
+                        style="@style/AppButtonStyle"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/textViewStartTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de início: Não selecionada"
+                        android:textSize="16sp"
+                        android:textColor="#555555"
+                        android:padding="8dp"
+                        android:background="#F0F0F0"
+                        android:layout_marginBottom="16dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeColor="#005792"
+                        app:hintTextColor="#005792"
+                        app:suffixText="minutos"
+                        style="@style/AppTextInputLayoutStyle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextDuration"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Duração permitida"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

@@ -137,6 +137,21 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <TextView
+                android:id="@+id/tvTimerNotDefined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Temporizador não definido"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="24dp"
+                android:textColor="#005792"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="#E6F2FF"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"/>
+
             <!-- Parking Info Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_parking_info"

@@ -63,9 +63,25 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Texto para temporizador não definido -->
+            <TextView
+                android:id="@+id/tvTimerNotDefined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Temporizador não definido"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="24dp"
+                android:textColor="#005792"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="#E6F2FF"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"/>
+
             <!-- Timer Card - Main Focus -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_timer"
+                android:id="@+id/cardTimerSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -171,6 +187,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/timeInfoLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -233,26 +250,33 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_notes"
+                    <LinearLayout
+                        android:id="@+id/descriptionSection"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxStrokeColor="#005792">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_notes"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_notes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Notas"
-                            android:text="Estacionei ao pé do McDonald's em frente ao símbolo da CarVertical"
-                            android:enabled="false"
-                            android:textColor="#4A5568"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxCornerRadiusTopStart="8dp"
+                            app:boxCornerRadiusTopEnd="8dp"
+                            app:boxCornerRadiusBottomStart="8dp"
+                            app:boxCornerRadiusBottomEnd="8dp"
+                            app:boxStrokeColor="#005792">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_notes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Notas"
+                                android:text="Estacionei ao pé do McDonald's em frente ao símbolo da CarVertical"
+                                android:enabled="false"
+                                android:textColor="#4A5568"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
