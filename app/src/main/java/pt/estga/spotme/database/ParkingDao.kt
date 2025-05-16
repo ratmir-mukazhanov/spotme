@@ -36,6 +36,30 @@ interface ParkingDao {
     @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId AND startTime >= :timestamp")
     fun getParkingCountByUserIdAfterTimestamp(userId: Long, timestamp: Long): Int
 
+    @Query("SELECT * FROM parking WHERE userId = :userId")
+    fun getUserParkingsById(userId: Long): List<Parking>
+
+    // Métodos para estatísticas da semana atual (últimos 7 dias)
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId AND startTime >= :startOfWeek")
+    fun getWeeklyParkingCount(userId: Long, startOfWeek: Long): Int
+
+    @Query("SELECT AVG(allowedTime) FROM parking WHERE userId = :userId AND startTime >= :startOfWeek AND allowedTime > 0")
+    fun getWeeklyParkingTimeAvg(userId: Long, startOfWeek: Long): Long?
+
+    // Métodos para estatísticas do mês atual (últimos 30 dias)
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId AND startTime >= :startOfMonth")
+    fun getMonthlyParkingCount(userId: Long, startOfMonth: Long): Int
+
+    @Query("SELECT AVG(allowedTime) FROM parking WHERE userId = :userId AND startTime >= :startOfMonth AND allowedTime > 0")
+    fun getMonthlyParkingTimeAvg(userId: Long, startOfMonth: Long): Long?
+
+    // Métodos para estatísticas gerais (all time)
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId")
+    fun getAllTimeParkingCount(userId: Long): Int
+
+    @Query("SELECT AVG(allowedTime) FROM parking WHERE userId = :userId AND allowedTime > 0")
+    fun getAllTimeParkingTimeAvg(userId: Long): Long?
+
     @Query("DELETE FROM parking WHERE userId = :userId")
     suspend fun deleteParkingsByUserId(userId: Long): Int
 

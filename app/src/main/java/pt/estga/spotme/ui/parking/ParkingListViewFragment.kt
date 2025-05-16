@@ -33,7 +33,7 @@ class ParkingListViewFragment : BaseFragment() {
         private const val STATE_SELECTED_TAB = "selected_tab"
     }
 
-    // Metodo para salvar o estado do fragment
+    // Metodo para guardar o estado do fragment
     override fun onSaveInstanceState(outState: Bundle) {
         // Verificar se binding está inicializado para evitar NPE
         if (_binding != null) {
@@ -190,13 +190,15 @@ class ParkingListViewFragment : BaseFragment() {
             val filteredParkings = db.parkingDao().getParkingsByUserIdAfterTimestamp(userId, threshold)
             val totalParkings = filteredParkings.size
 
-            // Calcular o tempo médio de estacionamento para os itens filtrados
-            val averageParkingTime = if (filteredParkings.isEmpty()) {
+            // Calcular o tempo médio apenas para estacionamentos com tempo definido
+            val parkingsWithTime = filteredParkings.filter { it.allowedTime > 0 }
+
+            val averageParkingTime = if (parkingsWithTime.isEmpty()) {
                 0L
             } else {
-                filteredParkings.sumOf { parking ->
+                parkingsWithTime.sumOf { parking ->
                     parking.allowedTime
-                } / filteredParkings.size
+                } / parkingsWithTime.size
             }
 
             requireActivity().runOnUiThread {

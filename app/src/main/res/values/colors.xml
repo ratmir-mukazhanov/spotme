@@ -8,5 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="chip_active">#4CAF50</color>
-    <color name="chip_inactive">#9E9E9E</color>
+    <color name="chip_inactive">#F44336</color>
+    <color name="chip_neutral">#9E9E9E</color>
+
 </resources>

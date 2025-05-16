@@ -56,12 +56,17 @@ class ParkingListAdapter(
 
         // Configurar o status do estacionamento
         val now = System.currentTimeMillis()
-        val isActive = parking.allowedTime > 0 && parking.startTime + parking.allowedTime > now
+        if (parking.allowedTime == 0L) {
+            holder.statusChip.text = "Sem Temporizador"
+            holder.statusChip.setChipBackgroundColorResource(R.color.chip_neutral)
+        } else if (parking.startTime + parking.allowedTime > now) {
+            holder.statusChip.text = "Ativo"
+            holder.statusChip.setChipBackgroundColorResource(R.color.chip_active)
+        } else {
+            holder.statusChip.text = "Concluído"
+            holder.statusChip.setChipBackgroundColorResource(R.color.chip_inactive)
+        }
 
-        holder.statusChip.text = if (isActive) "Ativo" else "Concluído"
-        holder.statusChip.setChipBackgroundColorResource(
-            if (isActive) R.color.chip_active else R.color.chip_inactive
-        )
 
         // Configurar a imagem (placeholder por enquanto)
         holder.parkingImageView.setImageResource(R.drawable.ic_parking_placeholder)

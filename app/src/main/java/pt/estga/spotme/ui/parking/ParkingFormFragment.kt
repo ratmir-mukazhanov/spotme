@@ -117,7 +117,7 @@ class ParkingFormFragment : BaseFragment() {
 
         val userId = userViewModel.userId.value
         if (userId == null || userId == -1L) {
-            Toast.makeText(requireContext(), "Utilizador não está loggedIn!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Utilizador não está logado!", Toast.LENGTH_SHORT).show()
             return
         }
 

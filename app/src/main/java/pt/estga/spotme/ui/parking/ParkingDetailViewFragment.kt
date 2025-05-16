@@ -18,6 +18,8 @@ import pt.estga.spotme.ui.BaseFragment
 import pt.estga.spotme.utils.*
 import java.io.File
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ParkingDetailViewFragment : BaseFragment() {
 
@@ -48,6 +50,15 @@ class ParkingDetailViewFragment : BaseFragment() {
         viewModel.parking.observe(viewLifecycleOwner) { parking ->
             if (parking != null) {
                 ParkingDetailHelper.bindDetails(binding, parking)
+
+                lifecycleScope.launch {
+                    val address = GeocodingHelper.getAddressFromCoordinates(
+                        requireContext(),
+                        parking.latitude,
+                        parking.longitude
+                    )
+                    binding.tvCoordinates.text = address
+                }
 
                 // Configurar visualização com base na temporização
                 if (parking.allowedTime <= 0) {

@@ -161,17 +161,16 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertFirebaseUserToUser(firebaseUser: FirebaseUser): User? {
+    private fun convertFirebaseUserToUser(firebaseUser: FirebaseUser): User {
         return User(
             username = firebaseUser.displayName ?: "",
             password = "",
             email = firebaseUser.email ?: "",
             phone = "",
             profileImage = firebaseUser.photoUrl?.toString() ?: ""
-        ).apply {
-            id = firebaseUser.uid.hashCode().toLong()
-        }
+        )
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
+import kotlinx.coroutines.launch
 import pt.estga.spotme.R
 import pt.estga.spotme.database.AppDatabase
 import pt.estga.spotme.database.ParkingDao
@@ -19,6 +21,7 @@ import pt.estga.spotme.entities.Parking
 import pt.estga.spotme.ui.BaseFragment
 import pt.estga.spotme.utils.ClipboardUtils
 import pt.estga.spotme.utils.DateFormatter
+import pt.estga.spotme.utils.GeocodingHelper
 import pt.estga.spotme.utils.ParkingDetailHelper
 import java.util.concurrent.Executors
 
@@ -57,8 +60,14 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         // Configurar data do estacionamento
         binding.tvParkingDate.text = DateFormatter.formatDate(parking.startTime)
 
-        // Configurar coordenadas
-        binding.tvCoordinates.text = "Latitude: ${parking.latitude}\nLongitude: ${parking.longitude}"
+        lifecycleScope.launch {
+            val address = GeocodingHelper.getAddressFromCoordinates(
+                requireContext(),
+                parking.latitude,
+                parking.longitude
+            )
+            binding.tvCoordinates.text = address
+        }
 
         // Verificar se há temporizador
         if (parking.allowedTime <= 0) {
@@ -90,10 +99,12 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
             // Configurar horário de fim
             val currentTime = System.currentTimeMillis()
-            if (parking.endTime > 0) {
-                binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
+            if (parking.endTime != null && parking.endTime > 0) {
+                // Se tem um endTime registrado, usa esse valor
+                binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime!!)
             } else {
-                binding.tvEndTime.text = "Não registrado"
+                // Caso contrário, sempre mostra o horário calculado (startTime + allowedTime)
+                binding.tvEndTime.text = DateFormatter.formatTime(parking.startTime + parking.allowedTime)
             }
 
             // Configurar duração
