@@ -128,7 +128,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleGoogleUser(firebaseUser: FirebaseUser) {
         val baseUser = convertFirebaseUserToUser(firebaseUser) ?: return showToast("Erro ao converter utilizador Firebase.")
-
         val db = AppDatabase.getInstance(applicationContext)
         val userDao = db.userDao()
         val session = UserSession.getInstance(applicationContext)
@@ -151,6 +150,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             session.user = user
+            session.userId = user.id ?: -1
             session.isGoogleLogin = true
 
             runOnUiThread {
