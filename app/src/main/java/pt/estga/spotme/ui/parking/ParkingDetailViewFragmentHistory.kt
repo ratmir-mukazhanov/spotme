@@ -55,7 +55,7 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
     private fun setupUI(parking: Parking) {
         // Configurar título e localização
-        binding.tvTitle.text = parking.title ?: "Meu Estacionamento"
+        binding.tvTitle.text = parking.title ?: getString(R.string.my_parking_text)
 
         // Configurar data do estacionamento
         binding.tvParkingDate.text = DateFormatter.formatDate(parking.startTime)
@@ -109,14 +109,14 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
             // Configurar duração
             val durationMinutes = (parking.allowedTime / (1000 * 60)).toInt()
-            binding.chipDuration.text = "Duração: $durationMinutes min"
+            binding.chipDuration.text = "${getString(R.string.duration_text)}: $durationMinutes min"
             binding.chipDuration.visibility = View.VISIBLE
 
             // Status do estacionamento
             if (currentTime > (parking.startTime + parking.allowedTime)) {
-                binding.tvStatus.text = "Concluído"
+                binding.tvStatus.text = getString(R.string.concluded_text)
             } else {
-                binding.tvStatus.text = "Em andamento"
+                binding.tvStatus.text = getString(R.string.ongoing_text)
             }
         }
 
@@ -267,17 +267,17 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
                 override fun onTick(millisUntilFinished: Long) {
                     if (millisUntilFinished <= 3 * 60 * 1000 && !warningShown) {
                         warningShown = true
-                        binding.tvStatus.text = "⚠️ A terminar!"
+                        binding.tvStatus.text = getString(R.string.ending_text)
                     }
                 }
 
                 override fun onFinish() {
-                    binding.tvStatus.text = "Concluído"
+                    binding.tvStatus.text = getString(R.string.concluded_text)
                     binding.tvEndTime.text = DateFormatter.formatDateShort(System.currentTimeMillis())
                 }
             }.start()
         } else {
-            binding.tvStatus.text = "Concluído"
+            binding.tvStatus.text = getString(R.string.concluded_text)
         }
     }
 

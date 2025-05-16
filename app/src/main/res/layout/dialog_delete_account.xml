@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eliminar a Conta"
+                android:text="@string/delete_acc_text"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#F44336" />
@@ -41,13 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Esta ação não pode ser anulada. Introduza a sua palavra-passe para confirmar."
+            android:text="@string/delete_acc_description_text"
             android:textColor="#757575" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Introduza a sua palavra-passe"
+            android:hint="@string/password_text"
             android:layout_marginTop="16dp"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancelar"
+                android:text="@string/cancel_text"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginEnd="8dp"
@@ -83,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Eliminar"
+                android:text="@string/delete_text"
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginStart="8dp"

@@ -1,6 +1,7 @@
 package pt.estga.spotme.ui.settings
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -35,11 +37,63 @@ class SettingsFragment : Fragment() {
         userSession = UserSession.getInstance(requireContext())
 
         setupLocationToggle()
+        setupLangDropdown()
+        setupDarkModeToggle()
         setupNotificationsToggle()
         setupRateAppButton()
         setupDeleteHistoryButton()
 
         return binding.root
+    }
+
+    private fun setupLangDropdown() {
+        val prefs = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val savedLang = prefs.getString("My_Lang", "pt") ?: "pt"
+
+        // Criar a lista de idiomas disponíveis
+        val languages = listOf("Português", "English")
+
+        // Criar um ArrayAdapter para o Spinner
+        val adapter = android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, languages)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerLanguage.adapter = adapter
+
+        // Definir o idioma selecionado conforme salvo no SharedPreferences
+        val selectedIndex = if (savedLang == "pt") 0 else 1
+        binding.spinnerLanguage.setSelection(selectedIndex)
+
+        // Listener para mudanças na seleção do Spinner
+        binding.spinnerLanguage.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedLanguageCode = if (position == 0) "pt" else "en"
+
+                // Só muda se for diferente do idioma salvo
+                if (savedLang != selectedLanguageCode) {
+                    setLocale(selectedLanguageCode)
+                }
+            }
+
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
+                // Não faz nada
+            }
+        }
+    }
+
+    private fun setLocale(langCode: String) {
+        val locale = java.util.Locale(langCode)
+        java.util.Locale.setDefault(locale)
+
+        val config = resources.configuration
+        config.setLocale(locale)
+
+        resources.updateConfiguration(config, resources.displayMetrics)
+
+        // Salvar a preferência
+        val prefs = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        prefs.edit().putString("My_Lang", langCode).apply()
+
+        // Recarregar a activity para aplicar a mudança
+        requireActivity().recreate()
     }
 
     private fun setupRateAppButton() {
@@ -51,6 +105,29 @@ class SettingsFragment : Fragment() {
     private fun setupDeleteHistoryButton() {
         binding.layoutDeleteHistory.setOnClickListener {
             showDeleteHistoryConfirmationDialog()
+        }
+    }
+
+    private fun setupDarkModeToggle() {
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+
+        // Inicializa o switch com o valor salvo
+        binding.switchDarkMode.isChecked = isDarkMode
+
+        // Quando o usuário alternar o switch, atualiza a preferência e o tema
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean("dark_mode", isChecked).apply()
+
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            // Opcional: para aplicar o tema imediatamente, reinicia a activity principal (ou o fragmento)
+            // Se quiser, pode tentar fazer só requireActivity().recreate()
+            requireActivity().recreate()
         }
     }
 

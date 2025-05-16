@@ -75,7 +75,7 @@ class ParkingFormFragment : BaseFragment() {
                     editTextDuration.setText((parking.allowedTime / 60000).toString())
                     editTextDescription.setText(parking.description)
                     if (parking.startTime != 0L) {
-                        textViewStartTime.text = "Hora de início: ${parking.startTime}"
+                        textViewStartTime.text = getString(R.string.start_time_text)+": ${parking.startTime}"
                     }
                     if (parking.allowedTime > 0 || parking.startTime > 0) {
                         switchEnableTimer.isChecked = true
@@ -95,7 +95,7 @@ class ParkingFormFragment : BaseFragment() {
                 binding.layoutTimeControls.visibility = View.GONE
                 // Opcional: limpar os valores de tempo quando desativado
                 startTimeCalendar = null
-                binding.textViewStartTime.text = "Hora de início: Não selecionada"
+                binding.textViewStartTime.text = getString(R.string.start_time_not_selected_text)
                 binding.editTextDuration.setText("")
             }
         }
@@ -162,32 +162,32 @@ class ParkingFormFragment : BaseFragment() {
         with(binding) {
             // Validar título
             if (editTextTitle.text.isNullOrEmpty()) {
-                editTextTitle.error = "Título é obrigatório"
+                editTextTitle.error = getString(R.string.validate_title)
                 isValid = false
             }
 
             // Validar latitude
             if (editTextLatitude.text.isNullOrEmpty()) {
-                editTextLatitude.error = "Latitude é obrigatória"
+                editTextLatitude.error = getString(R.string.validate_latitude)
                 isValid = false
             } else {
                 try {
                     editTextLatitude.text.toString().toDouble()
                 } catch (e: NumberFormatException) {
-                    editTextLatitude.error = "Formato de latitude inválido"
+                    editTextLatitude.error = getString(R.string.validate_formato_latitude)
                     isValid = false
                 }
             }
 
             // Validar longitude
             if (editTextLongitude.text.isNullOrEmpty()) {
-                editTextLongitude.error = "Longitude é obrigatória"
+                editTextLongitude.error = getString(R.string.validate_longitude)
                 isValid = false
             } else {
                 try {
                     editTextLongitude.text.toString().toDouble()
                 } catch (e: NumberFormatException) {
-                    editTextLongitude.error = "Formato de longitude inválido"
+                    editTextLongitude.error = getString(R.string.validate_formato_longitude)
                     isValid = false
                 }
             }
@@ -196,17 +196,17 @@ class ParkingFormFragment : BaseFragment() {
             if (switchEnableTimer.isChecked) {
                 // Validar duração
                 if (editTextDuration.text.isNullOrEmpty()) {
-                    editTextDuration.error = "Duração é obrigatória quando a temporização está ativada"
+                    editTextDuration.error = getString(R.string.validate_textDuration)
                     isValid = false
                 } else {
                     try {
                         val duration = editTextDuration.text.toString().toLong()
                         if (duration <= 0) {
-                            editTextDuration.error = "A duração deve ser maior que zero"
+                            editTextDuration.error = getString(R.string.validate_textDuration_zero)
                             isValid = false
                         }
                     } catch (e: NumberFormatException) {
-                        editTextDuration.error = "Formato de duração inválido"
+                        editTextDuration.error = getString(R.string.validate_textDuration_format)
                         isValid = false
                     }
                 }
@@ -302,7 +302,7 @@ class ParkingFormFragment : BaseFragment() {
             selectedTime.set(Calendar.MINUTE, selectedMinute)
 
             startTimeCalendar = selectedTime
-            binding.textViewStartTime.text = "Hora de início: %02d:%02d".format(selectedHour, selectedMinute)
+            binding.textViewStartTime.text = "${getString(R.string.start_time_text)}: %02d:%02d".format(selectedHour, selectedMinute)
         }, hour, minute, true).show()
     }
 

@@ -37,7 +37,7 @@
                         android:id="@+id/textViewParkingHistoryTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Histórico de Estacionamentos"
+                        android:text="@string/parking_history_text"
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:textColor="#005792"
@@ -75,12 +75,12 @@
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Última Semana" />
+                        android:text="@string/last_week_text" />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Último Mês" />
+                        android:text="@string/last_month_text" />
                 </com.google.android.material.tabs.TabLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -112,7 +112,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total"
+                            android:text="@string/total_text"
                             android:textSize="12sp"
                             android:textColor="#4A5568"/>
 
@@ -139,7 +139,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tempo Médio"
+                            android:text="@string/average_time_text"
                             android:textSize="12sp"
                             android:textColor="#4A5568"/>
 
@@ -172,7 +172,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Estacionamentos"
+                        android:text="@string/parking_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"
@@ -205,7 +205,7 @@
                 android:id="@+id/buttonSeeMore"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Ver Mais"
+                android:text="@string/see_more_text"
                 android:textAllCaps="false"
                 android:backgroundTint="#005792"
                 app:cornerRadius="12dp"

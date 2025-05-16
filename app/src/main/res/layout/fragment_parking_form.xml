@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Registo de Estacionamento"
+                    android:text="@string/parking_regist_text"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#005792"/>
@@ -61,7 +61,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Informações Básicas"
+                    android:text="@string/basic_info_text"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#005792"
@@ -79,7 +79,7 @@
                         android:id="@+id/editTextTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Título do estacionamento"
+                        android:hint="@string/parking_title_text"
                         android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +95,7 @@
                         android:id="@+id/editTextDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Descrição"
+                        android:hint="@string/parking_description_text"
                         android:minLines="3"
                         android:gravity="top"
                         android:inputType="textMultiLine"/>
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Localização"
+                        android:text="@string/location_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -152,9 +152,9 @@
                         android:id="@+id/editTextLatitude"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Latitude"
-                        android:inputType="numberDecimal"
-                        android:focusable="false"/>
+                        android:focusable="false"
+                        android:hint="@string/latitude_text"
+                        android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -169,7 +169,7 @@
                         android:id="@+id/editTextLongitude"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Longitude"
+                        android:hint="@string/longitude_text"
                         android:inputType="numberDecimal"
                         android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -178,7 +178,7 @@
                     android:id="@+id/btnGetLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Obter localização atual"
+                    android:text="@string/get_current_location_text"
                     android:textColor="#FFFFFF"
                     app:icon="@drawable/ic_location"
                     app:iconTint="#FFFFFF"
@@ -221,7 +221,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Tempo de Estacionamento"
+                        android:text="@string/parking_time_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -317,7 +317,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Foto do Estacionamento"
+                        android:text="@string/parking_photo_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -334,14 +334,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:contentDescription="Foto do estacionamento" />
+                        android:contentDescription="@string/parking_photo_text" />
 
                     <TextView
                         android:id="@+id/textViewNoImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Nenhuma foto selecionada"
+                        android:text="@string/no_photo_selected_text"
                         android:textColor="#888888"
                         android:textSize="16sp" />
                 </FrameLayout>
@@ -357,7 +357,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Tirar foto"
+                        android:text="@string/take_photo_text"
                         android:textColor="#FFFFFF"
                         app:icon="@android:drawable/ic_menu_camera"
                         app:iconTint="#FFFFFF"
@@ -370,7 +370,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Galeria"
+                        android:text="@string/gallery_text"
                         android:textColor="#FFFFFF"
                         app:icon="@android:drawable/ic_menu_gallery"
                         app:iconTint="#FFFFFF"
@@ -386,7 +386,7 @@
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GUARDAR ESTACIONAMENTO"
+            android:text="@string/save_parking_text"
             android:textColor="#FFFFFF"
             android:backgroundTint="#005792"
             app:icon="@android:drawable/ic_menu_save"

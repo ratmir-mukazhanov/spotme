@@ -7,27 +7,27 @@
     <fragment
         android:id="@+id/nav_parking_history"
         android:name="pt.estga.spotme.ui.parking.ParkingListViewFragment"
-        android:label="Histórico de Estacionamentos"
+        android:label="@string/parking_history_text"
         tools:layout="@layout/fragment_parking_list_view" />
     <fragment
         android:id="@+id/nav_home"
         android:name="pt.estga.spotme.ui.home.HomeFragment"
-        android:label="Início"
+        android:label="@string/home_text"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_account"
         android:name="pt.estga.spotme.ui.account.AccountFragment"
-        android:label="Perfil"
+        android:label="@string/perfil_text"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/nav_settings"
         android:name="pt.estga.spotme.ui.settings.SettingsFragment"
-        android:label="Definições"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/parkingListViewFragment"
         android:name="pt.estga.spotme.ui.parking.ParkingListViewFragment"
-        android:label="Lista de Estacionamentos"
+        android:label="@string/parking_list_text"
         tools:layout="@layout/fragment_parking_list_view">
         <action
             android:id="@+id/action_parkingListViewFragment_to_parkingFormFragment"
@@ -36,26 +36,26 @@
     <fragment
         android:id="@+id/parkingFormFragment"
         android:name="pt.estga.spotme.ui.parking.ParkingFormFragment"
-        android:label="Adicionar Estacionamento"
+        android:label="@string/parking_add_text"
         tools:layout="@layout/fragment_parking_form" />
     <fragment
         android:id="@+id/parkingDetailViewFragment"
         android:name="pt.estga.spotme.ui.parking.ParkingDetailViewFragment"
-        android:label="Detalhes do Estacionamento"
+        android:label="@string/parking_details_text"
         tools:layout="@layout/fragment_parking_detail_view" />
     <fragment
         android:id="@+id/parkingDetailViewFragmentHistory"
         android:name="pt.estga.spotme.ui.parking.ParkingDetailViewFragmentHistory"
-        android:label="Detalhes do Estacionamento"
+        android:label="@string/parking_details_text"
         tools:layout="@layout/fragment_parking_detail_view_history" />
     <fragment
         android:id="@+id/personalStatisticsFragment"
         android:name="pt.estga.spotme.ui.account.PersonalStatisticsFragment"
-        android:label="Estatísticas Pessoais"
+        android:label="@string/personal_statistics_text"
         tools:layout="@layout/personal_statistics" />
     <fragment
         android:id="@+id/parkingRouteFragment"
         android:name="pt.estga.spotme.ui.routing.MapRouteFragment"
-        android:label="Rota para o Estacionamento"
+        android:label="@string/parking_route_text"
         tools:layout="@layout/fragment_map_route" />
 </navigation>

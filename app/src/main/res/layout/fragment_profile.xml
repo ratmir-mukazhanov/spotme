@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Minha Conta"
+                    android:text="@string/my_account_text"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#005792"/>
@@ -143,7 +143,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Informações Pessoais"
+                        android:text="@string/info_personal_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -160,7 +160,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nome"
+                        android:text="@string/name_text"
                         android:textSize="14sp"
                         android:textColor="#4A5568"
                         android:layout_marginBottom="8dp"/>
@@ -202,7 +202,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Telemóvel"
+                        android:text="@string/phone_short_text"
                         android:textSize="14sp"
                         android:textColor="#4A5568"
                         android:layout_marginBottom="8dp"/>
@@ -243,7 +243,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email"
+                        android:text="@string/email_text"
                         android:textSize="14sp"
                         android:textColor="#4A5568"
                         android:layout_marginBottom="8dp"/>
@@ -315,7 +315,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ações da Conta"
+                        android:text="@string/account_actions_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -346,7 +346,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Alterar Password"
+                        android:text="@string/change_password_text"
                         android:textSize="16sp"
                         android:textColor="#005792"/>
 
@@ -381,7 +381,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Estatísticas Pessoais"
+                        android:text="@string/personal_statistics_text"
                         android:textSize="16sp"
                         android:textColor="#005792"/>
 
@@ -426,7 +426,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Apagar Conta"
+                    android:text="@string/delete_account_text"
                     android:textSize="16sp"
                     android:textColor="#F44336"/>
             </LinearLayout>

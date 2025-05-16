@@ -26,7 +26,7 @@
         android:id="@+id/textViewAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menos voltas. Mais vida."
+        android:text="@string/slogan_text"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-medium"

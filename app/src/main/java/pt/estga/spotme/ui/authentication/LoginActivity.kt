@@ -49,8 +49,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
         binding.googleButton.setOnClickListener { signInWithGoogle() }
-
+        binding.forgotPasswordText.setOnClickListener { handleForgot() }
         observeLoginResult()
+    }
+
+    private fun handleForgot() {
+        startActivity(Intent(this, ResetPassActivity::class.java));
     }
 
     private fun handleLogin() {
@@ -66,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.isEnabled = false
         loginViewModel.login(email, password)
     }
+
 
     private fun observeLoginResult() {
         loginViewModel.loginResult.observe(this) { result ->

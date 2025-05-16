@@ -77,7 +77,7 @@ class ParkingDetailViewFragment : BaseFragment() {
                     if (parking.endTime > 0) {
                         binding.tvEndTime.text = DateFormatter.formatTime(parking.endTime)
                     } else {
-                        binding.tvEndTime.text = "Em andamento"
+                        binding.tvEndTime.text = getString(R.string.ongoing_text)
                     }
 
                     startTimer(parking)
@@ -161,13 +161,13 @@ class ParkingDetailViewFragment : BaseFragment() {
 
                     if (minutes <= 3 && !warningShown) {
                         warningShown = true
-                        binding.tvTimerWarning.text = "⚠️ Atenção! Está quase a terminar!"
+                        binding.tvTimerWarning.text = getString(R.string.almost_ending_text)
                     }
                 }
 
                 override fun onFinish() {
                     binding.tvTimer.text = "00:00"
-                    binding.tvTimerWarning.text = "O tempo acabou!"
+                    binding.tvTimerWarning.text = getString(R.string.time_over_text)
                     binding.progressTimer.progress = 100
                     binding.tvEndTime.text = DateFormatter.formatTime(System.currentTimeMillis())
                     binding.progressTimer.setIndicatorColor(resources.getColor(android.R.color.holo_red_light))
@@ -175,7 +175,7 @@ class ParkingDetailViewFragment : BaseFragment() {
             }.start()
         } else {
             binding.tvTimer.text = "00:00"
-            binding.tvTimerWarning.text = "O tempo acabou!"
+            binding.tvTimerWarning.text = getString(R.string.time_over_text)
             binding.progressTimer.progress = 100
             binding.progressTimer.setIndicatorColor(resources.getColor(android.R.color.holo_red_light))
 
@@ -194,10 +194,11 @@ class ParkingDetailViewFragment : BaseFragment() {
         fun scheduleIfPossible(minBefore: Int) {
             val delayMillis = endTime - now - minBefore * 60 * 1000
             if (delayMillis > 0) {
+                val message = getString(R.string.reminder_message, minBefore)
                 ParkingReminderScheduler.scheduleReminder(
                     requireContext(),
                     delayMillis,
-                    "Faltam $minBefore minuto(s) para o estacionamento expirar!"
+                    message
                 )
             }
         }

@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name="pt.estga.spotme.ui.MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -46,6 +47,10 @@
         <!-- LoginActivity não é mais a Launcher Activity -->
         <activity
             android:name="pt.estga.spotme.ui.authentication.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="pt.estga.spotme.ui.authentication.ResetPassActivity"
             android:exported="false" />
 
         <!-- MainActivity -->

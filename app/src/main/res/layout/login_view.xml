@@ -33,7 +33,7 @@
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bem-vindo de volta!"
+            android:text="@string/welcome_back"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#005792"
@@ -43,7 +43,7 @@
             android:id="@+id/subtitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faça login para continuar"
+            android:text="@string/do_login_continue"
             android:textSize="16sp"
             android:textColor="#808080"
             android:layout_marginTop="4dp"
@@ -66,7 +66,7 @@
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/email_text"
                 android:inputType="textEmailAddress"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="16dp" />
@@ -90,7 +90,7 @@
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Palavra-passe"
+                android:hint="@string/password_text"
                 android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="16dp" />
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ou"
+                android:text="@string/or"
                 android:textSize="14sp"
                 android:textColor="#808080"
                 android:layout_marginHorizontal="16dp" />
@@ -143,7 +143,7 @@
             android:id="@+id/googleButton"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Continuar com a Google"
+            android:text="@string/continue_google"
             android:textColor="#5F6368"
             app:cornerRadius="12dp"
             android:backgroundTint="#FFFFFF"
@@ -161,11 +161,21 @@
             android:id="@+id/signupText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ainda não tem conta? Registe-se"
-            android:textSize="16sp"
-            android:textColor="#005792"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="32dp"
+            android:text="@string/not_account_register_text"
+            android:textColor="#005792"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/forgotPasswordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/forgot_password_text"
+            android:textColor="#005792"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>

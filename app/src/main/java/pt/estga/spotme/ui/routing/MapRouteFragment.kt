@@ -240,7 +240,7 @@ class MapRouteFragment : Fragment() {
 
     private fun showRouteInfo(distance: Double, duration: Double) {
         binding.tvDistance.text = formatDistance(distance)
-        binding.tvDuration.text = formatDuration(duration) + " (a pé)"
+        binding.tvDuration.text = formatDuration(duration) + getString(R.string.onFoot_text)
         binding.cardRouteInfo.visibility = View.VISIBLE
         binding.fabCloseInfo.visibility = View.VISIBLE
     }

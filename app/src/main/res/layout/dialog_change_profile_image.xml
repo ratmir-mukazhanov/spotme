@@ -10,7 +10,7 @@
         android:id="@+id/tvDialogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Alterar foto de Perfil"
+        android:text="@string/update_photo_profile_text"
         android:textColor="#1976D2"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Tirar Foto"
+            android:text="@string/take_photo_text"
             android:textColor="#212121"
             android:textSize="16sp" />
 
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Escolher pela Galeria"
+            android:text="@string/choose_galeria_text"
             android:textColor="#212121"
             android:textSize="16sp" />
 
@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Remover a Foto"
+            android:text="@string/delete_photo_text"
             android:textColor="#F44336"
             android:textSize="16sp" />
 
@@ -127,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Cancelar"
+        android:text="@string/cancel_text"
         android:textColor="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

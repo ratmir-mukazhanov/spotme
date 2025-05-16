@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Estatísticas Pessoais"
+                    android:text="@string/personal_statistics_text"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#005792"/>
@@ -109,7 +109,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="All Time"
+                        android:text="@string/all_time_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -129,7 +129,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Total de Estacionamentos"
+                        android:text="@string/parking_total_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 
@@ -156,7 +156,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Tempo Médio de Estacionamento"
+                        android:text="@string/parking_average_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 
@@ -211,7 +211,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="This Week"
+                        android:text="@string/this_week_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -231,7 +231,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Total de Estacionamentos"
+                        android:text="@string/parking_total_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 
@@ -258,7 +258,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Tempo Médio de Estacionamento"
+                        android:text="@string/parking_average_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 
@@ -313,7 +313,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="This Month"
+                        android:text="@string/this_month_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#005792"/>
@@ -333,7 +333,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Total de Estacionamentos"
+                        android:text="@string/parking_total_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 
@@ -360,7 +360,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Tempo Médio de Estacionamento"
+                        android:text="@string/parking_average_text"
                         android:textSize="16sp"
                         android:textColor="#4A5568"/>
 

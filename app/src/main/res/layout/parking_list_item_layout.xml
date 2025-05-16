@@ -10,11 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="Título do Estacionamento" />
+        android:text="@string/parking_title_text" />
 
     <TextView
         android:id="@+id/textViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descrição do Estacionamento" />
+        android:text="@string/parking_description_text" />
 </LinearLayout>
