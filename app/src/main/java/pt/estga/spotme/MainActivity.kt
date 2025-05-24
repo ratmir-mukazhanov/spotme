@@ -1,6 +1,7 @@
 package pt.estga.spotme
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -178,6 +179,12 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val langCode = pt.estga.spotme.ui.MyApp.languageCode
+        val context = pt.estga.spotme.utils.LocaleHelper.setLocale(newBase, langCode)
+        super.attachBaseContext(context)
     }
 
     companion object {

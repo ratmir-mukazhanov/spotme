@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA"
+    android:background="?attr/colorOnBackground"
     android:fillViewport="true">
 
     <LinearLayout
@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +33,7 @@
                     android:layout_height="40dp"
                     android:src="@android:drawable/ic_menu_preferences"
                     android:layout_marginEnd="16dp"
-                    app:tint="#005792" />
+                    app:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -40,87 +41,86 @@
                     android:text="@string/settings2_text"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#005792"/>
+                    android:textColor="@color/text_primary"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-
+        <!-- Idioma Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/icon_bg_blue"
                 android:padding="16dp"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tvLanguage"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/lang_text"
                     android:textSize="16sp"
-                    android:textColor="#005792"/>
+                    android:textColor="@color/text_primary"/>
 
                 <Spinner
                     android:id="@+id/spinnerLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/language_options"
-                    android:backgroundTint="#005792"
-                    android:spinnerMode="dropdown"
-                    android:padding="8dp"
-                    />
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Modo escuro Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/icon_bg_blue"
                 android:padding="16dp"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tvDarkMode"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Modo Escuro"
+                    android:text="@string/darkmode_text"
                     android:textSize="16sp"
-                    android:textColor="#005792"/>
+                    android:textColor="@color/text_primary"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchDarkMode"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    app:thumbTint="#005792"
-                    app:trackTint="#80BFDDF2"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
         <!-- Notifications Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
@@ -147,7 +147,7 @@
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_popup_reminder"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -156,7 +156,7 @@
                         android:text="@string/notifications_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Notifications Toggle -->
@@ -166,25 +166,23 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
                     android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvNotifications"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/activate_notifications_text"
+                        android:text="@string/notifications_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchNotifications"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        app:thumbTint="#005792"
-                        app:trackTint="#80BFDDF2"/>
+                        android:checked="true"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -195,7 +193,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,7 +213,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
@@ -222,7 +221,7 @@
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_mylocation"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -231,7 +230,7 @@
                         android:text="@string/location_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Location Services -->
@@ -241,26 +240,23 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvLocationServices"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/location_service_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        app:thumbTint="#005792"
-                        app:trackTint="#80BFDDF2"/>
+                        android:checked="true"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -271,7 +267,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -290,15 +287,15 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/ic_lock_idle_lock"
+                            android:src="@android:drawable/ic_lock_lock"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -307,7 +304,7 @@
                         android:text="@string/data_privacy_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Delete History -->
@@ -317,27 +314,25 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
-                    android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
                     android:clickable="true"
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/tvDeleteHistory"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/delete_history_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <ImageView
-                        android:id="@+id/ivArrowDeleteHistory"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -348,7 +343,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -367,15 +363,15 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_info_details"
+                            android:src="@android:drawable/ic_dialog_info"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -384,7 +380,7 @@
                         android:text="@string/app_info_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Rate App -->
@@ -394,6 +390,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
                     android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
@@ -401,48 +398,46 @@
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/tvRateApp"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/rate2_app_text"
+                        android:text="@string/rate_app_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <ImageView
-                        android:id="@+id/ivArrowRateApp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- App Version -->
                 <LinearLayout
-                    android:id="@+id/layoutAppVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
                     android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvAppVersion"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/version_app_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_tertiary"/>
 
                     <TextView
-                        android:id="@+id/tvAppVersionValue"
+                        android:id="@+id/tvAppVersion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1.0.0"
-                        android:textSize="14sp"
-                        android:textColor="#4A5568"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

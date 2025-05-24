@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F8FAFF"
+    android:background="?attr/colorOnBackground"
     android:fitsSystemWindows="true"
     tools:context="pt.estga.spotme.ui.authentication.LoginActivity">
 
@@ -36,7 +36,7 @@
             android:text="@string/welcome_back"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#005792"
+            android:textColor="@color/text_primary"
             android:fontFamily="sans-serif-medium" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="@string/do_login_continue"
             android:textSize="16sp"
-            android:textColor="#808080"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="24dp" />
 
@@ -54,8 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#005792"
-            app:hintTextColor="#005792"
+            app:boxStrokeColor="@color/input_box_stroke_color"
+            app:hintTextColor="@color/input_hint_text_color"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
@@ -68,8 +68,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_text"
                 android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="16dp" />
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- PASSWORD -->
@@ -77,8 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:boxStrokeColor="#005792"
-            app:hintTextColor="#005792"
+            app:boxStrokeColor="@color/input_box_stroke_color"
+            app:hintTextColor="@color/input_hint_text_color"
             app:passwordToggleEnabled="true"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -92,8 +91,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password_text"
                 android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock"
-                android:drawablePadding="16dp" />
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- LOGIN BUTTON -->
@@ -105,7 +103,7 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             app:cornerRadius="12dp"
-            android:backgroundTint="#005792"
+            android:backgroundTint="@color/button_primary"
             android:elevation="2dp" />
 
         <!-- Divider "Or" -->
@@ -121,21 +119,21 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#E0E0E0" />
+                android:background="@color/text_tertiary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/or"
-                android:textSize="14sp"
-                android:textColor="#808080"
-                android:layout_marginHorizontal="16dp" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/or_text"
+                android:textColor="@color/text_tertiary" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#E0E0E0" />
+                android:background="@color/text_tertiary" />
         </LinearLayout>
 
         <!-- GOOGLE LOGIN BUTTON -->
@@ -144,11 +142,11 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="@string/continue_google"
-            android:textColor="#5F6368"
+            android:textColor="@color/text_tertiary"
             app:cornerRadius="12dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/card_background"
             android:elevation="2dp"
-            app:strokeColor="#E0E0E0"
+            app:strokeColor="@color/text_tertiary"
             app:strokeWidth="1dp"
             app:icon="@mipmap/ic_google_icon"
             app:iconGravity="textStart"
@@ -164,7 +162,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="32dp"
             android:text="@string/not_account_register_text"
-            android:textColor="#005792"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
         <TextView
@@ -174,7 +172,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="32dp"
             android:text="@string/forgot_password_text"
-            android:textColor="#005792"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
     </LinearLayout>

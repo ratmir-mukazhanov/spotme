@@ -47,53 +47,71 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupLangDropdown() {
-        val prefs = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val savedLang = prefs.getString("My_Lang", "pt") ?: "pt"
+        // Usar as preferências da aplicação definidas em MyApp
+        val prefs = pt.estga.spotme.ui.MyApp.prefs
+        val savedLang = pt.estga.spotme.ui.MyApp.languageCode
 
-        // Criar a lista de idiomas disponíveis
+        // Lista de idiomas disponíveis
         val languages = listOf("Português", "English")
 
-        // Criar um ArrayAdapter para o Spinner
-        val adapter = android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, languages)
+        val adapter = android.widget.ArrayAdapter(requireContext(),
+            android.R.layout.simple_spinner_item, languages)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerLanguage.adapter = adapter
 
-        // Definir o idioma selecionado conforme salvo no SharedPreferences
+        // Definir o idioma selecionado
         val selectedIndex = if (savedLang == "pt") 0 else 1
         binding.spinnerLanguage.setSelection(selectedIndex)
 
-        // Listener para mudanças na seleção do Spinner
-        binding.spinnerLanguage.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedLanguageCode = if (position == 0) "pt" else "en"
+        // Listener para mudanças na seleção
+        binding.spinnerLanguage.onItemSelectedListener =
+            object : android.widget.AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: android.widget.AdapterView<*>,
+                                            view: View?, position: Int, id: Long) {
+                    val selectedLanguageCode = if (position == 0) "pt" else "en"
 
-                // Só muda se for diferente do idioma salvo
-                if (savedLang != selectedLanguageCode) {
-                    setLocale(selectedLanguageCode)
+                    // Só muda se for diferente do idioma atual
+                    if (savedLang != selectedLanguageCode) {
+                        changeAppLanguage(selectedLanguageCode)
+                    }
+                }
+
+                override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
+                    // Não faz nada
                 }
             }
-
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
-                // Não faz nada
-            }
-        }
     }
 
-    private fun setLocale(langCode: String) {
-        val locale = java.util.Locale(langCode)
-        java.util.Locale.setDefault(locale)
+    private fun changeAppLanguage(langCode: String) {
+        // Atualizar o código de idioma usando o método da classe MyApp
+        pt.estga.spotme.ui.MyApp.setLanguageCode(langCode)
 
-        val config = resources.configuration
-        config.setLocale(locale)
+        // Mostrar um diálogo informando ao usuário que a aplicação será reiniciada
+        AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+            .setTitle(getString(R.string.language_change_title))
+            .setMessage(getString(R.string.language_change_message))
+            .setPositiveButton(getString(R.string.restart_now)) { dialog, which ->
+                // Reiniciar a aplicação
+                restartApp()
+            }
+            .setCancelable(false)
+            .show()
+    }
 
-        resources.updateConfiguration(config, resources.displayMetrics)
+    private fun restartApp() {
+        // Obtém o Intent da atividade principal
+        val intent = requireActivity().packageManager
+            .getLaunchIntentForPackage(requireActivity().packageName) ?: return
 
-        // Salvar a preferência
-        val prefs = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        prefs.edit().putString("My_Lang", langCode).apply()
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        // Recarregar a activity para aplicar a mudança
-        requireActivity().recreate()
+        // Finaliza todas as atividades e inicia a aplicação novamente
+        requireActivity().finishAffinity()
+        startActivity(intent)
+
+        // Finaliza o processo atual para garantir um reinício limpo
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     private fun setupRateAppButton() {
@@ -144,13 +162,13 @@ class SettingsFragment : Fragment() {
             if (isChecked) {
                 Toast.makeText(
                     requireContext(),
-                    "Notificações ativadas",
+                    getString(R.string.notifications_enabled),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Notificações desativadas",
+                    getString(R.string.notifications_disabled),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -176,7 +194,7 @@ class SettingsFragment : Fragment() {
                 // Apenas armazena a preferência, não precisa de permissões extras
                 Toast.makeText(
                     requireContext(),
-                    "Acesso à localização permitido no aplicativo",
+                    getString(R.string.location_access_enabled),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -187,29 +205,31 @@ class SettingsFragment : Fragment() {
                         val uri = android.net.Uri.fromParts("package", requireActivity().packageName, null)
                         intent.setData(uri)
 
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Revogar permissões de localização")
-                            .setMessage("Para maior segurança, recomendamos revogar as permissões de localização nas configurações do aplicativo. Deseja fazer isso agora?")
-                            .setPositiveButton("Ir para configurações") { _, _ ->
+                        AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+                            .setTitle(getString(R.string.revoke_location_title))
+                            .setMessage(getString(R.string.revoke_location_message))
+                            .setPositiveButton(getString(R.string.go_to_settings)) { _, _ ->
                                 startActivity(intent)
                             }
-                            .setNegativeButton("Não") { _, _ ->
-                                Toast.makeText(requireContext(),
-                                    "O acesso à localização foi restrito apenas dentro do aplicativo",
-                                    Toast.LENGTH_LONG).show()
+                            .setNegativeButton(getString(R.string.delete_cancel)) { _, _ ->
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.location_restricted_app),
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                             .show()
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            "O acesso à localização foi restrito dentro do aplicativo",
+                            getString(R.string.location_restricted_app),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } catch (e: Exception) {
                     Toast.makeText(
                         requireContext(),
-                        "Não foi possível abrir as configurações de permissão",
+                        getString(R.string.location_permission_error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -223,13 +243,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showDeleteHistoryConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Apagar Histórico")
-            .setMessage("Tem certeza que deseja apagar todo o seu histórico de estacionamentos? Esta ação não pode ser desfeita.")
-            .setPositiveButton("Apagar") { _, _ ->
+        AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+            .setTitle(getString(R.string.delete_history_title))
+            .setMessage(getString(R.string.delete_history_message))
+            .setPositiveButton(getString(R.string.delete_button)) { _, _ ->
                 deleteUserParkingHistory()
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.delete_cancel), null)
             .show()
     }
 
@@ -246,7 +266,7 @@ class SettingsFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Histórico apagado com sucesso! ${deletedCount} registros removidos.",
+                        getString(R.string.delete_history_success, deletedCount),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -254,7 +274,7 @@ class SettingsFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Erro ao apagar histórico: ${e.message}",
+                        getString(R.string.delete_history_error, e.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -280,13 +300,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showReplacePreviousRatingDialog(previousRating: AppRating) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Avaliação Existente")
-            .setMessage("Já avaliou o aplicativo com ${previousRating.rating} estrelas. Deseja atualizar sua avaliação?")
-            .setPositiveButton("Atualizar") { _, _ ->
+        AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+            .setTitle(getString(R.string.existing_rating_title))
+            .setMessage(getString(R.string.existing_rating_message, previousRating.rating))
+            .setPositiveButton(getString(R.string.update_rating_button)) { _, _ ->
                 showRateAppDialog(previousRating)
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.delete_cancel), null)
             .show()
     }
 
@@ -295,15 +315,14 @@ class SettingsFragment : Fragment() {
         val dialogBinding = DialogRateAppBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
-
         previousRating?.let {
             dialogBinding.ratingBar.rating = it.rating
             dialogBinding.etFeedback.setText(it.feedback ?: "")
 
             val message = when {
-                it.rating <= 1 -> "Lamentamos que não esteja satisfeito"
-                it.rating <= 3 -> "Obrigado pelo feedback"
-                else -> "Obrigado pela sua excelente avaliação!"
+                it.rating <= 1 -> getString(R.string.rating_message_bad)
+                it.rating <= 3 -> getString(R.string.rating_message_neutral)
+                else -> getString(R.string.rating_message_good)
             }
             dialogBinding.tvRatingMessage.text = message
         }
@@ -311,9 +330,9 @@ class SettingsFragment : Fragment() {
         dialogBinding.ratingBar.setOnRatingBarChangeListener { _, rating, fromUser ->
             if (fromUser) {
                 val message = when {
-                    rating <= 1 -> "Lamentamos que não esteja satisfeito"
-                    rating <= 3 -> "Obrigado pelo feedback"
-                    else -> "Obrigado pela sua excelente avaliação!"
+                    rating <= 1 -> getString(R.string.rating_message_bad)
+                    rating <= 3 -> getString(R.string.rating_message_neutral)
+                    else -> getString(R.string.rating_message_good)
                 }
                 dialogBinding.tvRatingMessage.text = message
             }
@@ -328,7 +347,10 @@ class SettingsFragment : Fragment() {
             dialog.dismiss()
             Toast.makeText(
                 requireContext(),
-                if (previousRating != null) "Sua avaliação foi atualizada!" else "Obrigado pela sua avaliação!",
+                if (previousRating != null)
+                    getString(R.string.rating_updated)
+                else
+                    getString(R.string.rating_submitted),
                 Toast.LENGTH_SHORT
             ).show()
         }

@@ -65,14 +65,14 @@ class ParkingListViewFragment : BaseFragment() {
         loadParkingStatistics(userId)
 
         if (viewModel.parkings.isEmpty()) {
-            loadParkingList(userId, viewModel.currentOffset, LIMIT)
+            loadParkingList(userId, viewModel.currentOffset, LIMIT, false)
         } else {
             setupRecyclerView(viewModel.parkings)
         }
 
         binding.buttonSeeMore.setOnClickListener {
             viewModel.currentOffset += LIMIT
-            loadParkingList(userId, viewModel.currentOffset, LIMIT)
+            loadParkingList(userId, viewModel.currentOffset, LIMIT, false)
         }
 
         binding.tabLayoutTimeFilter.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -98,6 +98,8 @@ class ParkingListViewFragment : BaseFragment() {
         super.onResume()
 
         val userId = UserSession.getInstance(requireContext()).userId
+
+        loadParkingList(userId, 0, viewModel.currentOffset + LIMIT, true)
 
         // Recarrega os dados quando retornar ao fragment
         Executors.newSingleThreadExecutor().execute {
@@ -131,7 +133,7 @@ class ParkingListViewFragment : BaseFragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun loadParkingList(userId: Long, offset: Int, limit: Int) {
+    private fun loadParkingList(userId: Long, offset: Int, limit: Int, forceRefresh: Boolean = false) {
         Executors.newSingleThreadExecutor().execute {
             if (userId == -1L) {
                 requireActivity().runOnUiThread {
@@ -147,20 +149,28 @@ class ParkingListViewFragment : BaseFragment() {
 
             val db = AppDatabase.getInstance(requireContext())
 
-            // Carrega apenas os NOVOS registros a partir do offset atual
-            val newParkings = db.parkingDao().getParkingsByUserIdWithLimit(userId, offset, limit)
+            val parkings = if (forceRefresh || offset == 0) {
+                // Se for forceRefresh ou primeira carga, obter todos os registros até o limite atual
+                db.parkingDao().getParkingsByUserIdWithLimit(userId, 0, offset + limit)
+            } else {
+                // Caso contrário, obter apenas os novos a partir do offset
+                db.parkingDao().getParkingsByUserIdWithLimit(userId, offset, limit)
+            }
 
             // Obtém o total de estacionamentos para este usuário
             val totalCount = db.parkingDao().getParkingCountByUserId(userId)
 
-            // Verifica se já carregamos todos os estacionamentos
-            val hasMoreItems = (offset + newParkings.size) < totalCount
-
             requireActivity().runOnUiThread {
                 if (!isAdded || _binding == null) return@runOnUiThread
 
-                // Adiciona apenas os novos estacionamentos
-                viewModel.parkings.addAll(newParkings)
+                if (forceRefresh || offset == 0) {
+                    // Se for atualização forçada ou primeira carga, substitui toda a lista
+                    viewModel.parkings.clear()
+                    viewModel.parkings.addAll(parkings)
+                } else {
+                    // Caso contrário, adiciona apenas os novos estacionamentos
+                    viewModel.parkings.addAll(parkings)
+                }
 
                 // Aplica o filtro atual
                 val selectedTab = binding.tabLayoutTimeFilter.selectedTabPosition
@@ -168,6 +178,11 @@ class ParkingListViewFragment : BaseFragment() {
                     0 -> applyFilter(TimeFilter.LAST_WEEK)
                     1 -> applyFilter(TimeFilter.LAST_MONTH)
                 }
+
+                // Atualiza a visibilidade do botão Ver Mais
+                binding.buttonSeeMore.visibility =
+                    if ((viewModel.currentOffset + viewModel.parkings.size) < totalCount)
+                        View.VISIBLE else View.GONE
             }
         }
     }
@@ -223,16 +238,12 @@ class ParkingListViewFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView(parkings: List<Parking>) {
-        adapter = ParkingListAdapter(parkings) { view ->
-            val position = binding.recyclerViewParkings.getChildAdapterPosition(view)
-            if (position != RecyclerView.NO_POSITION) {
-                val selectedParking = parkings[position]
-
-                val bundle = Bundle().apply {
-                    putSerializable("parking", selectedParking)
-                }
-                findNavController().navigate(R.id.parkingDetailViewFragmentHistory, bundle)
+        adapter = ParkingListAdapter(parkings) { selectedParking ->
+            // Aqui recebemos diretamente o Parking selecionado, sem precisar do índice
+            val bundle = Bundle().apply {
+                putSerializable("parking", selectedParking)
             }
+            findNavController().navigate(R.id.parkingDetailViewFragmentHistory, bundle)
         }
         binding.recyclerViewParkings.adapter = adapter
     }

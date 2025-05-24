@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA"
+    android:background="?attr/colorOnBackground"
     tools:context="pt.estga.spotme.ui.parking.ParkingListViewFragment"
     android:id="@+id/fragmentParkingListView">
 
@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -40,14 +41,14 @@
                         android:text="@string/parking_history_text"
                         android:textSize="28sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"
+                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_marginBottom="8dp"/>
 
                     <View
                         android:layout_width="80dp"
                         android:layout_height="3dp"
-                        android:background="#005792"
+                        android:background="@color/text_primary"
                         android:layout_gravity="center"
                         android:layout_marginBottom="8dp"/>
                 </LinearLayout>
@@ -59,17 +60,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayoutTimeFilter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabTextColor="#4A5568"
-                    app:tabSelectedTextColor="#005792"
-                    app:tabIndicatorColor="#005792"
+                    app:tabTextColor="@color/text_tertiary"
+                    app:tabSelectedTextColor="@color/text_primary"
+                    app:tabIndicatorColor="@color/text_primary"
                     app:tabMode="fixed"
-                    android:background="#FFFFFF"
+                    android:background="@color/card_background"
                     app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Button">
 
                     <com.google.android.material.tabs.TabItem
@@ -90,20 +92,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
-                
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp">
-                    
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="#E6F2FF"
+                        android:background="@color/icon_bg_blue"
                         android:padding="12dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="center"
@@ -114,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/total_text"
                             android:textSize="12sp"
-                            android:textColor="#4A5568"/>
+                            android:textColor="@color/text_tertiary"/>
 
                         <TextView
                             android:id="@+id/tv_total_parkings"
@@ -123,15 +126,15 @@
                             android:text="24"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
                     </LinearLayout>
-                    
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="#E6F2FF"
+                        android:background="@color/icon_bg_blue"
                         android:padding="12dp"
                         android:gravity="center"
                         android:elevation="1dp">
@@ -141,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/average_time_text"
                             android:textSize="12sp"
-                            android:textColor="#4A5568"/>
+                            android:textColor="@color/text_tertiary"/>
 
                         <TextView
                             android:id="@+id/tv_avg_time"
@@ -150,7 +153,7 @@
                             android:text="1h 45m"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -162,7 +165,8 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -175,7 +179,7 @@
                         android:text="@string/parking_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"
+                        android:textColor="@color/text_primary"
                         android:padding="16dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -193,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:text="Nenhum estacionamento recente"
                         android:textSize="16sp"
-                        android:textColor="#757575"
+                        android:textColor="@color/text_secondary"
                         android:gravity="center"
                         android:padding="32dp"
                         android:visibility="gone"/>
@@ -207,15 +211,15 @@
                 android:layout_height="60dp"
                 android:text="@string/see_more_text"
                 android:textAllCaps="false"
-                android:backgroundTint="#005792"
+                android:backgroundTint="@color/button_primary"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_navigation"
                 app:iconGravity="textStart"
-                app:iconTint="#FFFFFF"/>
+                app:iconTint="@color/white"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    
+
     <!-- Botão Flutuante para Adicionar Novo Estacionamento -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddParking"
@@ -224,10 +228,10 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="#FFFFFF"
-        android:backgroundTint="#005792"
+        app:tint="@color/white"
+        android:backgroundTint="@color/button_primary"
         app:fabSize="normal"
         app:borderWidth="0dp"
         app:elevation="6dp" />
-        
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

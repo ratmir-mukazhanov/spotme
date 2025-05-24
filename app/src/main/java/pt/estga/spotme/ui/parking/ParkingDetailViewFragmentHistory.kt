@@ -238,20 +238,20 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
     }
 
     private fun deleteParking() {
-        android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Eliminar estacionamento")
-            .setMessage("Tens a certeza que pretendes eliminar este estacionamento?")
-            .setPositiveButton("Sim") { _, _ ->
+        android.app.AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+            .setTitle(getString(R.string.delete_parking_title))
+            .setMessage(getString(R.string.delete_parking_message))
+            .setPositiveButton(getString(R.string.delete_yes)) { _, _ ->
                 Executors.newSingleThreadExecutor().execute {
                     parkingDao.delete(parking)
                     requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Estacionamento eliminado com sucesso", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.delete_success), Toast.LENGTH_SHORT).show()
                         val navController = findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
                         navController.navigate(R.id.nav_parking_history)
                     }
                 }
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.delete_cancel), null)
             .show()
     }
 

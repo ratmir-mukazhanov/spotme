@@ -10,5 +10,15 @@
     <color name="chip_active">#4CAF50</color>
     <color name="chip_inactive">#F44336</color>
     <color name="chip_neutral">#9E9E9E</color>
+    <color name="background_app">#F5F7FA</color>
 
+    <!-- Novas cores para o tema -->
+    <color name="text_primary">#005792</color>
+    <color name="text_secondary">#7E7E7E</color>
+    <color name="text_tertiary">#5F6368</color>
+    <color name="icon_bg_blue">#E0EFFF</color>
+    <color name="icon_bg_orange">#FFE8E0</color>
+    <color name="button_primary">#005792</color>
+    <color name="button_secondary">#FF7D45</color>
+    <color name="card_background">#FFFFFF</color>
 </resources>

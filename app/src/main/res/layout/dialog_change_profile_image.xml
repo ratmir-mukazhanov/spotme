@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_rounded_background"
+    android:backgroundTint="@color/card_background"
     android:padding="24dp">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/update_photo_profile_text"
-        android:textColor="#1976D2"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="#E0E0E0"
+        android:background="@color/text_tertiary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDialogTitle" />
@@ -47,14 +48,14 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_camera"
-            app:tint="#212121" />
+            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/take_photo_text"
-            android:textColor="#212121"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -78,14 +79,14 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_gallery"
-            app:tint="#212121" />
+            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/choose_galeria_text"
-            android:textColor="#212121"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -109,14 +110,14 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_delete"
-            app:tint="#F44336" />
+            app:tint="@color/chip_inactive" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/delete_photo_text"
-            android:textColor="#F44336"
+            android:textColor="@color/chip_inactive"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -128,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/cancel_text"
-        android:textColor="#757575"
+        android:textColor="@color/text_tertiary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutRemove" />

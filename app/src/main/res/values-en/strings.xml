@@ -144,8 +144,8 @@
     <string name="reminder_message">There are %1$d minute(s) left before parking expires!</string>
     <string name="settings2_text">Settings</string>
     <string name="lang_text">Language</string>
-    <string name="darkMode_text">Dark Mode</string>
     <string name="notifications_text">Notifications</string>
+    <string name="darkmode_text">Dark Mode</string>
     <string name="activate_notifications_text">Enable Notifications</string>
     <string name="location_service_text">Location Services</string>
     <string name="data_privacy_text">Privacy and Data</string>
@@ -157,4 +157,51 @@
     <string name="parking_add_text">Add Parking</string>
     <string name="parking_details_text">Parking Details</string>
     <string name="parking_route_text">Route to Parking</string>
+    <string name="language_change_title">Language Change</string>
+    <string name="language_change_message">The app needs to restart to apply the new language. Would you like to restart now?</string>
+    <string name="restart_now">Restart Now</string>
+    <string name="or_text">Or</string>
+    <string name="encontrar_meu_veiculo">Find my vehicle</string>
+    <string name="choose_start_time">Choose Start Time</string>
+    <string name="start_time_not_selected">Start time: Not selected</string>
+    <string name="allowed_duration">Allowed duration</string>
+    <string name="minutes">minutes</string>
+    <!-- Strings for ParkingListAdapter -->
+    <string name="duration_format_hours">Duration: %1$dh %2$dmin</string>
+    <string name="duration_format_minutes">Duration: %1$dmin</string>
+    <string name="duration_undefined">Duration: Not Defined</string>
+    <string name="status_no_timer">No Timer</string>
+    <string name="status_active">Active</string>
+    <string name="status_completed">Completed</string>
+    <!-- Strings for delete parking dialog -->
+    <string name="delete_parking_title">Delete parking</string>
+    <string name="delete_parking_message">Are you sure you want to delete this parking?</string>
+    <string name="delete_yes">Yes</string>
+    <string name="delete_cancel">Cancel</string>
+    <string name="delete_success">Parking successfully deleted</string>
+    <!-- Strings for location dialog -->
+    <string name="revoke_location_title">Revoke location permissions</string>
+    <string name="revoke_location_message">For better security, we recommend revoking location permissions in app settings. Would you like to do this now?</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="location_restricted_app">Location access has been restricted within the app only</string>
+    <string name="location_permission_error">Could not open permission settings</string>
+    <string name="location_access_enabled">Location access allowed in the app</string>
+    <!-- Strings for delete history dialog -->
+    <string name="delete_history_title">Delete History</string>
+    <string name="delete_history_message">Are you sure you want to delete your entire parking history? This action cannot be undone.</string>
+    <string name="delete_button">Delete</string>
+    <string name="delete_history_success">History successfully deleted! %1$d records removed.</string>
+    <string name="delete_history_error">Error deleting history: %1$s</string>
+    <!-- Strings for rating replacement dialog -->
+    <string name="existing_rating_title">Existing Rating</string>
+    <string name="existing_rating_message">You\'ve already rated the app with %1$.1f stars. Would you like to update your rating?</string>
+    <string name="update_rating_button">Update</string>
+    <string name="rating_updated">Your rating has been updated!</string>
+    <string name="rating_submitted">Thank you for your rating!</string>
+    <string name="rating_message_bad">We\'re sorry you\'re not satisfied</string>
+    <string name="rating_message_neutral">Thank you for your feedback</string>
+    <string name="rating_message_good">Thank you for your excellent rating!</string>
+    <!-- Strings for notifications -->
+    <string name="notifications_enabled">Notifications enabled</string>
+    <string name="notifications_disabled">Notifications disabled</string>
 </resources>

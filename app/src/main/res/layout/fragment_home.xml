@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F8FAFF"
+    android:background="?attr/colorOnBackground"
     tools:openDrawer="start">
 
     <androidx.core.widget.NestedScrollView
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hi_text"
                     android:textSize="16sp"
-                    android:textColor="#7E7E7E"
+                    android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium"/>
 
                 <TextView
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/where_car_text"
                     android:textSize="28sp"
-                    android:textColor="#005792"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"/>
             </LinearLayout>
@@ -56,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -75,8 +76,9 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:padding="12dp"
-                            android:background="#E0EFFF"
+                            android:background="@color/icon_bg_blue"
                             app:srcCompat="@drawable/ic_location"
+                            app:tint="@color/text_primary"
                             app:shapeAppearanceOverlay="@style/circleImageView"/>
 
                         <TextView
@@ -86,7 +88,7 @@
                             android:layout_marginStart="16dp"
                             android:text="@string/set_location_car_text"
                             android:textSize="20sp"
-                            android:textColor="#005792"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -105,7 +107,7 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/mark_description_location_car_text"
                         android:textSize="14sp"
-                        android:textColor="#5F6368"/>
+                        android:textColor="@color/text_tertiary"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/setLocationButton"
@@ -113,9 +115,9 @@
                         android:layout_height="56dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/set_short_location_car_text"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/white"
                         app:cornerRadius="12dp"
-                        android:backgroundTint="#005792"/>
+                        android:backgroundTint="@color/button_primary"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -124,7 +126,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,8 +146,9 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:padding="12dp"
-                            android:background="#FFE8E0"
+                            android:background="@color/icon_bg_orange"
                             app:srcCompat="@drawable/ic_car"
+                            app:tint="@color/text_primary"
                             app:shapeAppearanceOverlay="@style/circleImageView"/>
 
                         <TextView
@@ -152,9 +156,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="Encontrar o meu Veículo"
+                            android:text="@string/encontrar_meu_veiculo"
                             android:textSize="20sp"
-                            android:textColor="#005792"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -173,7 +177,7 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/find_description_car_text"
                         android:textSize="14sp"
-                        android:textColor="#5F6368"/>
+                        android:textColor="@color/text_tertiary"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/findMyCarButton"
@@ -181,9 +185,9 @@
                         android:layout_height="56dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/find_car_text"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/white"
                         app:cornerRadius="12dp"
-                        android:backgroundTint="#FF7D45"/>
+                        android:backgroundTint="@color/button_secondary"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

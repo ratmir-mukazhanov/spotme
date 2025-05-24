@@ -37,4 +37,13 @@
         <item name="android:windowMinWidthMinor">90%</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="CustomAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <!-- Cor do texto dos botões positivos (como "Atualizar") -->
+        <item name="colorPrimary">@color/text_primary</item>
+        <!-- Cor do texto dos botões negativos (como "Cancelar") -->
+        <item name="colorSurface">@color/text_secondary</item>
+        <!-- Cor de fundo do diálogo -->
+        <item name="android:background">@color/card_background</item>
+    </style>
 </resources>

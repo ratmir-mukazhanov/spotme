@@ -5,14 +5,15 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="8dp">
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
-        android:background="@android:color/white">
+        android:background="@color/card_background">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:text="@string/update_email_text"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/primary_text_light" />
+                android:textColor="@color/text_primary" />
 
             <ImageButton
                 android:id="@+id/btnClose"
@@ -34,7 +35,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:contentDescription="Close"
-                app:tint="@android:color/darker_gray" />
+                app:tint="@color/text_tertiary" />
         </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -42,13 +43,16 @@
             android:layout_height="wrap_content"
             android:hint="@string/insert_email_text"
             android:layout_marginTop="16dp"
+            app:boxStrokeColor="@color/input_box_stroke_color"
+            app:hintTextColor="@color/input_hint_text_color"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNewEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/text_primary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +72,8 @@
                 android:paddingVertical="12dp"
                 android:layout_marginEnd="8dp"
                 app:cornerRadius="8dp"
+                app:strokeColor="@color/text_tertiary"
+                android:textColor="@color/text_primary"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             <com.google.android.material.button.MaterialButton
@@ -79,6 +85,8 @@
                 android:textAllCaps="false"
                 android:paddingVertical="12dp"
                 android:layout_marginStart="8dp"
+                android:backgroundTint="@color/button_primary"
+                android:textColor="@color/white"
                 app:cornerRadius="8dp" />
 
         </LinearLayout>

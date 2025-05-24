@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#1A1A2E</color>
+    <color name="purple_500">#004576</color>
+    <color name="purple_700">#001F3F</color>
+    <color name="teal_200">#2F4550</color>
+    <color name="teal_700">#1E272E</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="chip_active">#388E3C</color>
+    <color name="chip_inactive">#C62828</color>
+    <color name="chip_neutral">#616161</color>
+    <color name="background_app">#121212</color>
+
+    <!-- Novas cores para o tema escuro -->
+    <color name="text_primary">#81D4FA</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="text_tertiary">#9AA0A6</color>
+    <color name="icon_bg_blue">#0D3B69</color>
+    <color name="icon_bg_orange">#802200</color>
+    <color name="button_primary">#0277BD</color>
+    <color name="button_secondary">#E64A19</color>
+    <color name="card_background">#1E1E1E</color>
+</resources>

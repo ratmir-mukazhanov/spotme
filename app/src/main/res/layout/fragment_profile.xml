@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA"
+    android:background="?attr/colorOnBackground"
     android:fillViewport="true">
 
     <LinearLayout
@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +33,7 @@
                     android:layout_height="40dp"
                     android:src="@drawable/ic_default_profile"
                     android:layout_marginEnd="16dp"
-                    app:tint="#005792" />
+                    app:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:text="@string/my_account_text"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#005792"/>
+                    android:textColor="@color/text_primary"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -50,7 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,7 +71,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/ic_default_profile"
-                        app:civ_border_color="#005792"
+                        app:civ_border_color="@color/text_primary"
                         app:civ_border_width="3dp" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -79,8 +81,8 @@
                         android:layout_gravity="bottom|end"
                         android:src="@drawable/ic_camera"
                         app:fabSize="mini"
-                        app:backgroundTint="#005792"
-                        app:tint="#FFFFFF" />
+                        app:backgroundTint="@color/button_primary"
+                        app:tint="@color/white" />
                 </FrameLayout>
 
                 <TextView
@@ -90,7 +92,7 @@
                     android:text="Aurélio da Silva"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#005792"
+                    android:textColor="@color/text_primary"
                     android:layout_marginTop="16dp"/>
 
                 <TextView
@@ -99,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="aureliosilva@gmail.com"
                     android:textSize="14sp"
-                    android:textColor="#4A5568"
+                    android:textColor="@color/text_secondary"
                     android:layout_marginTop="4dp"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -110,7 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,7 +132,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
@@ -137,7 +140,7 @@
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_myplaces"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -146,7 +149,7 @@
                         android:text="@string/info_personal_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Nome Field -->
@@ -162,7 +165,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/name_text"
                         android:textSize="14sp"
-                        android:textColor="#4A5568"
+                        android:textColor="@color/text_tertiary"
                         android:layout_marginBottom="8dp"/>
 
                     <LinearLayout
@@ -170,6 +173,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="@drawable/rounded_background"
+                        android:backgroundTint="@color/icon_bg_blue"
                         android:padding="12dp"
                         android:gravity="center_vertical">
 
@@ -180,14 +184,14 @@
                             android:layout_height="wrap_content"
                             android:text="Aurélio da Silva"
                             android:textSize="16sp"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
 
                         <ImageView
                             android:id="@+id/ivEditNome"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_edit"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -204,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/phone_short_text"
                         android:textSize="14sp"
-                        android:textColor="#4A5568"
+                        android:textColor="@color/text_tertiary"
                         android:layout_marginBottom="8dp"/>
 
                     <LinearLayout
@@ -212,6 +216,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="@drawable/rounded_background"
+                        android:backgroundTint="@color/icon_bg_blue"
                         android:padding="12dp"
                         android:gravity="center_vertical">
 
@@ -222,14 +227,14 @@
                             android:layout_height="wrap_content"
                             android:text="912 345 678"
                             android:textSize="16sp"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
 
                         <ImageView
                             android:id="@+id/ivEditTelemovel"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_edit"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -245,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/email_text"
                         android:textSize="14sp"
-                        android:textColor="#4A5568"
+                        android:textColor="@color/text_tertiary"
                         android:layout_marginBottom="8dp"/>
 
                     <LinearLayout
@@ -253,6 +258,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="@drawable/rounded_background"
+                        android:backgroundTint="@color/icon_bg_blue"
                         android:padding="12dp"
                         android:gravity="center_vertical">
 
@@ -263,14 +269,14 @@
                             android:layout_height="wrap_content"
                             android:text="aureliosilva@gmail.com"
                             android:textSize="16sp"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
 
                         <ImageView
                             android:id="@+id/ivEditEmail"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_edit"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -282,7 +288,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -301,7 +308,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardCornerRadius="20dp"
-                        app:cardBackgroundColor="#E6F2FF"
+                        app:cardBackgroundColor="@color/icon_bg_blue"
                         android:layout_marginEnd="12dp">
 
                         <ImageView
@@ -309,7 +316,7 @@
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_manage"
                             android:layout_gravity="center"
-                            app:tint="#005792"/>
+                            app:tint="@color/text_primary"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -318,7 +325,7 @@
                         android:text="@string/account_actions_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Password Action -->
@@ -328,6 +335,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
                     android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
@@ -339,7 +347,7 @@
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_lock_idle_lock"
                         android:layout_marginEnd="16dp"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
 
                     <TextView
                         android:id="@+id/tvChangePassword"
@@ -348,13 +356,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/change_password_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Stats Action -->
@@ -364,6 +372,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_background"
+                    android:backgroundTint="@color/icon_bg_blue"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:clickable="true"
@@ -374,7 +383,7 @@
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_recent_history"
                         android:layout_marginEnd="16dp"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
 
                     <TextView
                         android:id="@+id/tvPersonalStats"
@@ -383,13 +392,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/personal_statistics_text"
                         android:textSize="16sp"
-                        android:textColor="#005792"/>
+                        android:textColor="@color/text_primary"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#005792"/>
+                        app:tint="@color/text_primary"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -400,9 +409,10 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:strokeColor="#F44336"
+            app:strokeColor="@color/chip_inactive"
             app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:id="@+id/cardDeleteAccount"
@@ -419,7 +429,7 @@
                     android:layout_height="24dp"
                     android:src="@drawable/ic_delete"
                     android:layout_marginEnd="16dp"
-                    app:tint="#F44336"/>
+                    app:tint="@color/chip_inactive"/>
 
                 <TextView
                     android:id="@+id/tvDeleteAccount"
@@ -428,7 +438,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/delete_account_text"
                     android:textSize="16sp"
-                    android:textColor="#F44336"/>
+                    android:textColor="@color/chip_inactive"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="?attr/colorOnBackground">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -37,14 +38,14 @@
                         android:text="@string/my_parking_text"
                         android:textSize="28sp"
                         android:textStyle="bold"
-                        android:textColor="#005792"
+                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_marginBottom="8dp"/>
 
                     <View
                         android:layout_width="80dp"
                         android:layout_height="3dp"
-                        android:background="#005792"
+                        android:background="@color/text_primary"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"/>
 
@@ -53,13 +54,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/share_text"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/white"
                         android:layout_gravity="center"
                         app:icon="@android:drawable/ic_menu_share"
-                        app:iconTint="#FFFFFF"
+                        app:iconTint="@color/white"
                         app:cornerRadius="24dp"
                         android:paddingHorizontal="24dp"
-                        android:backgroundTint="#005792"/>
+                        android:backgroundTint="@color/button_primary"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -73,9 +74,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:padding="24dp"
-                android:textColor="#005792"
+                android:textColor="@color/text_primary"
                 android:background="@drawable/rounded_background"
-                android:backgroundTint="#E6F2FF"
+                android:backgroundTint="@color/icon_bg_blue"
                 android:layout_marginBottom="16dp"
                 android:visibility="gone"/>
 
@@ -88,7 +89,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="3dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#D0E1F9">
+                app:strokeColor="@color/icon_bg_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                         android:text="@string/remaining_time_text"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:id="@+id/tv_timer"
@@ -115,7 +116,7 @@
                         android:textStyle="bold"
                         android:layout_marginTop="16dp"
                         android:fontFamily="sans-serif-light"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:id="@+id/tv_timer_warning"
@@ -134,7 +135,7 @@
                         app:indicatorSize="200dp"
                         app:trackThickness="8dp"
                         app:trackColor="#80FFFFFF"
-                        app:indicatorColor="#FFFFFF"
+                        app:indicatorColor="@color/white"
                         android:progress="70"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -146,7 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -165,7 +167,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             app:cardCornerRadius="20dp"
-                            app:cardBackgroundColor="#E6F2FF"
+                            app:cardBackgroundColor="@color/icon_bg_blue"
                             android:layout_marginEnd="12dp">
 
                             <ImageView
@@ -173,7 +175,7 @@
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_location"
                                 android:layout_gravity="center"
-                                app:tint="#005792"/>
+                                app:tint="@color/text_primary"/>
                         </com.google.android.material.card.MaterialCardView>
 
                         <TextView
@@ -183,7 +185,7 @@
                             android:text="@string/data_parking_text"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -198,7 +200,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:background="#E6F2FF"
+                            android:background="@color/icon_bg_blue"
                             android:padding="12dp"
                             android:layout_marginEnd="8dp"
                             android:gravity="center"
@@ -209,7 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/start_time_text"
                                 android:textSize="12sp"
-                                android:textColor="#4A5568"/>
+                                android:textColor="@color/text_tertiary"/>
 
                             <TextView
                                 android:id="@+id/tv_start_time"
@@ -218,7 +220,7 @@
                                 android:text="17:00h"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                android:textColor="#005792"/>
+                                android:textColor="@color/text_primary"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -226,7 +228,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:background="#E6F2FF"
+                            android:background="@color/icon_bg_blue"
                             android:padding="12dp"
                             android:layout_marginStart="8dp"
                             android:gravity="center"
@@ -237,7 +239,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/end_time_text"
                                 android:textSize="12sp"
-                                android:textColor="#4A5568"/>
+                                android:textColor="@color/text_tertiary"/>
 
                             <TextView
                                 android:id="@+id/tv_end_time"
@@ -246,7 +248,7 @@
                                 android:text="17:45h"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                android:textColor="#005792"/>
+                                android:textColor="@color/text_primary"/>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -265,7 +267,7 @@
                             app:boxCornerRadiusTopEnd="8dp"
                             app:boxCornerRadiusBottomStart="8dp"
                             app:boxCornerRadiusBottomEnd="8dp"
-                            app:boxStrokeColor="#005792">
+                            app:boxStrokeColor="@color/text_primary">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_notes"
@@ -274,7 +276,7 @@
                                 android:hint="@string/notes_text"
                                 android:text="Estacionei ao pé do McDonald's em frente ao símbolo da CarVertical"
                                 android:enabled="false"
-                                android:textColor="#4A5568"/>
+                                android:textColor="@color/text_tertiary"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -287,7 +289,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -305,7 +308,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             app:cardCornerRadius="20dp"
-                            app:cardBackgroundColor="#E6F2FF"
+                            app:cardBackgroundColor="@color/icon_bg_blue"
                             android:layout_marginEnd="12dp">
 
                             <ImageView
@@ -313,7 +316,7 @@
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_location"
                                 android:layout_gravity="center"
-                                app:tint="#005792"/>
+                                app:tint="@color/text_primary"/>
                         </com.google.android.material.card.MaterialCardView>
 
                         <TextView
@@ -323,18 +326,18 @@
                             android:text="@string/coordinates_text"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#005792"/>
+                            android:textColor="@color/text_primary"/>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_copy_coordinates"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             app:icon="@drawable/ic_copy"
-                            app:iconTint="#005792"
+                            app:iconTint="@color/text_primary"
                             android:text="@string/copy_text"
-                            android:textColor="#005792"
+                            android:textColor="@color/text_primary"
                             app:cornerRadius="20dp"
-                            android:backgroundTint="#E6F2FF"
+                            android:backgroundTint="@color/icon_bg_blue"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                     </LinearLayout>
 
@@ -345,9 +348,9 @@
                         android:text="Latitude: 40.6412\nLongitude: -8.65362"
                         android:layout_marginTop="12dp"
                         android:textSize="16sp"
-                        android:background="#E6F2FF"
+                        android:background="@color/icon_bg_blue"
                         android:padding="12dp"
-                        android:textColor="#4A5568"/>
+                        android:textColor="@color/text_tertiary"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -365,12 +368,12 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/see_photo_text"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     app:icon="@drawable/ic_photo"
                     app:iconGravity="textStart"
-                    app:iconTint="#FFFFFF"
+                    app:iconTint="@color/white"
                     app:cornerRadius="12dp"
-                    android:backgroundTint="#005792"/>
+                    android:backgroundTint="@color/button_primary"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_route"
@@ -379,12 +382,12 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/directions_text"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     app:icon="@drawable/ic_navigation"
                     app:iconGravity="textStart"
-                    app:iconTint="#FFFFFF"
+                    app:iconTint="@color/white"
                     app:cornerRadius="12dp"
-                    android:backgroundTint="#005792"/>
+                    android:backgroundTint="@color/button_primary"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

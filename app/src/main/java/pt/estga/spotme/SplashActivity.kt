@@ -1,6 +1,7 @@
 package pt.estga.spotme
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -38,5 +39,11 @@ class SplashActivity : AppCompatActivity() {
 
         startActivity(Intent(this, destinationActivity))
         finish()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val langCode = pt.estga.spotme.ui.MyApp.languageCode
+        val context = pt.estga.spotme.utils.LocaleHelper.setLocale(newBase, langCode)
+        super.attachBaseContext(context)
     }
 }
