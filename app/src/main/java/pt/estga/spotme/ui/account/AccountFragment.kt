@@ -111,36 +111,60 @@ class AccountFragment : Fragment() {
 
             btnSave.setOnClickListener {
                 val newName = etNewName.text.toString().trim()
-                if (newName.isNotEmpty()) {
-                    userSession!!.userName = newName
-                    tvNome.text = newName
-                    tvNomeField.text = newName
 
-                    Thread {
-                        userDAO!!.updateNome(newName, userSession!!.userId)
-                    }.start()
-
-                    // Atualiza o ViewModel
-                    val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-                    userViewModel.updateUser(
-                        newName,
-                        userSession!!.userEmail,
-                        userSession!!.userProfileImage
-                    )
-
+                // Validação para verificar se o nome está vazio
+                if (newName.isEmpty()) {
                     Toast.makeText(
                         requireContext(),
-                        "Nome atualizado com sucesso",
+                        getString(R.string.name_empty_error),
                         Toast.LENGTH_SHORT
                     ).show()
-                    alertDialog.dismiss()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "O nome não pode estar vazio",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    return@setOnClickListener
                 }
+
+                // Validação para verificar se o nome tem pelo menos 2 caracteres
+                if (newName.length < 2) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.name_too_short),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                // Validação para verificar se o nome contém apenas letras e espaços
+                if (!newName.matches(Regex("^[\\p{L} ]+$"))) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.name_invalid_chars),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                // Se passar por todas as validações, atualizamos o nome
+                userSession!!.userName = newName
+                tvNome.text = newName
+                tvNomeField.text = newName
+
+                Thread {
+                    userDAO!!.updateNome(newName, userSession!!.userId)
+                }.start()
+
+                // Atualiza o ViewModel
+                val userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+                userViewModel.updateUser(
+                    newName,
+                    userSession!!.userEmail,
+                    userSession!!.userProfileImage
+                )
+
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.name_updated),
+                    Toast.LENGTH_SHORT
+                ).show()
+                alertDialog.dismiss()
             }
 
             buttonClose.setOnClickListener { view: View? -> alertDialog.dismiss() }
@@ -179,7 +203,7 @@ class AccountFragment : Fragment() {
                                 tvEmailField.text = newEmail
                                 Toast.makeText(
                                     requireContext(),
-                                    "Email atualizado com sucesso",
+                                    getString(R.string.email_updated_successfully),
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -197,7 +221,7 @@ class AccountFragment : Fragment() {
                             requireActivity().runOnUiThread {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Este email já está registado",
+                                    getString(R.string.email_already_registered),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -206,7 +230,7 @@ class AccountFragment : Fragment() {
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Por favor, insere um email válido",
+                        getString(R.string.email_invalid),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -235,29 +259,41 @@ class AccountFragment : Fragment() {
             etNewPhone.setText(userSession!!.userPhone)
 
             btnSave.setOnClickListener { view: View? ->
-                val newPhone = etNewPhone.text.toString().trim { it <= ' ' }
-                if (!newPhone.isEmpty()) {
-                    userSession!!.userPhone = newPhone
-                    tvTelemovel.text = newPhone
-                    Thread {
-                        userDAO!!.updatePhone(newPhone, userSession!!.userId)
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(
-                                requireContext(),
-                                "Número de telefone atualizado com sucesso",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            alertDialog.dismiss()
-                        }
-                    }.start()
-                } else {
+                val newPhone = etNewPhone.text.toString().trim()
+
+                if (newPhone.isEmpty()) {
                     Toast.makeText(
                         requireContext(),
-                        "O número de telefone não pode estar vazio",
+                        getString(R.string.phone_empty_error),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
+                    return@setOnClickListener
                 }
+
+                // Validar formato do número de telefone usando regex
+                // Aceita formatos como: +351 123456789, 351123456789, 123456789
+                if (!newPhone.matches(Regex("^(\\+?\\d{1,3}\\s?)?\\d{9}\$"))) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.phone_invalid_format),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                userSession!!.userPhone = newPhone
+                tvTelemovel.text = newPhone
+                Thread {
+                    userDAO!!.updatePhone(newPhone, userSession!!.userId)
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.phone_updated),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        alertDialog.dismiss()
+                    }
+                }.start()
             }
 
             btnCancel.setOnClickListener { view: View? -> alertDialog.dismiss() }
@@ -314,43 +350,100 @@ class AccountFragment : Fragment() {
         alertDialog.show()
 
         btnSave.setOnClickListener { view: View? ->
-            val currentPassword = etCurrentPassword.text.toString().trim { it <= ' ' }
-            val newPassword = etNewPassword.text.toString().trim { it <= ' ' }
-            val confirmPassword = etConfirmPassword.text.toString().trim { it <= ' ' }
+            val currentPassword = etCurrentPassword.text.toString().trim()
+            val newPassword = etNewPassword.text.toString().trim()
+            val confirmPassword = etConfirmPassword.text.toString().trim()
+
+            // Verificação de campos vazios
             if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(requireContext(), "Os campos não podem estar vazios", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (currentPassword != userSession!!.userPassword) {
                 Toast.makeText(
                     requireContext(),
-                    "Senha atual incorreta, tente novamente",
+                    getString(R.string.password_empty_error),
                     Toast.LENGTH_SHORT
                 ).show()
-            } else if (newPassword == confirmPassword) {
-                val hashedPassword = PasswordUtils.hashPassword(newPassword)
-                Thread {
-                    userDAO!!.updatePassword(hashedPassword, userSession!!.userId)
-                    requireActivity().runOnUiThread {
+                return@setOnClickListener
+            }
+
+            // Verificação do tamanho mínimo da senha
+            if (newPassword.length < 6) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.password_too_short),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Verificação se a senha contém pelo menos um número
+            if (!newPassword.any { it.isDigit() }) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.password_must_have_number),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Verificação se a senha contém pelo menos uma letra
+            if (!newPassword.any { it.isLetter() }) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.password_must_have_letter),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Verificação se as senhas novas coincidem
+            if (newPassword != confirmPassword) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.password_no_match),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Verificar a senha atual no banco de dados
+            Thread {
+                val user = userDAO!!.getById(userSession!!.userId.toInt())
+                val isPasswordCorrect = user?.let {
+                    PasswordUtils.verifyPassword(currentPassword, it.password)
+                } ?: false
+
+                requireActivity().runOnUiThread {
+                    if (isPasswordCorrect) {
+                        // Se a senha atual estiver correta, atualiza para a nova senha
+                        val hashedPassword = PasswordUtils.hashPassword(newPassword)
+                        Thread {
+                            userDAO!!.updatePassword(hashedPassword, userSession!!.userId)
+                            requireActivity().runOnUiThread {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.password_updated),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                alertDialog.dismiss()
+                                // ir para a tela de login
+                                userSession!!.clearSession()
+                                val intent = Intent(
+                                    requireContext(),
+                                    LoginActivity::class.java
+                                )
+                                startActivity(intent)
+                                requireActivity().finish()
+                            }
+                        }.start()
+                    } else {
+                        // Senha atual incorreta
                         Toast.makeText(
                             requireContext(),
-                            "Password atualizada com sucesso",
+                            getString(R.string.password_incorrect),
                             Toast.LENGTH_SHORT
                         ).show()
-                        alertDialog.dismiss()
-                        // ir para a tela de login
-                        userSession!!.clearSession()
-                        val intent = Intent(
-                            requireContext(),
-                            LoginActivity::class.java
-                        )
-                        startActivity(intent)
-                        requireActivity().finish()
                     }
-                }.start()
-            } else {
-                Toast.makeText(requireContext(), "As senhas não coincidem", Toast.LENGTH_SHORT)
-                    .show()
-            }
+                }
+            }.start()
         }
 
         btnClose.setOnClickListener { view: View? -> alertDialog.dismiss() }
@@ -415,7 +508,7 @@ class AccountFragment : Fragment() {
 
                     Toast.makeText(
                         requireContext(),
-                        "Imagem de perfil removida",
+                        getString(R.string.profile_image_removed),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -446,34 +539,49 @@ class AccountFragment : Fragment() {
         btnDelete.setOnClickListener { view1: View? ->
             val password = etPassword.text.toString().trim { it <= ' ' }
             if (password.isEmpty()) {
-                Toast.makeText(requireContext(), "A senha não pode estar vazia", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (password != userSession!!.userPassword) {
                 Toast.makeText(
                     requireContext(),
-                    "Senha incorreta, tente novamente",
+                    getString(R.string.password_empty),
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
             } else {
+                // Iniciar uma thread para verificar a senha no banco de dados
                 Thread {
-                    userDAO!!.delete(userSession!!.userId)
+                    val user = userDAO!!.getById(userSession!!.userId.toInt())
+                    val isPasswordCorrect = user?.let {
+                        PasswordUtils.verifyPassword(password, it.password)
+                    } ?: false
+
                     requireActivity().runOnUiThread {
-                        Toast.makeText(
-                            requireContext(),
-                            "Conta apagada com sucesso",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        alertDialog.dismiss()
-                        // ir para a tela de login
-                        userSession!!.clearSession()
-                        val intent = Intent(
-                            requireContext(),
-                            LoginActivity::class.java
-                        )
-                        startActivity(intent)
-                        requireActivity().finish()
+                        if (isPasswordCorrect) {
+                            // Senha correta, exclui a conta
+                            Thread {
+                                userDAO!!.delete(userSession!!.userId)
+                                requireActivity().runOnUiThread {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.account_deleted),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    alertDialog.dismiss()
+                                    // ir para a tela de login
+                                    userSession!!.clearSession()
+                                    val intent = Intent(
+                                        requireContext(),
+                                        LoginActivity::class.java
+                                    )
+                                    startActivity(intent)
+                                    requireActivity().finish()
+                                }
+                            }.start()
+                        } else {
+                            // Senha incorreta
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.password_incorrect_delete),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }.start()
             }

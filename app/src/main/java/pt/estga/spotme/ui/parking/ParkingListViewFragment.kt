@@ -71,9 +71,24 @@ class ParkingListViewFragment : BaseFragment() {
         }
 
         binding.buttonSeeMore.setOnClickListener {
-            viewModel.currentOffset += LIMIT
-            loadParkingList(userId, viewModel.currentOffset, LIMIT, false)
+            val userId = UserSession.getInstance(requireContext()).userId
+            val totalLoaded = viewModel.parkings.size
+
+            Executors.newSingleThreadExecutor().execute {
+                val db = AppDatabase.getInstance(requireContext())
+                val totalCount = db.parkingDao().getParkingCountByUserId(userId)
+
+                requireActivity().runOnUiThread {
+                    if (totalLoaded >= totalCount) {
+                        Toast.makeText(requireContext(), R.string.nothing_to_view, Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.currentOffset += LIMIT
+                        loadParkingList(userId, viewModel.currentOffset, LIMIT, false)
+                    }
+                }
+            }
         }
+
 
         binding.tabLayoutTimeFilter.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -140,7 +155,7 @@ class ParkingListViewFragment : BaseFragment() {
                     if (!isAdded || _binding == null) return@runOnUiThread
                     Toast.makeText(
                         requireContext(),
-                        "Utilizador não autenticado",
+                        R.string.user_not_authenticated,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

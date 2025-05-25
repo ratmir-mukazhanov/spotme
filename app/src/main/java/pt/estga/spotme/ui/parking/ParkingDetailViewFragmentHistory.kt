@@ -187,13 +187,24 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         alertDialog.show()
 
         btnSaveName.setOnClickListener {
-            val newName = etEditName.text.toString()
+            val newName = etEditName.text.toString().trim()
+
+            if (newName.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.parking_name_empty_error), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (newName.length < 3) {
+                Toast.makeText(requireContext(), getString(R.string.parking_name_too_short), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             parking.title = newName
             Executors.newSingleThreadExecutor().execute {
                 parkingDao.update(parking)
                 requireActivity().runOnUiThread {
                     binding.tvTitle.text = newName
-                    Toast.makeText(requireContext(), "Nome atualizado com sucesso", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.parking_name_updated), Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
                 }
             }
@@ -230,7 +241,7 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
                 parkingDao.update(parking)
                 requireActivity().runOnUiThread {
                     binding.etNotes.setText(newNotes)
-                    Toast.makeText(requireContext(), "Notas atualizadas com sucesso", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.notes_updated_successfully), Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
                 }
             }

@@ -204,4 +204,43 @@
     <!-- Strings for notifications -->
     <string name="notifications_enabled">Notifications enabled</string>
     <string name="notifications_disabled">Notifications disabled</string>
+    <string name="general_config_text">General Configurations</string>
+    <!-- Toast messages for parking name validation -->
+    <string name="parking_name_empty_error">Parking name cannot be empty</string>
+    <string name="parking_name_too_short">Name must have at least 3 characters</string>
+    <string name="parking_name_updated">Name successfully updated</string>
+    <!-- Toast message for notes update -->
+    <string name="notes_updated_successfully">Notes updated successfully</string>
+    <!-- Toast messages for name validation -->
+    <string name="name_empty_error">Name cannot be empty</string>
+    <string name="name_invalid_chars">Name can only contain letters and spaces</string>
+    <string name="name_too_short">Name must have at least 2 characters</string>
+    <string name="name_updated">Name updated successfully</string>
+    <!-- Toast messages for email validation -->
+    <string name="email_updated_successfully">Email updated successfully</string>
+    <string name="email_already_registered">This email is already registered</string>
+    <string name="email_invalid">Please enter a valid email</string>
+    <!-- Toast messages for phone validation -->
+    <string name="phone_empty_error">Phone number cannot be empty</string>
+    <string name="phone_invalid_format">Please enter a valid phone number</string>
+    <string name="phone_updated">Phone number updated successfully</string>
+    <!-- Toast messages for password validation -->
+    <string name="password_empty_error">Password fields cannot be empty</string>
+    <string name="password_incorrect">Current password is incorrect, please try again</string>
+    <string name="password_too_short">Password must have at least 6 characters</string>
+    <string name="password_no_match">Passwords do not match</string>
+    <string name="password_updated">Password successfully updated</string>
+    <string name="password_must_have_number">Password must contain at least one number</string>
+    <string name="password_must_have_letter">Password must contain at least one letter</string>
+    <!-- Toast message for profile image removal -->
+    <string name="profile_image_removed">Profile image removed</string>
+    <!-- Toast messages for account deletion -->
+    <string name="password_empty">Password cannot be empty</string>
+    <string name="password_incorrect_delete">Incorrect password, please try again</string>
+    <string name="account_deleted">Account successfully deleted</string>
+    <!-- Mensagens de LisViewFragment -->
+    <string name="user_not_authenticated">User not authenticated</string>
+    <string name="nothing_to_view">There are no more records to view</string>
+    <!-- Toast message for saving parking -->
+    <string name="parking_saved_successfully">Parking saved successfully!</string>
 </resources>

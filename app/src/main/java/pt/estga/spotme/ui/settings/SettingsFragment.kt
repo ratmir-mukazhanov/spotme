@@ -51,35 +51,30 @@ class SettingsFragment : Fragment() {
         val prefs = pt.estga.spotme.ui.MyApp.prefs
         val savedLang = pt.estga.spotme.ui.MyApp.languageCode
 
-        // Lista de idiomas disponíveis
-        val languages = listOf("Português", "English")
+        // Definir o texto do idioma selecionado
+        binding.tvSelectedLanguage.text = if (savedLang == "pt") "Português" else "English"
 
-        val adapter = android.widget.ArrayAdapter(requireContext(),
-            android.R.layout.simple_spinner_item, languages)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerLanguage.adapter = adapter
+        // Configurar o clique no layout do idioma
+        binding.layoutLanguage.setOnClickListener {
+            // Criar um diálogo com as opções de idioma
+            val languages = arrayOf("Português", "English")
+            val checkedItem = if (savedLang == "pt") 0 else 1
 
-        // Definir o idioma selecionado
-        val selectedIndex = if (savedLang == "pt") 0 else 1
-        binding.spinnerLanguage.setSelection(selectedIndex)
-
-        // Listener para mudanças na seleção
-        binding.spinnerLanguage.onItemSelectedListener =
-            object : android.widget.AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: android.widget.AdapterView<*>,
-                                            view: View?, position: Int, id: Long) {
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
+                .setTitle(getString(R.string.lang_text))
+                .setSingleChoiceItems(languages, checkedItem) { dialog, position ->
                     val selectedLanguageCode = if (position == 0) "pt" else "en"
 
                     // Só muda se for diferente do idioma atual
                     if (savedLang != selectedLanguageCode) {
+                        binding.tvSelectedLanguage.text = languages[position]
                         changeAppLanguage(selectedLanguageCode)
                     }
+                    dialog.dismiss()
                 }
-
-                override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
-                    // Não faz nada
-                }
-            }
+                .setNegativeButton(getString(R.string.delete_cancel), null)
+                .show()
+        }
     }
 
     private fun changeAppLanguage(langCode: String) {

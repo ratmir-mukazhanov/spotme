@@ -95,8 +95,8 @@
     <string name="set_short_location_car_text">Definir localização</string>
     <string name="find_car_text">Encontrar o meu Veículo</string>
     <string name="find_description_car_text">Navegue de volta para o seu carro com informações sobre direcções e distâncias.</string>
-    <string name="rate_app_text">Avalie o nosso aplicativo</string>
-    <string name="rate_app_description_text">A sua opinião é importante para nós. Ajude-nos a melhorar o aplicativo!</string>
+    <string name="rate_app_text">Avalia a nossa app</string>
+    <string name="rate_app_description_text">A sua opinião é importante para nós. Ajude-nos a melhorar a nossa app!</string>
     <string name="click_stars_text">Toque nas estrelas para avaliar</string>
     <string name="share_experience_text">Partilhe a sua experiência (opcional)</string>
     <string name="send_avaliation_text">Enviar avaliação</string>
@@ -159,7 +159,7 @@
     <string name="parking_details_text">Detalhes Estacionamento</string>
     <string name="parking_route_text">Rota para o Estacionamento</string>
     <string name="language_change_title">Mudança de Idioma</string>
-    <string name="language_change_message">É necessário reiniciar o aplicativo para aplicar o novo idioma. Deseja reiniciar agora?</string>
+    <string name="language_change_message">É necessário reiniciar a app para aplicar o novo idioma. Deseja reiniciar agora?</string>
     <string name="restart_now">Reiniciar Agora</string>
     <string name="or_text">Ou</string>
     <string name="encontrar_meu_veiculo">Encontrar o meu Veículo</string>
@@ -181,11 +181,11 @@
     <string name="delete_success">Estacionamento eliminado com sucesso</string>
     <!-- Strings para o diálogo de localização -->
     <string name="revoke_location_title">Revogar permissões de localização</string>
-    <string name="revoke_location_message">Para maior segurança, recomendamos revogar as permissões de localização nas configurações do aplicativo. Deseja fazer isso agora?</string>
+    <string name="revoke_location_message">Para maior segurança, recomendamos revogar as permissões de localização nas configurações da app. Deseja fazer isso agora?</string>
     <string name="go_to_settings">Ir para configurações</string>
-    <string name="location_restricted_app">O acesso à localização foi restrito apenas dentro do aplicativo</string>
+    <string name="location_restricted_app">O acesso à localização foi restrito apenas dentro da app</string>
     <string name="location_permission_error">Não foi possível abrir as configurações de permissão</string>
-    <string name="location_access_enabled">Acesso à localização permitido no aplicativo</string>
+    <string name="location_access_enabled">Acesso à localização permitido na app</string>
     <!-- Strings para o diálogo de apagar histórico -->
     <string name="delete_history_title">Apagar Histórico</string>
     <string name="delete_history_message">Tem certeza que deseja apagar todo o seu histórico de estacionamentos? Esta ação não pode ser desfeita.</string>
@@ -194,14 +194,53 @@
     <string name="delete_history_error">Erro ao apagar histórico: %1$s</string>
     <!-- Strings para o diálogo de substituição de avaliação -->
     <string name="existing_rating_title">Avaliação Existente</string>
-    <string name="existing_rating_message">Já avaliou o aplicativo com %1$.1f estrelas. Deseja atualizar sua avaliação?</string>
+    <string name="existing_rating_message">Já avaliou a app com %1$.1f estrelas. Deseja atualizar a sua avaliação?</string>
     <string name="update_rating_button">Atualizar</string>
-    <string name="rating_updated">Sua avaliação foi atualizada!</string>
-    <string name="rating_submitted">Obrigado pela sua avaliação!</string>
-    <string name="rating_message_bad">Lamentamos que não esteja satisfeito</string>
+    <string name="rating_updated">A sua avaliação foi atualizada!</string>
+    <string name="rating_submitted">Obrigado pela a sua avaliação!</string>
+    <string name="rating_message_bad">Epá, lamentamos que não esteja satisfeito</string>
     <string name="rating_message_neutral">Obrigado pelo feedback</string>
-    <string name="rating_message_good">Obrigado pela sua excelente avaliação!</string>
+    <string name="rating_message_good">Obrigado pela tua excelente avaliação!</string>
     <!-- Strings para notificações -->
     <string name="notifications_enabled">Notificações ativadas</string>
     <string name="notifications_disabled">Notificações desativadas</string>
+    <string name="general_config_text">Configurações Gerais</string>
+    <!-- Mensagens toast para validação do nome de estacionamento -->
+    <string name="parking_name_empty_error">O nome do estacionamento não pode ser vazio</string>
+    <string name="parking_name_too_short">O nome deve ter pelo menos 3 caracteres</string>
+    <string name="parking_name_updated">Nome atualizado com sucesso</string>
+    <!-- Mensagem toast para atualização de notas -->
+    <string name="notes_updated_successfully">Notas atualizadas com sucesso</string>
+    <!-- Mensagens toast para validação do nome -->
+    <string name="name_empty_error">O nome não pode estar vazio</string>
+    <string name="name_invalid_chars">O nome só pode conter letras e espaços</string>
+    <string name="name_too_short">O nome deve ter pelo menos 2 caracteres</string>
+    <string name="name_updated">Nome atualizado com sucesso</string>
+    <!-- Mensagens toast para validação de email -->
+    <string name="email_updated_successfully">Email atualizado com sucesso</string>
+    <string name="email_already_registered">Este email já está registado</string>
+    <string name="email_invalid">Por favor, insira um email válido</string>
+    <!-- Mensagens toast para validação de telefone -->
+    <string name="phone_empty_error">O número de telefone não pode estar vazio</string>
+    <string name="phone_invalid_format">Por favor, insira um número de telefone válido</string>
+    <string name="phone_updated">Número de telefone atualizado com sucesso</string>
+    <!-- Mensagens toast para validação de senha -->
+    <string name="password_empty_error">Os campos de senha não podem estar vazios</string>
+    <string name="password_incorrect">Senha atual incorreta, tente novamente</string>
+    <string name="password_too_short">A senha deve ter pelo menos 6 caracteres</string>
+    <string name="password_no_match">As senhas não coincidem</string>
+    <string name="password_updated">Senha atualizada com sucesso</string>
+    <string name="password_must_have_number">A senha deve conter pelo menos um número</string>
+    <string name="password_must_have_letter">A senha deve conter pelo menos uma letra</string>
+    <!-- Mensagem toast para remoção da imagem de perfil -->
+    <string name="profile_image_removed">Imagem de perfil removida</string>
+    <!-- Mensagens toast para exclusão de conta -->
+    <string name="password_empty">A senha não pode estar vazia</string>
+    <string name="password_incorrect_delete">Senha incorreta, tente novamente</string>
+    <string name="account_deleted">Conta apagada com sucesso</string>
+    <!-- Mensagens de LisViewFragment -->
+    <string name="user_not_authenticated">Utilizador não autenticado</string>
+    <string name="nothing_to_view">Não há mais registros para ver</string>
+    <!-- Mensagem toast para salvar estacionamento -->
+    <string name="parking_saved_successfully">Estacionamento guardado com sucesso!</string>
 </resources>
