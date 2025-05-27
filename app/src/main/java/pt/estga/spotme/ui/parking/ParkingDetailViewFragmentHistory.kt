@@ -189,13 +189,21 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
         btnSaveName.setOnClickListener {
             val newName = etEditName.text.toString().trim()
 
+            // Validação de nome vazio
             if (newName.isEmpty()) {
                 Toast.makeText(requireContext(), getString(R.string.parking_name_empty_error), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // Validação de tamanho mínimo
             if (newName.length < 3) {
                 Toast.makeText(requireContext(), getString(R.string.parking_name_too_short), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Validação de tamanho máximo (50 caracteres)
+            if (newName.length > 50) {
+                Toast.makeText(requireContext(), getString(R.string.validate_title_max_length), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -236,6 +244,13 @@ class ParkingDetailViewFragmentHistory : BaseFragment() {
 
         btnSaveNotes.setOnClickListener {
             val newNotes = etEditNotes.text.toString()
+
+            // Validação do tamanho máximo das notas (200 caracteres)
+            if (newNotes.length > 200) {
+                Toast.makeText(requireContext(), getString(R.string.validate_description_max_length), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             parking.description = newNotes
             Executors.newSingleThreadExecutor().execute {
                 parkingDao.update(parking)

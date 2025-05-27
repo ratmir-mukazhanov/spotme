@@ -20,11 +20,16 @@ object ParkingDetailHelper {
     fun share(context: Context, parking: Parking) {
         val googleMapsLink = "https://www.google.com/maps/search/?api=1&query=${parking.latitude},${parking.longitude}"
 
+        val shareTitle = context.getString(pt.estga.spotme.R.string.share_vehicle_location_title)
+        val shareLocation = context.getString(pt.estga.spotme.R.string.share_location_label)
+        val shareViewMap = context.getString(pt.estga.spotme.R.string.share_view_on_map_label)
+        val shareDialogTitle = context.getString(pt.estga.spotme.R.string.share_dialog_title)
+
         val shareText = """
-        🚗 A Localização do Meu Veículo!
-        
-        📍 Local: ${parking.title}
-        🌍 Ver no mapa: $googleMapsLink
+    🚗 $shareTitle
+    
+    📍 $shareLocation ${parking.title}
+    🌍 $shareViewMap $googleMapsLink
     """.trimIndent()
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -33,12 +38,12 @@ object ParkingDetailHelper {
         }
 
         context.startActivity(
-            Intent.createChooser(shareIntent, "Partilhar localização do estacionamento")
+            Intent.createChooser(shareIntent, shareDialogTitle)
         )
     }
 
     fun openInMaps(context: Context, latitude: Double, longitude: Double) {
-        // Verificar configuração do usuário
+        // Verificar configuração do utilizador
         val userPreferences = UserPreferences.getInstance(context)
         if (!userPreferences.isLocationEnabled()) {
             AlertDialog.Builder(context)

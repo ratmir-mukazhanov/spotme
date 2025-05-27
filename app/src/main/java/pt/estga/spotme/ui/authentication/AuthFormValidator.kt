@@ -1,19 +1,22 @@
 package pt.estga.spotme.ui.authentication
 
+import android.content.Context
 import android.util.Patterns
+import pt.estga.spotme.R
 
 object AuthFormValidator {
 
-    fun validateLogin(email: String, password: String): String? {
+    fun validateLogin(context: Context, email: String, password: String): String? {
         return when {
-            email.isBlank() || password.isBlank() -> "Preencha o email e a password."
-            !isValidEmail(email) -> "Formato de email inválido."
-            password.length < 6 -> "A password deve ter pelo menos 6 caracteres."
+            email.isBlank() || password.isBlank() -> context.getString(R.string.error_email_password_required)
+            !isValidEmail(email) -> context.getString(R.string.error_invalid_email)
+            password.length < 6 -> context.getString(R.string.error_password_too_short)
             else -> null
         }
     }
 
     fun validateRegistration(
+        context: Context,
         username: String,
         email: String,
         phone: String,
@@ -22,19 +25,21 @@ object AuthFormValidator {
     ): String? {
         return when {
             username.isBlank() || email.isBlank() || phone.isBlank() ||
-                    password.isBlank() || confirmPassword.isBlank() -> "Todos os campos devem ser preenchidos!"
+                    password.isBlank() || confirmPassword.isBlank() -> context.getString(R.string.error_empty_fields)
 
-            username.length < 3 -> "O nome de utilizador deve ter pelo menos 3 caracteres."
+            username.length < 3 -> context.getString(R.string.error_username_too_short)
 
-            !isValidEmail(email) -> "Formato de email inválido."
+            username.length > 30 -> context.getString(R.string.name_too_long)
 
-            !isValidPhone(phone) -> "Formato de telefone inválido. Use apenas números (9 dígitos)."
+            !isValidEmail(email) -> context.getString(R.string.error_invalid_email)
 
-            password.length < 6 -> "A password deve ter pelo menos 6 caracteres."
+            !isValidPhone(phone) -> context.getString(R.string.error_invalid_phone)
 
-            !isStrongPassword(password) -> "A password deve conter letras e números."
+            password.length < 6 -> context.getString(R.string.error_password_too_short)
 
-            password != confirmPassword -> "As password's não coincidem!"
+            !isStrongPassword(password) -> context.getString(R.string.error_password_strength)
+
+            password != confirmPassword -> context.getString(R.string.error_password_mismatch)
 
             else -> null
         }

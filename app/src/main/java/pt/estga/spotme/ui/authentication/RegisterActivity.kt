@@ -1,5 +1,6 @@
 package pt.estga.spotme.ui.authentication
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -44,7 +45,7 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
 
         val validationError = AuthFormValidator.validateRegistration(
-            username, email, phone, password, confirmPassword
+            this, username, email, phone, password, confirmPassword
         )
 
         if (validationError != null) {
@@ -80,5 +81,11 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val langCode = pt.estga.spotme.ui.MyApp.languageCode
+        val context = pt.estga.spotme.utils.LocaleHelper.setLocale(newBase, langCode)
+        super.attachBaseContext(context)
     }
 }

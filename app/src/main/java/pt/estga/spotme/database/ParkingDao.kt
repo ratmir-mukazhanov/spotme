@@ -53,6 +53,9 @@ interface ParkingDao {
     @Query("SELECT AVG(allowedTime) FROM parking WHERE userId = :userId AND startTime >= :startOfMonth AND allowedTime > 0")
     fun getMonthlyParkingTimeAvg(userId: Long, startOfMonth: Long): Long?
 
+    @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId AND startTime >= :timestamp")
+    fun getCountByUserIdAfterTimestamp(userId: Long, timestamp: Long): Int
+
     // Métodos para estatísticas gerais (all time)
     @Query("SELECT COUNT(*) FROM parking WHERE userId = :userId")
     fun getAllTimeParkingCount(userId: Long): Int

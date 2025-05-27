@@ -72,14 +72,33 @@ class ParkingListViewFragment : BaseFragment() {
 
         binding.buttonSeeMore.setOnClickListener {
             val userId = UserSession.getInstance(requireContext()).userId
-            val totalLoaded = viewModel.parkings.size
+            val selectedFilter = when (viewModel.selectedTabPosition) {
+                0 -> TimeFilter.LAST_WEEK
+                1 -> TimeFilter.LAST_MONTH
+                else -> TimeFilter.LAST_WEEK
+            }
+
+            val now = System.currentTimeMillis()
+            val millisInDay = 24 * 60 * 60 * 1000L
+            val threshold = when (selectedFilter) {
+                TimeFilter.LAST_WEEK -> now - (7 * millisInDay)
+                TimeFilter.LAST_MONTH -> now - (30 * millisInDay)
+            }
 
             Executors.newSingleThreadExecutor().execute {
                 val db = AppDatabase.getInstance(requireContext())
-                val totalCount = db.parkingDao().getParkingCountByUserId(userId)
+
+                val totalCountForFilter = db.parkingDao()
+                    .getCountByUserIdAfterTimestamp(userId, threshold)
+
+                val filteredLoaded = viewModel.parkings.count { it.startTime >= threshold }
+
+                val hasMoreToLoad = filteredLoaded < totalCountForFilter
 
                 requireActivity().runOnUiThread {
-                    if (totalLoaded >= totalCount) {
+                    if (!isAdded || _binding == null) return@runOnUiThread
+
+                    if (!hasMoreToLoad) {
                         Toast.makeText(requireContext(), R.string.nothing_to_view, Toast.LENGTH_SHORT).show()
                     } else {
                         viewModel.currentOffset += LIMIT
@@ -88,6 +107,7 @@ class ParkingListViewFragment : BaseFragment() {
                 }
             }
         }
+
 
 
         binding.tabLayoutTimeFilter.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

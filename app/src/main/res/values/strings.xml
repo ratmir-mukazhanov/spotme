@@ -242,4 +242,30 @@
     <string name="nothing_to_view">There are no more records to view</string>
     <!-- Toast message for saving parking -->
     <string name="parking_saved_successfully">Parking saved successfully!</string>
+    <!-- Permission message for image storage -->
+    <string name="permission_needed_storage">Permission required to load images from storage.</string>
+    <!-- Login and Registration Validations -->
+    <string name="error_empty_fields">Fill in all fields.</string>
+    <string name="error_email_password_required">Fill in email and password.</string>
+    <string name="error_invalid_email">Invalid email format.</string>
+    <string name="error_password_too_short">Password must have at least 6 characters.</string>
+    <string name="error_username_too_short">Username must have at least 3 characters.</string>
+    <string name="error_invalid_phone">Invalid phone format. Use only numbers (9 digits).</string>
+    <string name="error_password_strength">Password must contain letters and numbers.</string>
+    <string name="error_password_mismatch">Passwords dont match!</string>
+    <!-- Authentication messages -->
+    <string name="invalid_credentials">Invalid credentials.</string>
+    <!-- Login success message -->
+    <string name="login_successful">Login successful!</string>
+    <string name="validate_title_max_length">Title must have at most 50 characters</string>
+    <string name="validate_description_max_length">Description must have at most 200 characters</string>
+    <string name="start_time_required">Start time is required when timer is enabled</string>
+    <string name="fill_required_fields">Please fill in all required fields</string>
+    <string name="name_too_long">Name must not exceed 30 characters</string>
+    <string name="validate_duration_too_long">Duration cannot exceed 1440 minutes (24 hours)</string>
+    <string name="share_vehicle_location_title">My Vehicle Location!</string>
+    <string name="share_location_label">Location:</string>
+    <string name="share_view_on_map_label">View on map:</string>
+    <string name="share_dialog_title">Share parking location</string>
+    <string name="temporizador_nao_definido">Timer not defined</string>
 </resources>

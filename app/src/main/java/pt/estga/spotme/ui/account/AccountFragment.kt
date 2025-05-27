@@ -132,6 +132,15 @@ class AccountFragment : Fragment() {
                     return@setOnClickListener
                 }
 
+                if (newName.length > 30) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.name_too_long),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
                 // Validação para verificar se o nome contém apenas letras e espaços
                 if (!newName.matches(Regex("^[\\p{L} ]+$"))) {
                     Toast.makeText(
@@ -270,7 +279,7 @@ class AccountFragment : Fragment() {
                     return@setOnClickListener
                 }
 
-                // Validar formato do número de telefone usando regex
+                // Validar formato do número de telefone com regex
                 // Aceita formatos como: +351 123456789, 351123456789, 123456789
                 if (!newPhone.matches(Regex("^(\\+?\\d{1,3}\\s?)?\\d{9}\$"))) {
                     Toast.makeText(
@@ -404,7 +413,7 @@ class AccountFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // Verificar a senha atual no banco de dados
+            // Verificar a password atual na base de dados
             Thread {
                 val user = userDAO!!.getById(userSession!!.userId.toInt())
                 val isPasswordCorrect = user?.let {
@@ -413,7 +422,7 @@ class AccountFragment : Fragment() {
 
                 requireActivity().runOnUiThread {
                     if (isPasswordCorrect) {
-                        // Se a senha atual estiver correta, atualiza para a nova senha
+                        // Se a password atual estiver correta, atualiza para a nova password
                         val hashedPassword = PasswordUtils.hashPassword(newPassword)
                         Thread {
                             userDAO!!.updatePassword(hashedPassword, userSession!!.userId)
@@ -435,7 +444,7 @@ class AccountFragment : Fragment() {
                             }
                         }.start()
                     } else {
-                        // Senha atual incorreta
+                        // password atual incorreta
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.password_incorrect),
@@ -700,7 +709,7 @@ class AccountFragment : Fragment() {
                 )
                 Toast.makeText(
                     requireContext(),
-                    "Permissão necessária para carregar imagens do armazenamento.",
+                    getString(R.string.permission_needed_storage),
                     Toast.LENGTH_LONG
                 ).show()
             }

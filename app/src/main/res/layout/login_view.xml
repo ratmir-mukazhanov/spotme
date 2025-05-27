@@ -68,6 +68,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_text"
                 android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="16dp"
                 android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,6 +93,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password_text"
                 android:inputType="textPassword"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="16dp"
                 android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 

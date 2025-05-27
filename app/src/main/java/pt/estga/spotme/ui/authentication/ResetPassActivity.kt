@@ -1,5 +1,6 @@
 package pt.estga.spotme.ui.authentication;
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -69,10 +70,14 @@ class ResetPassActivity: AppCompatActivity() {
         finish();
     }
 
-
-
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val langCode = pt.estga.spotme.ui.MyApp.languageCode
+        val context = pt.estga.spotme.utils.LocaleHelper.setLocale(newBase, langCode)
+        super.attachBaseContext(context)
     }
 
     companion object {

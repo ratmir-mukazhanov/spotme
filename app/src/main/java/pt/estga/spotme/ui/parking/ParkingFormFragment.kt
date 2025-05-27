@@ -164,6 +164,9 @@ class ParkingFormFragment : BaseFragment() {
             if (editTextTitle.text.isNullOrEmpty()) {
                 editTextTitle.error = getString(R.string.validate_title)
                 isValid = false
+            } else if (editTextTitle.text.toString().length > 50) {
+                editTextTitle.error = getString(R.string.validate_title_max_length)
+                isValid = false
             }
 
             // Validar latitude
@@ -192,6 +195,12 @@ class ParkingFormFragment : BaseFragment() {
                 }
             }
 
+            // Validar descrição (sem ser obrigatória, apenas limite de caracteres)
+            if (!editTextDescription.text.isNullOrEmpty() && editTextDescription.text.toString().length > 200) {
+                editTextDescription.error = getString(R.string.validate_description_max_length)
+                isValid = false
+            }
+
             // Validar campos de temporização apenas se o toggle estiver ativado
             if (switchEnableTimer.isChecked) {
                 // Validar duração
@@ -201,9 +210,15 @@ class ParkingFormFragment : BaseFragment() {
                 } else {
                     try {
                         val duration = editTextDuration.text.toString().toLong()
-                        if (duration <= 0) {
-                            editTextDuration.error = getString(R.string.validate_textDuration_zero)
-                            isValid = false
+                        when {
+                            duration <= 0 -> {
+                                editTextDuration.error = getString(R.string.validate_textDuration_zero)
+                                isValid = false
+                            }
+                            duration > 1440 -> {  // Limite máximo de 24 horas (1440 minutos)
+                                editTextDuration.error = getString(R.string.validate_duration_too_long)
+                                isValid = false
+                            }
                         }
                     } catch (e: NumberFormatException) {
                         editTextDuration.error = getString(R.string.validate_textDuration_format)
@@ -213,14 +228,14 @@ class ParkingFormFragment : BaseFragment() {
 
                 // Validar hora de início (agora obrigatória)
                 if (startTimeCalendar == null) {
-                    Toast.makeText(requireContext(), "Hora de início é obrigatória quando a temporização está ativada", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.start_time_required), Toast.LENGTH_LONG).show()
                     isValid = false
                 }
             }
         }
 
         if (!isValid) {
-            Toast.makeText(requireContext(), "Por favor, preencha todos os campos obrigatórios", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.fill_required_fields), Toast.LENGTH_LONG).show()
         }
 
         return isValid

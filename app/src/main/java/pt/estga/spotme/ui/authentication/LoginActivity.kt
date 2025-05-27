@@ -1,5 +1,6 @@
 package pt.estga.spotme.ui.authentication
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -39,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
         val db = AppDatabase.getInstance(applicationContext)
         val repository = AuthRepository(db.userDao())
-        val factory = LoginViewModelFactory(repository)
+        val factory = LoginViewModelFactory(application, repository)
         loginViewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
 
         initGoogleSignIn()
@@ -61,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.emailEditText.text.toString().trim()
         val password = binding.passwordEditText.text.toString().trim()
 
-        val validationError = AuthFormValidator.validateLogin(email, password)
+        val validationError = AuthFormValidator.validateLogin(this, email, password)
         if (validationError != null) {
             showToast(validationError)
             return
@@ -78,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
             result.onSuccess { user ->
                 val password = binding.passwordEditText.text.toString().trim()
                 UserSession.getInstance(applicationContext).updateUserSession(user, password)
-                showToast("Login bem-sucedido!")
+                showToast(getString(R.string.login_successful))
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.onFailure { ex ->
@@ -184,5 +185,11 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 9001
         private const val TAG = "LoginActivity"
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val langCode = pt.estga.spotme.ui.MyApp.languageCode
+        val context = pt.estga.spotme.utils.LocaleHelper.setLocale(newBase, langCode)
+        super.attachBaseContext(context)
     }
 }

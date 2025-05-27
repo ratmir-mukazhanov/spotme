@@ -1,15 +1,20 @@
 package pt.estga.spotme.ui.authentication
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pt.estga.spotme.R
 import pt.estga.spotme.database.repository.AuthRepository
 import pt.estga.spotme.entities.User
 
-class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class LoginViewModel(
+    application: Application,
+    private val authRepository: AuthRepository
+) : AndroidViewModel(application) {
 
     private val _loginResult = MutableLiveData<Result<User>>()
     val loginResult: LiveData<Result<User>> get() = _loginResult
@@ -21,7 +26,8 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 if (user != null) {
                     _loginResult.postValue(Result.success(user))
                 } else {
-                    _loginResult.postValue(Result.failure(Exception("Credenciais inválidas.")))
+                    val errorMessage = getApplication<Application>().getString(R.string.invalid_credentials)
+                    _loginResult.postValue(Result.failure(Exception(errorMessage)))
                 }
             } catch (e: Exception) {
                 _loginResult.postValue(Result.failure(e))

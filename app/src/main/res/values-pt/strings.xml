@@ -225,22 +225,48 @@
     <string name="phone_invalid_format">Por favor, insira um número de telefone válido</string>
     <string name="phone_updated">Número de telefone atualizado com sucesso</string>
     <!-- Mensagens toast para validação de senha -->
-    <string name="password_empty_error">Os campos de senha não podem estar vazios</string>
-    <string name="password_incorrect">Senha atual incorreta, tente novamente</string>
-    <string name="password_too_short">A senha deve ter pelo menos 6 caracteres</string>
-    <string name="password_no_match">As senhas não coincidem</string>
-    <string name="password_updated">Senha atualizada com sucesso</string>
-    <string name="password_must_have_number">A senha deve conter pelo menos um número</string>
-    <string name="password_must_have_letter">A senha deve conter pelo menos uma letra</string>
+    <string name="password_empty_error">Os campos de password não podem estar vazios</string>
+    <string name="password_incorrect">Password atual incorreta, tente novamente</string>
+    <string name="password_too_short">A password deve ter pelo menos 6 caracteres</string>
+    <string name="password_no_match">As passwords não coincidem</string>
+    <string name="password_updated">Password atualizada com sucesso</string>
+    <string name="password_must_have_number">A password deve conter pelo menos um número</string>
+    <string name="password_must_have_letter">A password deve conter pelo menos uma letra</string>
     <!-- Mensagem toast para remoção da imagem de perfil -->
     <string name="profile_image_removed">Imagem de perfil removida</string>
     <!-- Mensagens toast para exclusão de conta -->
-    <string name="password_empty">A senha não pode estar vazia</string>
-    <string name="password_incorrect_delete">Senha incorreta, tente novamente</string>
+    <string name="password_empty">A password não pode estar vazia</string>
+    <string name="password_incorrect_delete">Password incorreta, tente novamente</string>
     <string name="account_deleted">Conta apagada com sucesso</string>
     <!-- Mensagens de LisViewFragment -->
     <string name="user_not_authenticated">Utilizador não autenticado</string>
     <string name="nothing_to_view">Não há mais registros para ver</string>
     <!-- Mensagem toast para salvar estacionamento -->
     <string name="parking_saved_successfully">Estacionamento guardado com sucesso!</string>
+    <!-- Mensagem de permissão para armazenamento de imagens -->
+    <string name="permission_needed_storage">Permissão necessária para carregar imagens do armazenamento.</string>
+    <!-- Validações de Login e Registro -->
+    <string name="error_empty_fields">Todos os campos devem ser preenchidos!</string>
+    <string name="error_email_password_required">Preencha o email e a password.</string>
+    <string name="error_invalid_email">Formato de email inválido.</string>
+    <string name="error_password_too_short">A password deve ter pelo menos 6 caracteres.</string>
+    <string name="error_username_too_short">O nome de utilizador deve ter pelo menos 3 caracteres.</string>
+    <string name="error_invalid_phone">Formato de telefone inválido. Use apenas números (9 dígitos).</string>
+    <string name="error_password_strength">A password deve conter letras e números.</string>
+    <string name="error_password_mismatch">As passwords não coincidem!</string>
+    <!-- Mensagens de autenticação -->
+    <string name="invalid_credentials">Credenciais inválidas.</string>
+    <!-- Mensagem de login bem-sucedido -->
+    <string name="login_successful">Login bem-sucedido!</string>
+    <string name="validate_title_max_length">O título deve ter no máximo 50 caracteres</string>
+    <string name="validate_description_max_length">A descrição deve ter no máximo 200 caracteres</string>
+    <string name="start_time_required">Hora de início é obrigatória quando a temporização está ativada</string>
+    <string name="fill_required_fields">Por favor, preencha todos os campos obrigatórios</string>
+    <string name="name_too_long">O nome não deve exceder 30 caracteres</string>
+    <string name="validate_duration_too_long">A duração não pode exceder 1440 minutos (24 horas)</string>
+    <string name="share_vehicle_location_title">A Localização do Meu Veículo!</string>
+    <string name="share_location_label">Local:</string>
+    <string name="share_view_on_map_label">Ver no mapa:</string>
+    <string name="share_dialog_title">Partilhar localização do estacionamento</string>
+    <string name="temporizador_nao_definido">Temporizador não definido</string>
 </resources>
