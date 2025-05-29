@@ -240,7 +240,7 @@
     <string name="account_deleted">Conta apagada com sucesso</string>
     <!-- Mensagens de LisViewFragment -->
     <string name="user_not_authenticated">Utilizador não autenticado</string>
-    <string name="nothing_to_view">Não há mais registros para ver</string>
+    <string name="nothing_to_view">Não há mais registos para ver</string>
     <!-- Mensagem toast para salvar estacionamento -->
     <string name="parking_saved_successfully">Estacionamento guardado com sucesso!</string>
     <!-- Mensagem de permissão para armazenamento de imagens -->

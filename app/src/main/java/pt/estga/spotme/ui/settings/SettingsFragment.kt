@@ -81,7 +81,7 @@ class SettingsFragment : Fragment() {
         // Atualizar o código de idioma usando o método da classe MyApp
         pt.estga.spotme.ui.MyApp.setLanguageCode(langCode)
 
-        // Mostrar um diálogo informando ao usuário que a aplicação será reiniciada
+        // Mostrar um diálogo informando ao utilizador que a aplicação será reiniciada
         AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogTheme)
             .setTitle(getString(R.string.language_change_title))
             .setMessage(getString(R.string.language_change_message))
@@ -128,7 +128,7 @@ class SettingsFragment : Fragment() {
         // Inicializa o switch com o valor salvo
         binding.switchDarkMode.isChecked = isDarkMode
 
-        // Quando o usuário alternar o switch, atualiza a preferência e o tema
+        // Quando o utilizador alternar o switch, atualiza a preferência e o tema
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("dark_mode", isChecked).apply()
 

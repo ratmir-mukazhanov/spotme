@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         googleSignInClient.signOut().addOnCompleteListener(this) {
             // Opcional: revogar acesso para forçar a escolha da conta
             googleSignInClient.revokeAccess().addOnCompleteListener(this) {
-                // Limpar dados da sessão do usuário se necessário
+                // Limpar dados da sessão do utilizador se for necessário
                 UserSession.clearSession(this)
 
                 // Redirecionar para a tela de login

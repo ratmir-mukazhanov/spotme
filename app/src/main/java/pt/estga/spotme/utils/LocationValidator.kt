@@ -20,7 +20,7 @@ object LocationValidator {
         destinationId: Int,
         args: Bundle? = null
     ): Boolean {
-        // Verificar configuração do usuário
+        // Verificar configuração do utilizador
         val userPreferences = UserPreferences.getInstance(context)
         if (!userPreferences.isLocationEnabled()) {
             showLocationDisabledByUserDialog(context, navController)

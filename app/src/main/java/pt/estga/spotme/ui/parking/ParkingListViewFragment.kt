@@ -185,14 +185,14 @@ class ParkingListViewFragment : BaseFragment() {
             val db = AppDatabase.getInstance(requireContext())
 
             val parkings = if (forceRefresh || offset == 0) {
-                // Se for forceRefresh ou primeira carga, obter todos os registros até o limite atual
+                // Se for forceRefresh ou primeira carga, obter todos os registos até o limite atual
                 db.parkingDao().getParkingsByUserIdWithLimit(userId, 0, offset + limit)
             } else {
                 // Caso contrário, obter apenas os novos a partir do offset
                 db.parkingDao().getParkingsByUserIdWithLimit(userId, offset, limit)
             }
 
-            // Obtém o total de estacionamentos para este usuário
+            // Obtém o total de estacionamentos para este utilizador
             val totalCount = db.parkingDao().getParkingCountByUserId(userId)
 
             requireActivity().runOnUiThread {

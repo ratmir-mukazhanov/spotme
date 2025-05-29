@@ -58,7 +58,7 @@ class PersonalStatisticsFragment : Fragment() {
         userDAO = AppDatabase.getInstance(requireContext()).userDao()
         parkingDAO = AppDatabase.getInstance(requireContext()).parkingDao()
 
-        // Carrega a imagem de perfil do usuário
+        // Carrega a imagem de perfil do utilizador
         carregarImagemDePerfil()
 
         // Carrega as estatísticas do utilizador
